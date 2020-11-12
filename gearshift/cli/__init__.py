@@ -62,7 +62,13 @@ def cli():
 @click.option(
     "-OT", "--output-template", help="Template output.", type=click.Path(exists=True)
 )
-def run(input_files, output_folder, **kwargs):
+@click.option(
+    "-PL",
+    "--plot-workflow",
+    is_flag=True,
+    help="Open workflow-plot in browser, after run finished.",
+)
+def run(input_files, output_folder, plot_workflow, **kwargs):
     """
     Run GEARSHIFT for all files into INPUT_FILES.
 
@@ -74,6 +80,7 @@ def run(input_files, output_folder, **kwargs):
         input_files=input_files,
         cmd_flags=kwargs,
         output_folder=output_folder,
+        plot_workflow=plot_workflow,
         **{sh.START: kwargs}
     )
     os.makedirs(inputs.get("output_folder") or ".", exist_ok=True)

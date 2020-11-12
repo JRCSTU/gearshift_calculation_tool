@@ -116,8 +116,8 @@ def merge_data(raw_data):
     data = {**speed_phase_data, **raw_data}
     return data
 
-@sh.add_function(dsp, inputs_kwargs=True, outputs=["base", "dice"])
+
+@sh.add_function(dsp, inputs_kwargs=True, outputs=["base"])
 def _validation(data):
     base = data
-    dice = "dice"
-    return base, dice
+    return base

@@ -131,3 +131,37 @@ def run_core(core_model, input_files, output_folder, cmd_flags, **kwargs):
                 dict(input_file_name=fp, cmd_flags=cmd_flags), **kwargs
             )
     return solutions
+
+
+@sh.add_function(dsp, outputs=["start_time"])
+def default_start_time():
+    """
+    Returns the default run start time.
+
+    :return:
+        Run start time.
+    :rtype: datetime.datetime
+    """
+    import datetime
+
+    return datetime.datetime.today()
+
+
+@sh.add_function(dsp, outputs=["done"], weight=sh.inf(100, 0))
+def log_done(start_time):
+    """
+    Logs the overall execution time.
+
+    :param start_time:
+        Run start time.
+    :type start_time: datetime.datetime
+
+    :return:
+        Execution time [s].
+    :rtype:
+    """
+    import datetime
+
+    sec = (datetime.datetime.today() - start_time).total_seconds()
+    log.info(" Done! [%.2f sec]" % sec)
+    return sec

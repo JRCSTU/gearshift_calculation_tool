@@ -18,3 +18,35 @@ Sub-Modules:
     scaleTrace
     calculateShiftpointsNdvFullPC
 """
+
+import schedula as sh
+from .scaleTrace import dsp as _scaleTrace
+from .calculateShiftpointsNdvFullPC import dsp as _calculateShiftpointsNdvFullPC
+
+
+dsp = sh.BlueDispatcher(
+    name="GEARSHIFT model",
+    description="Calculates the speed trace with scaleTrace and predict the gearshift "
+    "with calculateShiftpointsNdvFullPC",
+)
+
+dsp.add_data(
+    data_id="execution_case",
+    description="User input data of PYCSIS calibration stage.",
+)
+
+dsp.add_function(
+    function_id="speedTrace",
+    function=sh.SubDispatch(_scaleTrace),
+    inputs=["execution_case"],
+    outputs=["speed_trace"],
+    description="This function calibrates the speed trance, following the Sub-Annex 1",
+)
+
+dsp.add_function(
+    function_id="speedTrace",
+    function=sh.SubDispatch(_calculateShiftpointsNdvFullPC),
+    inputs=["execution_case", "speed_trace"],
+    outputs=["a"],
+    description="This function calibrates the speed trance, following the Sub-Annex 1",
+)

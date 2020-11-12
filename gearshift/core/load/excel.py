@@ -84,7 +84,10 @@ def _read_dataframe(col, dataframe):
 
     dataframe = dataframe.astype(type_cols[col])
 
-    return dataframe
+    for string_column in dataframe.select_dtypes(include="object"):
+        dataframe[string_column] = dataframe[string_column].str.replace(" ", "")
+
+    return dataframe.reset_index(drop=True)
 
 
 def parse_excel_file(input_file_name, input_file):
@@ -108,5 +111,5 @@ def parse_excel_file(input_file_name, input_file):
     columns = _read_columns(input_data)
     for col in columns:
         raw_data[col] = _read_dataframe(col, input_data.parse(col))
-    raw_data['input_file'] = input_file_name
+    raw_data["input_file"] = input_file_name
     return raw_data
