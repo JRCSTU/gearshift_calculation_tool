@@ -36,6 +36,17 @@ dsp = sh.BlueDispatcher(
     outputs=["originalTraceTimes", "originalVehicleSpeeds", "originalTraceTimesCount"],
 )
 def resample_trace(Trace):
+    """
+    Re-sample the trace in 1Hz. If the trace was provided with higher sample rate, this may lead to data loss.
+
+    :param Trace:
+        Velocities and times from the phases of the WLTC cycle.
+    :type Trace: array
+
+    :return: originalTraceTimes, originalVehicleSpeeds, originalTraceTimesCount
+        Data required to calculate the final Trace
+    :rtype: array, array, int
+    """
     from scipy.interpolate import interp1d
 
     originalTraceTimes = np.arange(int(Trace[:, 0][-1] + 1)).astype(int)
@@ -48,6 +59,21 @@ def resample_trace(Trace):
 
 @sh.add_function(dsp, outputs=["phaseStarts", "phaseEnds"])
 def identify_phases(PhaseLengths, originalTraceTimes):
+    """
+    This function determines the starts and ends of different phases of the whole cycles.
+
+    :param PhaseLengths:
+        Contains the lengths of the different phases.
+    :type PhaseLengths: list
+
+    :param originalTraceTimes:
+        Contains the total times of the whole WLTC cycles.
+    :type originalTraceTimes: array
+
+    :return: phaseStarts, phaseEnds
+        The position of the beginning and the end of each cycle.
+    :rtype: array, array
+    """
     originalPhaseLengths = PhaseLengths.copy()
 
     phaseEnds = np.cumsum(originalPhaseLengths)
@@ -66,6 +92,21 @@ def identify_phases(PhaseLengths, originalTraceTimes):
 
 @sh.add_function(dsp, outputs=["accelerations"])
 def calculate_accelerations(originalVehicleSpeeds, originalTraceTimes):
+    """
+    Calculate accelerations.
+
+    :param originalVehicleSpeeds:
+        Contains the speeds of the whole WLTC cycles.
+    :type originalVehicleSpeeds: array
+
+    :param originalTraceTimes:
+        Contains the times of the whole WLTC cycles.
+    :type originalTraceTimes: array
+
+    :return: accelerations
+        Accelerations from the whole WLTC cycles.
+    :rtype accelerations: array
+    """
     accelerations = np.around(
         np.append(
             np.diff(originalVehicleSpeeds) / (3.6 * np.diff(originalTraceTimes)), 0
@@ -79,6 +120,40 @@ def calculate_accelerations(originalVehicleSpeeds, originalTraceTimes):
 def calculate_required_powers(
     originalVehicleSpeeds, accelerations, VehicleTestMass, f0, f1, f2
 ):
+    """
+    Calculate required powers, following the P_req,max,i function in section 8.3.
+
+    :param originalVehicleSpeeds:
+        Contains the speeds of the whole WLTC cycles.
+    :type originalVehicleSpeeds: array
+
+    :param accelerations:
+        Accelerations from the whole WLTC cycles.
+    :type accelerations: array
+
+    :param VehicleTestMass:
+        Vehicle test mass used during the cycle execution.
+    :type VehicleTestMass: float
+
+    :param f0:
+        Represents the constant road load coefficient, i.e. independent of velocity, caused by internal
+        frictional resistances.
+    :type f0: float
+
+    :param f1:
+        Represents the linear road load coefficient, i.e. proportional to velocity, caused by tyres rolling
+        resistances.
+    :type f1: float
+
+    :param f2:
+        Represents the exponential road load coefficient, i.e. quadratical to velocity, caused by
+        aerodynamic resistances.
+    :type f2: float
+
+    :return: requiredPowers:
+        The power required to overcome driving resistance and to accelerate.
+    :rtype: array
+    """
     requiredPowers = (
         f0 * originalVehicleSpeeds
         + f1 * np.power(originalVehicleSpeeds, 2)
@@ -92,6 +167,19 @@ def calculate_required_powers(
 def _calculate_required_to_rated_power_ratio(
     indexing, requiredPowers, RatedEnginePower
 ):
+    """
+    :param indexing:
+        Boolean array that select the required powers to take into account to calculate the rated power ratio
+    :rtype indexing: boolean array
+
+    :param requiredPowers:
+        The power required to overcome driving resistance and to accelerate.
+    :rtype requiredPowers: array
+
+    :param RatedEnginePower:
+        The maximum rated engine required
+    :return RatedEnginePower: float
+    """
     requiredPowersInd = [
         requiredPowers[i] for i in range(len(requiredPowers)) if indexing[i] == 1
     ]
@@ -109,6 +197,47 @@ def _calculate_downscaling_factor(
     RatedEnginePower,
     indexing=None,
 ):
+    """
+    Determine the downscaling factor for the entire trace (8.3)
+
+    :param r0:
+        Factor to determine the downscaling factor
+    :type r0: float
+
+    :param a1:
+        Factor to determine the downscaling factor
+    :type a1: float
+
+    :param b1:
+        Factor to determine the downscaling factor
+    :type b1: float
+
+    :param UseCalculatedDownscalingPercentage:
+        Boolean variable to check if is necessary calculates the downscaling factor
+    :type UseCalculatedDownscalingPercentage: boolean
+
+    :param DownscalingPercentage:
+        The degree of downscaling. This value will only be used if the input parameter
+        UseCalculatedDownscalingPercentage is false.
+    :type DownscalingPercentage: float
+
+    :param requiredPowers:
+        The power required to overcome driving resistance and to accelerate.
+    :rtype requiredPowers: array
+
+    :param RatedEnginePower:
+        The maximum rated engine required
+    :return RatedEnginePower: float
+
+    :param indexing:
+        (optional) Boolean array that select the required powers to take into account to calculate the rated
+        power ratio
+    :rtype indexing: boolean array
+
+    :return: downscalingFactor, requiredToRatedPowerRatio
+        The downscaling factor for the cycle and the required rated power ratio after apply the downscaling factor
+    :rtype: float, float
+    """
     if UseCalculatedDownscalingPercentage:
         if indexing is None:
             indexing = np.full((len(requiredPowers)), 1)
@@ -139,6 +268,43 @@ def _algorithm_wltp(
     downscalingFactor,
     accelerations,
 ):
+    """
+    Algorithm WLTP
+
+    :param ScalingStartTimes:
+         Contains the start times of the segments to scale in seconds.
+    :type ScalingStartTimes: array
+
+    :param ScalingCorrectionTimes:
+        Contains the times to begin the scaling correction at in seconds. The size must correspond to the size of
+        ScalingStartTimes. Each value must be between the corresponding start and end times.
+    :type ScalingCorrectionTimes: array
+
+    :param ScalingEndTimes:
+        Contains the end times of the segments to scale in seconds. The size must correspond to the
+        size of ScalingStartTimes.
+    :type ScalingEndTimes: array
+
+    :param originalTraceTimes:
+        Contains the times of the whole WLTC cycles.
+    :type originalTraceTimes: array
+
+    :param originalVehicleSpeeds:
+        Contains the speeds of the whole WLTC cycles.
+    :type originalVehicleSpeeds: array
+
+    :param downscalingFactor:
+        The downscaling factor for the cycle
+    :type downscalingFactor: float
+
+    :param accelerations:
+        Accelerations from the whole WLTC cycles.
+    :type accelerations: array
+
+    :return downscaledVehicleSpeeds:
+        Contains the speeds of the whole WLTC cycles downscaled.
+    :rtype downscaledVehicleSpeeds: array
+    """
 
     scalingStartIndex = np.where(originalTraceTimes >= ScalingStartTimes)[0][0]
 
@@ -207,6 +373,79 @@ def downscale_trace(
     ApplyDownscaling,
     accelerations,
 ):
+    """
+    Downscaling applies to very low powered class 1 vehicles or vehicles with power to mass ratios close to class
+    borderlines, thus causing driveability issues.
+
+    :param r0:
+        Factor to determine the downscaling factor
+    :type r0: float
+
+    :param a1:
+        Factor to determine the downscaling factor
+    :type a1: float
+
+    :param b1:
+        Factor to determine the downscaling factor
+    :type b1: float
+
+    :param UseCalculatedDownscalingPercentage:
+        Boolean variable to check if is necessary calculates the downscaling factor
+    :type UseCalculatedDownscalingPercentage: boolean
+
+    :param DownscalingPercentage:
+        The degree of downscaling. This value will only be used if the input parameter
+        UseCalculatedDownscalingPercentage is false.
+    :type DownscalingPercentage: float
+
+    :param requiredPowers:
+        The power required to overcome driving resistance and to accelerate.
+    :rtype requiredPowers: array
+
+    :param RatedEnginePower:
+        The maximum rated engine required
+    :return RatedEnginePower: float
+
+    :param ScalingStartTimes:
+         Contains the start times of the segments to scale in seconds.
+    :type ScalingStartTimes: array
+
+    :param ScalingCorrectionTimes:
+        Contains the times to begin the scaling correction at in seconds. The size must correspond to the size of
+        ScalingStartTimes. Each value must be between the corresponding start and end times.
+    :type ScalingCorrectionTimes: array
+
+    :param ScalingEndTimes:
+        Contains the end times of the segments to scale in seconds. The size must correspond to the
+        size of ScalingStartTimes.
+    :type ScalingEndTimes: array
+
+    :param originalTraceTimes:
+        The times used in the whole trace.
+    :type originalTraceTimes: array
+
+    :param ScalingAlgorithms:
+        Represents a strings, that denotes the algorithm to use for the specific segment.
+    :type ScalingAlgorithms: String
+
+    :param originalVehicleSpeeds:
+        The speeds used in the whole trace.
+    :type originalVehicleSpeeds: array
+
+    :param ApplyDownscaling:
+        Specifies if the trace shall be downscaled.
+    :type ApplyDownscaling: boolen
+
+    :param accelerations:
+        Accelerations from the whole WLTC cycles.
+    :type accelerations: array
+
+    :return downscaled, downscaledVehicleSpeeds, requiredToRatedPowerRatios, calculatedDownscalingFactors,
+            downscalingFactor, requiredToRatedPowerRatio:
+        Data required to calculate the final Trace
+    :type downscaled, downscaledVehicleSpeeds, requiredToRatedPowerRatios, calculatedDownscalingFactors,
+    downscalingFactor, requiredToRatedPowerRatio: boolean array, boolean array, array, array, float, float
+    """
 
     downscalingFactor, requiredToRatedPowerRatio = _calculate_downscaling_factor(
         r0,
@@ -272,6 +511,24 @@ def downscale_trace(
 
 @sh.add_function(dsp, outputs=["capped", "cappedVehicleSpeeds"])
 def cap_trace(ApplySpeedCap, CappedSpeed, downscaledVehicleSpeeds):
+    """
+    Speed cap applies to vehicles that are technically able to follow the given trace, but whose maximum speed
+    is limited to a value lower than the maximum speed of that trace.
+
+    :param ApplySpeedCap:
+        Specifies if the trace shall be capped to the given CappedSpeed.
+    :type ApplySpeedCap: boolean
+
+    :param CappedSpeed:
+        The maximum speed of vehicles, which are technically able to follow the speed of the given trace but are not
+        able to reach the maximum speed of that trace.
+    :type CappedSpeed: array
+
+    :return capped, cappedVehicleSpeeds:
+        The boolean array that show the vehicle speeds capped and the vehicle speeds capped according to
+        the maximum value available
+    :rtype cappedVehicleSpeeds: array
+    """
     cappedVehicleSpeeds = np.copy(downscaledVehicleSpeeds)
 
     if ApplySpeedCap:
@@ -310,6 +567,60 @@ def compensate_trace(
     capped,
     downscaled,
 ):
+    """
+    A capped trace may need compensations to achieve the same distance as for the original trace.
+
+    :param originalTraceTimesCount:
+        The original length of the trace time
+    :type originalTraceTimesCount: integer
+
+    :param originalTraceTimes:
+        The times used in the whole trace.
+    :type originalTraceTimes: array
+
+    :param cappedVehicleSpeeds:
+        The vehicle speeds capped according to the maximum value available
+    :type cappedVehicleSpeeds: array
+
+    :param PhaseLengths:
+        Contains the lengths of the different phases.
+    :type PhaseLengths: list
+
+    :param ApplyDistanceCompensation:
+        Specifies it the trace shall be compensated for distance due to capped speeds.
+    :type ApplyDistanceCompensation: boolean
+
+    :param phaseStarts:
+        The position of the beginning of each cycle.
+    :type phaseStarts: array
+
+    :param phaseEnds:
+        The position of the end of each cycle.
+    :type phaseEnds: array
+
+    :param downscaledVehicleSpeeds:
+        Contains the speeds of the whole WLTC cycles downscaled.
+    :type downscaledVehicleSpeeds: array
+
+    :param CappedSpeed:
+        The maximum speed of vehicles, which are technically able to follow the speed of the given trace but are not
+        able to reach the maximum speed of that trace.
+    :type CappedSpeed: array
+
+    :param capped:
+        The boolean array that show the vehicle speeds capped.
+    :type capped: boolean array
+
+    :param downscaled:
+        The boolean array that show the vehicle speeds downscaled.
+    :type  downscaled: boolean array
+    :return compensated, compensatedTraceTimes, compensatedVehicleSpeeds, downscaledCompensated, cappedCompensated,
+            compensatedTraceTimes, additionalSamples:
+        Data required to calculate the final Trace
+    :rtype compensated, compensatedTraceTimes, compensatedVehicleSpeeds, downscaledCompensated, cappedCompensated,
+            compensatedTraceTimes, additionalSamples: boolean array, array, array, boolean array, boolean array,
+            array, array
+    """
 
     compensated = np.zeros(originalTraceTimesCount)
     compensatedTraceTimes = np.copy(originalTraceTimes)
@@ -394,6 +705,69 @@ def generate_speed_trace(
     cappedCompensated,
     compensated,
 ):
+    """
+    This function creates a dictionary with the final results of the Scale trace
+
+    :param downscalingFactor:
+        The downscaling factor for the cycle
+    :type downscalingFactor: float
+
+    :return: requiredToRatedPowerRatio
+        The required rated power ratio after apply the downscaling factor.
+    :rtype: float
+
+    :return: requiredToRatedPowerRatio
+        The required rated power ratio after apply the downscaling factors.
+    :rtype: float
+
+    :param calculatedDownscalingFactors:
+            The downscaling factor for the cycle
+    :type calculatedDownscalingFactors: float
+
+    :param originalVehicleSpeeds:
+        The speeds used in the whole trace.
+    :type originalVehicleSpeeds: array
+
+    :param PhaseLengths:
+        Contains the lengths of the different phases.
+    :type PhaseLengths: list
+
+    :param phaseStarts:
+        The position of the beginning of each cycle.
+    :type phaseStarts: array
+
+    :param phaseEnds:
+        The position of the end of each cycle.
+    :type phaseEnds: array
+
+    :param compensatedVehicleSpeeds:
+        The vehicle speeds after apply compensation.
+    :type compensatedVehicleSpeeds: array
+
+    :param additionalSamples:
+        The additional samples added to compensate the capped speed correction.
+    :type additionalSamples: array
+
+    :param originalTraceTimes:
+        The times used in the whole trace.
+    :type originalTraceTimes: array
+
+    :param compensatedTraceTimes:
+        The final times after applied compensation
+    :type compensatedTraceTimes: array
+
+    :param downscaledCompensated:
+        The boolean array that shows the vehicle speeds downscaled and compensated
+    :type downscaledCompensated: boolean array
+
+    :param cappedCompensated:
+        The boolean array that shows the vehicle speeds capped and compensated
+    :param compensated:boolean array
+
+    :return speed_trace:
+        The dictionary that contains the all final values of speed trace
+    :type speed_trace: dict
+    """
     calculatedDownscalingFactor = downscalingFactor
     if calculatedDownscalingFactor <= 0.01:
         calculatedDownscalingFactor = 0

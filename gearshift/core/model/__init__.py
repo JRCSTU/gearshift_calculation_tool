@@ -44,7 +44,7 @@ dsp.add_function(
 )
 
 dsp.add_function(
-    function_id="speedTrace",
+    function_id="calculateShiftpointsNdvFullPC",
     function=sh.SubDispatch(_calculateShiftpointsNdvFullPC),
     inputs=["execution_case", "speed_trace"],
     outputs=["a"],
