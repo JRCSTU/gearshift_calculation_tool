@@ -12,7 +12,7 @@ Docstrings should provide sufficient understanding for any individual function.
 
 Sub-Modules:
 
-.. currentmodule:: gearshift.core.model.physical
+.. currentmodule:: gearshift.core.model.scaleTrace
 
 .. autosummary::
     :nosignatures:
