@@ -50,7 +50,7 @@ def register_model():
 
 
 def _obtain_inputs(case, base):
-    to_del = ["case", "vehicle", "class", "merge", "n_lim", "m_ro", "phase"]
+    to_del = ["case", "vehicle", "class", "merge", "m_ro", "phase"]
 
     case_rename = {
         "do_dsc": "ApplyDownscaling",
@@ -85,6 +85,7 @@ def _obtain_inputs(case, base):
         "#g": "NoOfGears",
         "m_test": "VehicleTestMass",
         "f_dsc": "DownscalingPercentage",
+        "n_lim": "EngineSpeedLimitVMaxVehicle",
         "f0": "f0",
         "f1": "f1",
         "f2": "f2",
