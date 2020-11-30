@@ -330,6 +330,10 @@ def determine_maximum_engine_speed_95(
         "MinDrivesI",
         "CalculatedMinDriveEngineSpeedGreater2nd",
         "MinDrive1stTo2nd",
+        "MinDrive1st",
+        "MinDrive2ndDecel",
+        "MinDrive2nd",
+        "MinDriveGreater2nd",
     ],
 )
 def minimum_engine_speed_in_motion(
@@ -378,7 +382,15 @@ def minimum_engine_speed_in_motion(
         MinDrivesI[:, 1], np.where(InDecelerationToStandstill != 0), MinDrive2ndDecel
     )
 
-    return MinDrivesI, CalculatedMinDriveEngineSpeedGreater2nd, MinDrive1stTo2nd
+    return (
+        MinDrivesI,
+        CalculatedMinDriveEngineSpeedGreater2nd,
+        MinDrive1stTo2nd,
+        MinDrive1st,
+        MinDrive2ndDecel,
+        MinDrive2nd,
+        MinDriveGreater2nd,
+    )
 
 
 @sh.add_function(dsp, outputs=["Accelerations"])
@@ -721,7 +733,7 @@ def determine_maximum_engine_speed(
         GearAtMaxVehicleSpeedFinal,
         MaxVehicleSpeedFinal,
         EngineSpeedAtGearAtMaxRequiredSpeed,
-        EngineSpeedAtGearAtMaxVehicleSpeed
+        EngineSpeedAtGearAtMaxVehicleSpeed,
     )
 
 
@@ -1596,7 +1608,7 @@ def reduce_vehicle_speed_if_not_enough_power(
     requiredPowersF,
     ClutchDisengagedFinal,
     ClutchUndefinedFinal,
-    InitialGearsFinal,
+    InitialGearsFinalAfterClutch,
     NoOfGearsFinal,
     AvailablePowers,
     NdvRatios,
@@ -1691,7 +1703,7 @@ def reduce_vehicle_speed_if_not_enough_power(
                 Acceleration * 1.03 * RequiredVehicleSpeeds[i] * VehicleTestMass / 3600
             )
             requiredPowersF[i] = PowerForRestistance + PowerForAcceleration
-            g = InitialGearsFinal[i]
+            g = InitialGearsFinalAfterClutch[i]
             if ClutchDisengagedFinal[i] == 1 or (g >= 1 and g <= NoOfGearsFinal):
                 if ClutchDisengagedFinal[i] == 1:
                     if ClutchUndefinedFinal[i] == 1:
@@ -1757,7 +1769,7 @@ def reduce_vehicle_speed_if_not_enough_power(
     return AvailablePowersFinal
 
 
-@sh.add_function(dsp, outputs=["CalculatedGearsOutput"])
+@sh.add_function(dsp, outputs=["shift_poits"])
 def generate_gears(
     TraceTimes,
     GearSequenceStarts,
@@ -1773,32 +1785,63 @@ def generate_gears(
     InitialAvailablePowers,
     FullPowerCurve,
     EngineSpeedAtGearAtMaxRequiredSpeed,
-    EngineSpeedAtGearAtMaxVehicleSpeed
+    EngineSpeedAtGearAtMaxVehicleSpeed,
+    MaxEngineSpeed,
+    MaxVehicleSpeedFinal,
+    GearAtMaxVehicleSpeedFinal,
+    MinDrive1st,
+    MinDrive1stTo2nd,
+    MinDrive2ndDecel,
+    MinDrive2nd,
+    MinDriveGreater2nd,
+    InitialGearsFinalAfterClutch,
+    ClutchDisengagedFinal,
+    ClutchUndefinedFinal,
+    ClutchHST,
+    CorrectionsCells,
+    ChecksumVxGear,
 ):
     # This is a test parameter that can be included in the inputs in the future
     ReturnAdjustedEngSpeedsAndAvlPowers = True
 
-    CalculatedGearsOutput = np.vstack((TraceTimes[GearSequenceStarts], GearNames)).T
-    AverageGearOutput = np.round(AverageGear * 10000) / 10000
-    AdjustedMax95EngineSpeed = Max95EngineSpeedFinal
-    TraceTimesOutput = TraceTimes
-    RequiredVehicleSpeedsOutput = RequiredVehicleSpeeds
-    RequiredPowersOutput = requiredPowersF
-
     if ReturnAdjustedEngSpeedsAndAvlPowers:
         RequiredEngineSpeeds[np.where(~(PossibleGearsByEngineSpeed == 1))] = np.nan
         AvailablePowersFinal[np.where(~(PossibleGearsByEngineSpeed == 1))] = np.nan
-        RequiredEngineSpeedsOutput = RequiredEngineSpeeds
-        AvailablePowersOutput = AvailablePowersFinal
+        RequiredEngineSpeedsOutput = np.round(RequiredEngineSpeeds, 4)
+        AvailablePowersOutput = np.round(AvailablePowersFinal, 4)
     else:
-        RequiredEngineSpeedsOutput = InitialRequiredEngineSpeeds
-        AvailablePowersOutput = InitialAvailablePowers
+        RequiredEngineSpeedsOutput = np.round(InitialRequiredEngineSpeeds, 4)
+        AvailablePowersOutput = np.round(InitialAvailablePowers, 4)
 
-    PowerCurveOutput = FullPowerCurve
-    MaxEngineSpeedCycleOutput = EngineSpeedAtGearAtMaxRequiredSpeed
-    MaxEngineSpeedReachableOutput = EngineSpeedAtGearAtMaxVehicleSpeed
+    shift_poits = {
+        "CalculatedGearsOutput": np.vstack(
+            (TraceTimes[GearSequenceStarts], GearNames)
+        ).T,
+        "AverageGearOutput": np.round(AverageGear * 10000) / 10000,
+        "PowerCurveOutput": FullPowerCurve,
+        "AdjustedMax95EngineSpeed": Max95EngineSpeedFinal,
+        "TraceTimesOutput": TraceTimes,
+        "RequiredVehicleSpeedsOutput": RequiredVehicleSpeeds,
+        "RequiredPowersOutput": np.round(requiredPowersF, 4),
+        "RequiredEngineSpeedsOutput": RequiredEngineSpeedsOutput,
+        "AvailablePowersOutput": AvailablePowersOutput,
+        "MaxEngineSpeedCycleOutput": EngineSpeedAtGearAtMaxRequiredSpeed,
+        "MaxEngineSpeedReachableOutput": EngineSpeedAtGearAtMaxVehicleSpeed,
+        "MaxEngineSpeedOutput": MaxEngineSpeed,
+        "MaxVehicleSpeedCycleOutput": np.max(RequiredVehicleSpeeds),
+        "MaxVehicleSpeedReachableOutput": MaxVehicleSpeedFinal,
+        "GearMaxVehicleSpeedReachableOutput": GearAtMaxVehicleSpeedFinal,
+        "MinDriveEngineSpeed1stOutput": MinDrive1st,
+        "MinDriveEngineSpeed1stTo2ndOutput": MinDrive1stTo2nd,
+        "MinDriveEngineSpeed2ndDecelOutput": MinDrive2ndDecel,
+        "MinDriveEngineSpeed2ndOutput": MinDrive2nd,
+        "MinDriveEngineSpeedGreater2ndOutput": MinDriveGreater2nd,
+        "GearsOutput": InitialGearsFinalAfterClutch.astype(int),
+        "ClutchDisengagedOutput": ClutchDisengagedFinal.astype(int),
+        "ClutchUndefinedOutput": ClutchUndefinedFinal.astype(int),
+        "ClutchHSTOutput": ClutchHST,
+        "GearCorrectionsOutput": CorrectionsCells,
+        "ChecksumVxGearOutput": np.round(ChecksumVxGear * 10000) / 10000,
+    }
 
-        
-        
-
-    return CalculatedGearsOutput
+    return shift_poits
