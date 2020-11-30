@@ -68,7 +68,15 @@ def cli():
     is_flag=True,
     help="Open workflow-plot in browser, after run finished.",
 )
-def run(input_files, output_folder, plot_workflow, **kwargs):
+@click.option(
+    "-OF",
+    "--output-format",
+    help="Output format.",
+    default="xlsx",
+    type=click.Path(file_okay=False, writable=True),
+    show_default=True,
+)
+def run(input_files, output_folder, plot_workflow, output_format, **kwargs):
     """
     Run GEARSHIFT for all files into INPUT_FILES.
 
@@ -81,6 +89,7 @@ def run(input_files, output_folder, plot_workflow, **kwargs):
         cmd_flags=kwargs,
         output_folder=output_folder,
         plot_workflow=plot_workflow,
+        output_format=output_format,
         **{sh.START: kwargs}
     )
     os.makedirs(inputs.get("output_folder") or ".", exist_ok=True)

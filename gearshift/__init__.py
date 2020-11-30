@@ -99,8 +99,32 @@ class _ProgressBar(tqdm.tqdm):
             return bar
 
 
+@sh.add_function(dsp, outputs=["timestamp"])
+def default_timestamp(start_time):
+    """
+    Returns the default timestamp.
+
+    :param start_time:
+        Run start time.
+    :type start_time: datetime.datetime
+
+    :return:
+        Run timestamp.
+    :rtype: str
+    """
+    return start_time.strftime("%Y%m%d_%H%M%S")
+
+
 @sh.add_function(dsp, outputs=["core_solutions"])
-def run_core(core_model, input_files, output_folder, cmd_flags, **kwargs):
+def run_core(
+    core_model,
+    input_files,
+    output_folder,
+    cmd_flags,
+    timestamp,
+    output_format,
+    **kwargs
+):
     """
     Run core model.
 
@@ -128,7 +152,14 @@ def run_core(core_model, input_files, output_folder, cmd_flags, **kwargs):
     if it:
         for fp in _ProgressBar(it):
             solutions[fp] = core_model(
-                dict(input_file_name=fp, cmd_flags=cmd_flags), **kwargs
+                dict(
+                    input_file_name=fp,
+                    cmd_flags=cmd_flags,
+                    output_folder=output_folder,
+                    timestamp=timestamp,
+                    output_format=output_format,
+                ),
+                **kwargs
             )
     return solutions
 
