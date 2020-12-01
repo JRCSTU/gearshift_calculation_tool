@@ -173,7 +173,6 @@ def save_demo_files(output_folder):
     from shutil import copy2
     from pkg_resources import resource_filename
     os.makedirs(output_folder or '.', exist_ok=True)
-    print(glob.glob(resource_filename('gearshift', 'demos/*')))
     for src in glob.glob(resource_filename('gearshift', 'demos/*')):
         copy2(src, osp.join(output_folder, osp.basename(src)))
     log.info('CO2MPAS demos written into (%s).', output_folder)
