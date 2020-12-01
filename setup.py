@@ -80,7 +80,6 @@ if __name__ == '__main__':
             'PyYAML',
             'pandas',
             'schedula>=1.1.1',
-            'ruamel.yaml',
             'click',
             'click_log',
             'tqdm',
@@ -89,6 +88,7 @@ if __name__ == '__main__':
             'scipy',
             'pyarrow',
             'XlsxWriter',
+            'ruamel.yaml',
             'xlrd'
         ],
         entry_points={
