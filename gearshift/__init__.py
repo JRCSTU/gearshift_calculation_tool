@@ -159,6 +159,25 @@ def run_core(
             )
     return solutions
 
+@sh.add_function(dsp, outputs=['demo'])
+def save_demo_files(output_folder):
+    """
+    Save CO2MPAS demo files.
+
+    :param output_folder:
+        Output folder.
+    :type output_folder: str
+    """
+    import glob
+    import os
+    from shutil import copy2
+    from pkg_resources import resource_filename
+    os.makedirs(output_folder or '.', exist_ok=True)
+    print(glob.glob(resource_filename('gearshift', 'demos/*')))
+    for src in glob.glob(resource_filename('gearshift', 'demos/*')):
+        copy2(src, osp.join(output_folder, osp.basename(src)))
+    log.info('CO2MPAS demos written into (%s).', output_folder)
+
 
 @sh.add_function(dsp, outputs=["start_time"])
 def default_start_time():
