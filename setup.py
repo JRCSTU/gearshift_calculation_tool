@@ -78,16 +78,18 @@ if __name__ == '__main__':
         python_requires='>=3.5',
         install_requires=[
             'PyYAML',
+            'pandas',
             'schedula>=1.1.1',
             'ruamel.yaml',
             'click',
             'click_log',
             'tqdm',
             'regex',
-            'numpy',
+            'numpy==1.19.3',
             'scipy',
             'pyarrow',
-            'XlsxWriter'
+            'XlsxWriter',
+            'xlrd'
         ],
         entry_points={
             'console_scripts': [
