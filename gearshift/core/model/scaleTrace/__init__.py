@@ -314,11 +314,9 @@ def _algorithm_wltp(
 
     downscaledVehicleSpeeds = np.copy(originalVehicleSpeeds)
 
-    for i in range(scalingStartIndex, correctionStartIndex - 1):
-        downscaledVehicleSpeeds[i + 1] = (
-            downscaledVehicleSpeeds[i]
-            + accelerations[i] * (1 - downscalingFactor) * 3.6
-        )
+    for i in range(scalingStartIndex, correctionStartIndex):
+        downscaledVehicleSpeeds[i + 1] = downscaledVehicleSpeeds[i] + accelerations[i] * (1 - downscalingFactor) * 3.6
+
 
     if scalingEndIndex < len(originalTraceTimes):
         subsequentVehicleSpeed = originalVehicleSpeeds[scalingEndIndex + 1]
@@ -334,13 +332,13 @@ def _algorithm_wltp(
             downscaledVehicleSpeeds[correctionStartIndex] - subsequentVehicleSpeed
         ) / (originalVehicleSpeeds[correctionStartIndex] - subsequentVehicleSpeed)
 
-    for i in range(scalingStartIndex + 1, scalingEndIndex):
+    for i in range(correctionStartIndex + 1, scalingEndIndex+1):
         downscaledVehicleSpeeds[i] = (
             downscaledVehicleSpeeds[i - 1]
-            + accelerations[i] * (1 - correctionFactor) * 3.6
+            + accelerations[i - 1] * correctionFactor * 3.6
         )
 
-    downscaledVehicleSpeeds = np.round(downscaledVehicleSpeeds, 4)
+    downscaledVehicleSpeeds = np.round(downscaledVehicleSpeeds * 10) / 10
 
     return downscaledVehicleSpeeds
 
