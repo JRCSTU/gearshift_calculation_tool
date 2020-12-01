@@ -35,7 +35,44 @@ dsp = sh.BlueDispatcher(
 
 @sh.add_function(dsp, outputs=["NoOfGearsFinal", "Gears", "NdvRatios"])
 def check_gears(NoOfGears, gear_nbrs, Ndv, ExcludeCrawlerGear):
+    """
+    Check if is necessary exclude the first gear from the input gears
 
+    :param NoOfGears:
+        Annex 2 (2d) ng. The number of forward gears.
+    :type NoOfGears: Integer
+
+    :param gear_nbrs:
+        List with of gears of the vehicle.
+    :type gear_nbrs: list
+
+    :param Ndv:
+        Annex 2 (2e) i ==> (n/v)_i
+        The ratio obtained by dividing the engine speed n by the vehicle speed v
+        for each gear i form 1 to ng.
+    :type Ndv: list
+
+    :param ExcludeCrawlerGear:
+        Annex 2 (2j)
+        Gear 1 may be excluded at the request of . the manufacturer if
+    :type ExcludeCrawlerGear: boolean
+
+    :return NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :rtype NoOfGearsFinal: integer
+
+    :return Gears:
+        List with of gears of the vehicle after apply the exclusion of first gear
+        if is necessary.
+    :rtype Gears: list
+
+    :return NdvRatios:
+        The ratio obtained by dividing the engine speed n by the vehicle speed v
+        for each gear i form 1 to ng after apply the exclusion of first gear if
+        is necessary.
+    :rtype NdvRatios: array
+    """
     if ExcludeCrawlerGear:
         Gears = gear_nbrs[1:, :]
         NdvRatios = np.array(Ndv[1:])
@@ -50,6 +87,22 @@ def check_gears(NoOfGears, gear_nbrs, Ndv, ExcludeCrawlerGear):
 
 @sh.add_function(dsp, outputs=["TraceTimesInput", "RequiredVehicleSpeedsInput"])
 def parse_speed_trace(speed_trace):
+    """
+    Split speed trace in trace times and required vehicles speeds
+
+    :param speed_trace:
+        Annex 1 (eg 8.3) i ==> v_i
+        The vehicle speed at second i.
+    :type speed_trace: array
+
+    :return TraceTimesInput:
+        Times for each vehicle speed required
+    :rtype TraceTimesInput: array
+
+    :return RequiredVehicleSpeedsInput:
+        The vehicle speed required for the whole cycle.
+    :rtype RequiredVehicleSpeedsInput: array
+    """
     TraceTimesInput = speed_trace["ApplicableTrace"]["compensatedTraceTimes"]
     RequiredVehicleSpeedsInput = speed_trace["ApplicableTrace"][
         "compensatedVehicleSpeeds"
@@ -62,6 +115,31 @@ def parse_speed_trace(speed_trace):
     outputs=["TraceTimes", "RequiredVehicleSpeeds", "TraceTimesCount"],
 )
 def resample_trace(TraceTimesInput, RequiredVehicleSpeedsInput):
+    """
+    Re-sample the trace in 1Hz
+    If the trace was provided with higher sample rate, this may lead to data
+    loss.
+
+    :param TraceTimesInput:
+        Times for each vehicle speed required
+    :type TraceTimesInput: array
+
+    :param RequiredVehicleSpeedsInput:
+        The vehicle speed required for the whole cycle.
+    :type RequiredVehicleSpeedsInput: array
+
+    :return TraceTimes:
+        Times for each vehicle speed required re-sampled in 1Hz
+    :rtype TraceTimes: array
+
+    :return RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :rtype RequiredVehicleSpeeds: array
+
+    :return TraceTimesCount:
+        The length of trace times re-sampled in 1Hz
+    :rtype TraceTimesCount: integer
+    """
     from scipy.interpolate import interp1d
 
     TraceTimes = np.arange(int(TraceTimesInput[-1] + 1)).astype(int)
@@ -93,6 +171,79 @@ def resample_trace(TraceTimesInput, RequiredVehicleSpeedsInput):
     ],
 )
 def identify_phases(TraceTimesCount, RequiredVehicleSpeeds):
+    """
+    Identify phases
+
+    :param TraceTimesCount:
+        The length of trace times re-sampled in 1Hz
+    :type TraceTimesCount: integer
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: array
+
+    :return Phases:
+        The list of phases that are used during whole cycle
+    :rtype Phases: array
+
+    :return InDecelerationToStandstill:
+        The array that contains the seconds from deceleration to standstill as a True
+    :rtype InDecelerationToStandstill: boolean array
+
+    :return PhaseValues:
+        Contains the points of changes phases
+    :rtype PhaseValues: array
+
+    :return InStandStill:
+        Contains the points that are in standstill phase as a True
+    :rtype InStandStill: boolean array
+
+    :return PhaseStarts:
+        Contains the points that are start point from a phase
+    :rtype PhaseStarts: array
+
+    :return PhaseEnds:
+        Contains the points that are end point from a phase
+    :rtype PhaseStarts: array
+
+    :return PHASE_ACCELERATION_FROM_STANDSTILL:
+        Acceleration phase following a standstill phase
+    :rtype PHASE_ACCELERATION_FROM_STANDSTILL: int
+
+    :return PHASE_ACCELERATION:
+        Acceleration phase
+    :rtype PHASE_ACCELERATION: int
+
+    :return InAcceleration:
+        Contains the points that are in acceleration phase as a True
+    :rtype InAcceleration: boolean array
+
+    :return InConstantSpeed:
+        Contains the points that are in constant speed phase as a True
+    :rtype InConstantSpeed: boolean array
+
+    :return InAccelerationAnyDuration:
+         some gear corrections ignore the duration of acceleration phases
+         so save acceleration phases with any duration here
+    :rtype InAccelerationAnyDuration: boolean array
+
+    :return PHASE_DECELERATION:
+        time period of more than 2 seconds with required vehicle
+ 		speed >= 1km/h and monotonically decreasing
+    :rtype PHASE_DECELERATION: integer
+
+    :return PHASE_DECELERATION_TO_STANDSTILL:
+        DECELERATION phase preceding a STANDSTILL phase
+    :rtype PHASE_DECELERATION_TO_STANDSTILL: integer
+
+    :return InDeceleration:
+        Contains the points that are in deceleration phase as a True
+    :rtype InDeceleration: boolean array
+
+    :return PHASE_STANDSTILL:
+        Time period with required vehicle speed < 1km/h
+    :rtype PHASE_STANDSTILL: integer
+    """
     PHASE_TOO_SHORT = 0
     PHASE_STANDSTILL = 1
     PHASE_ACCELERATION = 2
@@ -254,6 +405,49 @@ def _ExponentialDecayingASM(
 def load_full_power_curve(
     FullPowerCurve, AdditionalSafetyMargin0, StartEngineSpeed, EndEngineSpeed
 ):
+    """
+    Load full power curve
+    This function split the different components of full power curve in a independent array
+
+    :param FullPowerCurve:
+        Annex 2 (2h) and (3.4) n ==> P_wot(n), ASM
+        The full load power curve over the engine speed range.
+    :type FullPowerCurve: array
+
+    :param AdditionalSafetyMargin0:
+        This is a legacy parameter used until regulation GRPE-72-10-Rev.2.
+        Later regulations define the additional safety margin values
+        as part of the FullPowerCurve.
+    :type AdditionalSafetyMargin0: array
+
+    :param StartEngineSpeed:
+        This is a legacy parameter used until regulation GRPE-72-10-Rev.2.
+        GRPE-72-10-Rev.2 Annex 2 (3.4) n_start
+        The engine speed at which ASM approching zero starts.
+    :type StartEngineSpeed: array
+
+    :param EndEngineSpeed:
+        This is a legacy parameter used until regulation GRPE-72-10-Rev.2.
+        GRPE-72-10-Rev.2 Annex 2 (3.4) n_end
+        The engine speed at which ASM approching zero ends.
+    :type EndEngineSpeed: array
+
+    :result PowerCurveEngineSpeeds:
+        Contains the power curve engine speeds
+    :rtype PowerCurveEngineSpeeds: array
+
+    :result PowerCurvePowers:
+        Contains the power curve powers
+    :rtype PowerCurvePowers: array
+
+    :result PowerCurveASM:
+        Contains the power curve additional save margin
+    :rtype PowerCurveASM: array
+
+    :result DefinedPowerCurveAdditionalSafetyMargins:
+        Boolean that define if the additional save margins are present
+    :rtype DefinedPowerCurveAdditionalSafetyMargins: boolean
+    """
     if np.shape(FullPowerCurve)[1] == 2:
         ASM = []
         for i in range(np.shape(FullPowerCurve)[0]):
@@ -285,10 +479,61 @@ def load_full_power_curve(
     )
 
 
-@sh.add_function(dsp, outputs=["RatedEnginePower", "RatedEngineSpeed"])
+@sh.add_function(dsp, outputs=["RatedEnginePowerF", "RatedEngineSpeedF"])
 def determine_rated_engine_power(
     RatedEnginePower, RatedEngineSpeed, PowerCurvePowers, PowerCurveEngineSpeeds
 ):
+    """
+    Determine rated engine power and rated engine speed from the full power curve
+
+    .. note::
+    The following requirement was deleted from the regulation but as there is no
+    new requirement we will stay with the old one :
+    If the maximum power is developed over an engine speed range, n_rated shall be
+    the minimum of this range
+
+    :param RatedEnginePower:
+        Annex 2 (2a) P_rated.
+        This is a legacy parameter used until regulation GRPE-75-23.The maximum rated
+        engine power as declared by the manufacturer. But the newer regulation
+        GRPE/2018/2 Annex 2 (2g) now requires : The data sets and the values P_rated
+        and n_rated shall be taken from the power curve as declared by the manufacturer.
+
+        For backward compatibility this parameter may still be used to override the
+        value calculated from FullPowerCurve. Set RatedEnginePower and RatedEngineSpeed
+        to 0 to use the calculated values.
+    :type RatedEnginePower: array
+
+    :param RatedEngineSpeed:
+        Annex 2 (2b) n_rated. This is a legacy parameter used until regulation GRPE-75-23.
+        The rated engine speed at which an engine declared by the manufacturer as the
+        engine speed at which the engine develops its maximum power.
+
+        But the newer regulation GRPE/2018/2 Annex 2 (2g) now requires: The data sets and
+        the values P_rated and n_rated shall be taken from the power curve as declared by
+        the manufacturer.
+
+        For backward compatibility this parameter may still be used to override the value
+        calculated from FullPowerCurve. Set RatedEnginePower and RatedEngineSpeed to 0
+        to use the calculated values.
+    :type RatedEngineSpeed: array
+
+    :param PowerCurvePowers:
+        Contains the power curve powers
+    :type PowerCurvePowers: array
+
+    :param PowerCurveEngineSpeeds:
+        Contains the power curve engine speeds
+    :type PowerCurveEngineSpeeds: array
+
+    :return RatedEnginePowerF:
+        Contains the rated engine power corrected if is necessary
+    :rtype RatedEnginePowerF: float
+
+    :return RatedEngineSpeedF:
+        Contains the rated engine speed corrected if is necessary
+    :rtype RatedEngineSpeedF: float
+    """
     if (RatedEnginePower is None or RatedEnginePower <= 0) and (
         RatedEngineSpeed is None or RatedEngineSpeed <= 0
     ):
@@ -302,6 +547,33 @@ def determine_rated_engine_power(
 def determine_maximum_engine_speed_95(
     Max95EngineSpeed, PowerCurvePowers, PowerCurveEngineSpeeds
 ):
+    """
+    Determine the maximum engine speed where 95 percent of the rated power is
+    reached from the full power curve
+
+    .. note::
+    This will only be done if this value was not set as input parameter
+
+    :param Max95EngineSpeed:
+        Annex 2 (2g) n_max1 = n_95_high
+        The maximum engine speed where 95 per cent of rated power is reached.
+        If the dummy value 0 will be given for this parameter then n_max1 will
+        be calculated from parameter FullPowerCurve P_wot.
+    :type Max95EngineSpeed: float
+
+    :param PowerCurvePowers:
+        Contains the power curve powers
+    :type PowerCurvePowers: array
+
+    :param PowerCurveEngineSpeeds:
+        Contains the power curve engine speeds
+    :type PowerCurveEngineSpeeds: array
+
+    :return Max95EngineSpeedFinal:
+        The maximum engine speed where 95 percent of the rated power is
+        reached from the full power curve
+    :rtype Max95EngineSpeedFinal: float
+    """
     if Max95EngineSpeed <= 0 or np.isnan(Max95EngineSpeed):
         PowerCurvePowerMax95 = 0.95 * np.max(PowerCurvePowers)
         if PowerCurvePowers[-1] >= PowerCurvePowerMax95:
@@ -338,7 +610,7 @@ def determine_maximum_engine_speed_95(
 )
 def minimum_engine_speed_in_motion(
     IdlingEngineSpeed,
-    RatedEngineSpeed,
+    RatedEngineSpeedF,
     MinDriveEngineSpeed1st,
     MinDriveEngineSpeed1stTo2nd,
     MinDriveEngineSpeed2ndDecel,
@@ -348,12 +620,104 @@ def minimum_engine_speed_in_motion(
     NoOfGearsFinal,
     InDecelerationToStandstill,
 ):
+    """
+    Define minimum engine speeds when vehicle is in motion (2k)
+
+    .. note::
+    The calculation of minimum engine speeds for the second gear does
+    not fully confirm to the latest legislation text, but rather reflects
+    the previous revision of it until (2ka) is clarified.
+
+    :param IdlingEngineSpeed:
+        Annex 2 (2c) n_idle. The idling speed.
+    :type IdlingEngineSpeed: float
+
+    :param RatedEngineSpeedF:
+        Contains the rated engine speed corrected if is necessary
+    :type RatedEngineSpeedF: float
+
+    :param MinDriveEngineSpeed1st:
+        This is a legacy parameter used until regulation GRPE-75-23.
+        This value may be used to increase the calculated value.
+        Annex 2 (2k) n_min_drive = n_idle for n_gear:1
+        The minimum engine speed when the vehicle is in motion.
+    :type MinDriveEngineSpeed1st: float
+
+    :param MinDriveEngineSpeed1stTo2nd:
+        This is a legacy parameter used until regulation GRPE-75-23.
+        This value may be used to increase the calculated value.
+        Annex 2 (2ka) n_min_drive = 1.15 x n_idle for n_gear:1->2
+        The minimum engine speed for transitions from first to second gear.
+    :type MinDriveEngineSpeed1stTo2nd: float
+
+    :param MinDriveEngineSpeed2ndDecel:
+        This is a legacy parameter used until regulation GRPE-75-23.
+        This value may be used to increase the calculated value.
+        Annex 2 (2kb) n_min_drive = n_idle for n_gear:2
+        The minimum engine speed for decelerations to standstill in second gear.
+    :type MinDriveEngineSpeed2ndDecel: float
+
+    :param MinDriveEngineSpeed2nd:
+        This is a legacy parameter used until regulation GRPE-75-23.
+        This value may be used to increase the calculated value.
+        Annex 2 (2kc) n_min_drive = 0.9 x n_idle for n_gear:2
+    :type MinDriveEngineSpeed2nd: float
+
+    :param MinDriveEngineSpeedGreater2nd:
+        This is a legacy parameter used until regulation GRPE-75-23.
+        This value may be used to increase the calculated value.
+        Annex 2 (2k) n_min_drive = n_idle + 0.125 × ( n_rated - n_idle ) for n_gear:3..
+        This value shall be referred to as n_min_drive_set.
+        The minimum engine speed for all driving conditions in gears greater than 2.
+    :type MinDriveEngineSpeedGreater2nd: float
+
+    :param TraceTimesCount:
+        The length of trace times re-sampled in 1Hz
+    :type TraceTimesCount: integer
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: integer
+
+    :param InDecelerationToStandstill:
+        The array that contains the seconds from deceleration to standstill as a True
+    :type InDecelerationToStandstill: boolean array
+
+    :return MinDrivesI:
+        Minimum engine speeds when vehicle is in motion
+    :rtype MinDrivesI: array
+
+    :return CalculatedMinDriveEngineSpeedGreater2nd:
+        The minimum drive engine speed grater than second
+    :rtype CalculatedMinDriveEngineSpeedGreater2nd: float
+
+    :return MinDrive1stTo2nd:
+        The minimum drive first to second
+    :rtype MinDrive1stTo2nd: float
+
+    :return MinDrive1st:
+        The minimum drive first
+    :rtype MinDrive1st: float
+
+    :return MinDrive2ndDecel:
+        The minimum drive second during deceleration phase
+    :rtype MinDrive2ndDecel: float
+
+    :return MinDrive2nd:
+        The minimum drive second
+    :rtype MinDrive2nd: float
+
+    :return MinDriveGreater2nd:
+        The minimum drive greater than second
+    :rtype MinDriveGreater2nd: float
+    """
     CalculatedMinDriveEngineSpeed1st = IdlingEngineSpeed
     CalculatedMinDriveEngineSpeed1stTo2nd = np.round(1.15 * IdlingEngineSpeed)
     CalculatedMinDriveEngineSpeed2ndDecel = IdlingEngineSpeed
     CalculatedMinDriveEngineSpeed2nd = 0.9 * IdlingEngineSpeed
     CalculatedMinDriveEngineSpeedGreater2nd = IdlingEngineSpeed + 0.125 * (
-        RatedEngineSpeed - IdlingEngineSpeed
+        RatedEngineSpeedF - IdlingEngineSpeed
     )
 
     MinDrive1st = np.round(
@@ -395,7 +759,21 @@ def minimum_engine_speed_in_motion(
 
 @sh.add_function(dsp, outputs=["Accelerations"])
 def get_accelerations(RequiredVehicleSpeeds, TraceTimes):
-    a = RequiredVehicleSpeeds
+    """
+    Calculate accelerations.
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: array
+
+    :param TraceTimes:
+        Times for each vehicle speed required re-sampled in 1Hz
+    :type TraceTimes: array
+
+    :return Accelerations:
+         The acceleration required for the whole cycle re-sampled in 1Hz
+    :rtype accelerations: array
+    """
     Accelerations = np.around(
         np.append(np.diff(RequiredVehicleSpeeds) / (3.6 * np.diff(TraceTimes)), 0),
         4,
@@ -504,6 +882,93 @@ def define_minimum_engine_speed_in_motion(
     NoOfGearsFinal,
     Accelerations,
 ):
+    """
+    Determine the gear, in which the maximum vehicle speed is reached (2i)
+    The maximum vehicle speed is defined as the vehicle speed, at which the
+    available power equals the road load power caused by friction and
+    aerodynamics, and is usually not covered by typical traces. That is why
+    the calculation is based on sufficient fictive road load speeds.
+
+    :param MinDrivesI:
+        Minimum engine speeds when vehicle is in motion
+    :type MinDrivesI: array
+
+    :param CalculatedMinDriveEngineSpeedGreater2nd:
+        The minimum drive engine speed grater than second
+    :type CalculatedMinDriveEngineSpeedGreater2nd: float
+
+    :param MinDriveEngineSpeedGreater2ndAccel:
+        Annex 2 (2j) n_min_drive_up
+        Values higher than n_min_drive_set may be used for n_gear > 2.
+        The manufacturer may specify a value
+        for acceleration/constant speed phases (n_min_drive_up).
+    :type MinDriveEngineSpeedGreater2ndAccel: float
+
+    :param MinDriveEngineSpeedGreater2ndDecel:
+        Annex 2 (2j) n_min_drive_down
+        Values higher than n_min_drive_set may be used for n_gear > 2.
+        The manufacturer may specify a value
+        for deceleration phases (n_min_drive_down).
+    :type MinDriveEngineSpeedGreater2ndDecel: float
+
+    :param MinDriveEngineSpeedGreater2ndAccelStartPhase:
+        Annex 2 (2j) n_min_drive_up_start
+        Heinz Steven Tool n_min_drive_start_up
+        For an initial period of time (t_start_phase),
+        the manufacturer may specify higher values
+        (n_min_drive_start and/or n_min_drive_up_start)
+        for the values n_min_drive and/or n_min_drive_up
+        for n_gear > 2.
+        This requirement was implemented with other parameters
+        by the reference implementation Heinz Steven Tool.
+    :type MinDriveEngineSpeedGreater2ndAccelStartPhase: float
+
+    :param MinDriveEngineSpeedGreater2ndDecelStartPhase:
+        Annex 2 (2j) n_min_drive_start
+        Heinz Steven Tool n_min_drive_start_down
+        For an initial period of time (t_start_phase),
+        the manufacturer may specify higher values
+        (n_min_drive_start and/or n_min_drive_up_start)
+        for the values n_min_drive and/or n_min_drive_up
+        for n_gear > 2.
+        This requirement was implemented with other parameters
+        by the reference implementation Heinz Steven Tool.
+    :type MinDriveEngineSpeedGreater2ndDecelStartPhase: float
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: array
+
+    :param TimeEndOfStartPhase:
+        Annex 2 (2j) t_start_phase
+        For an initial period of time (t_start_phase),
+        the manufacturer may specify higher values
+        (n_min_drive_start and/or n_min_drive_up_start)
+        for the values n_min_drive and/or n_min_drive_up
+        for n_gear > 2.
+        The input parameter here is used in combination with
+        MinDriveEngineSpeedGreater2ndAccelStartPhase and
+        MinDriveEngineSpeedGreater2ndDecelStartPhase.
+    :type TimeEndOfStartPhase: array
+
+    :param TraceTimes:
+        Times for each vehicle speed required re-sampled in 1Hz
+    :type TraceTimes: array
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: integer
+
+    :param Accelerations:
+         The acceleration required for the whole cycle re-sampled in 1Hz
+    :type Accelerations: array
+
+    :return MinDrives:
+        Samples which have acceleration values >= -0.1389 m/s² ( = 0.5 (km/h)/s )
+        shall belong to the acceleration/constant speed phases.
+    :rtype MinDrives: array
+    """
 
     NoOfGears = NoOfGearsFinal
 
@@ -580,6 +1045,54 @@ def determine_gear_in_maximum_vehicle_speed(
     NoOfGearsFinal,
     PowerCurvePowers,
 ):
+    """
+    The maximum vehicle speed is defined as the vehicle speed, at which the
+    available power equals the road load power caused by friction and
+    aerodynamics, and is usually not covered by typical traces. That is why
+    the calculation is based on sufficient fictive road load speeds.
+
+    :param PowerCurveEngineSpeeds:
+        Contains the power curve engine speeds
+    :type PowerCurveEngineSpeeds: array
+
+    :param f0:
+        The constant road load coefficient,
+        i.e. independent of velocity, caused by internal frictional resistances.
+    :type f0: float
+
+    :param f1:
+        The linear road load coefficient,
+        i.e. proportional to velocity, caused by tyres rolling resistances.
+    :type f1: float
+
+    :param f2:
+        The quadratic road load coefficient,
+        i.e. quadratical to velocity, caused by aerodynamic resistances.
+    :type f2: float
+
+    :param NdvRatios:
+        The ratio obtained by dividing the engine speed n by the vehicle speed v
+        for each gear i form 1 to ng after apply the exclusion of first gear if
+        is necessary.
+    :type NdvRatios: array
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: integer
+
+    :param PowerCurvePowers:
+        Contains the power curve powers
+    :type PowerCurvePowers: array
+
+    :return GearAtMaxVehicleSpeed:
+        The gear that have the maximum vehicle speed
+    :rtype GearAtMaxVehicleSpeed: float
+
+    :return MaxVehicleSpeed:
+        The maximum vehicle speed
+    :rtype MaxVehicleSpeed: float
+    """
     from scipy.interpolate import interp1d
 
     RoadLoadSpeeds = np.arange(0.1, 500.1, 0.1)
@@ -643,13 +1156,14 @@ def check_gear_max_vehicle_speed(
     Max95EngineSpeedFinal,
     PowerCurveEngineSpeeds,
     PowerCurvePowers,
-    RatedEnginePower,
+    RatedEnginePowerF,
     NdvRatios,
     GearAtMaxVehicleSpeed,
     RequiredVehicleSpeeds,
     MaxVehicleSpeed,
     NoOfGearsFinal,
 ):
+
     if GearAtMaxVehicleSpeed == 0:
         logging.error(
             "Gear to be used at maximum vehicle speed could not be determined"
@@ -675,14 +1189,88 @@ def determine_maximum_engine_speed(
     Max95EngineSpeedFinal,
     PowerCurveEngineSpeeds,
     PowerCurvePowers,
-    RatedEnginePower,
+    RatedEnginePowerF,
     NdvRatios,
     GearAtMaxVehicleSpeed,
     RequiredVehicleSpeeds,
     MaxVehicleSpeed,
     NoOfGearsFinal,
 ):
+    """
+    Determine maximum engine speed (2g)
 
+    n_max1 = n_95_high
+    If n_95_high cannot be determined
+    because the engine speed is limited to a lower value n_lim for all gears
+    and the corresponding full load power is higher than 95 per cent of rated power,
+    n_95_high shall be set to n_lim.
+
+    :param EngineSpeedLimitVMax:
+        Annex 2, (2i) n_lim
+        The maximum engine speed for the purpose of limiting maximum vehicle speed.
+        (value 0 means unlimited vehicle speed)
+    :type EngineSpeedLimitVMax: float
+
+    :param Max95EngineSpeedFinal:
+        The maximum engine speed where 95 percent of the rated power is
+        reached from the full power curve
+    :type Max95EngineSpeedFinal: float
+
+    :param PowerCurveEngineSpeeds:
+        Contains the power curve engine speeds
+    :type PowerCurveEngineSpeeds: array
+
+    :param PowerCurvePowers:
+        Contains the power curve powers
+    :type PowerCurvePowers: array
+
+    :param RatedEnginePowerF:
+        Contains the rated engine power corrected if is necessary
+    :type RatedEnginePowerF: float
+
+    :param NdvRatios:
+        The ratio obtained by dividing the engine speed n by the vehicle speed v
+        for each gear i form 1 to ng after apply the exclusion of first gear if
+        is necessary.
+    :type NdvRatios: array
+
+    :return GearAtMaxVehicleSpeed:
+        The gear that have the maximum vehicle speed
+    :rtype GearAtMaxVehicleSpeed: float
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: array
+
+    :param MaxVehicleSpeed:
+        The maximum vehicle speed
+    :type MaxVehicleSpeed: float
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: integer
+
+    :return MaxEngineSpeed:
+        The maximum engine speed
+    :rtype MaxEngineSpeed: float
+
+    :return GearAtMaxVehicleSpeedFinal:
+        The gear that have the maximum vehicle speed after check required engine speeds
+    :rtype GearAtMaxVehicleSpeedFinal: integer
+
+    :return MaxVehicleSpeed:
+        The maximum vehicle speed after check required engine speeds
+    :rtype MaxVehicleSpeed: float
+
+    :return EngineSpeedAtGearAtMaxRequiredSpeed:
+        The engine speed at gear maximum required speed
+    :rtype EngineSpeedAtGearAtMaxRequiredSpeed: float
+
+    :return EngineSpeedAtGearAtMaxVehicleSpeed:
+        The engine speed at gear at maximum vehicle speed
+    :rtype EngineSpeedAtGearAtMaxVehicleSpeed: float
+    """
     NoOfGears = NoOfGearsFinal
 
     if EngineSpeedLimitVMax > 0 and EngineSpeedLimitVMax < Max95EngineSpeedFinal:
@@ -691,7 +1279,7 @@ def determine_maximum_engine_speed(
         PowerAtEngineSpeedLimitVMax = interp1d(
             PowerCurveEngineSpeeds, PowerCurvePowers
         )(EngineSpeedLimitVMax)
-        if PowerAtEngineSpeedLimitVMax > 0.95 * RatedEnginePower:
+        if PowerAtEngineSpeedLimitVMax > 0.95 * RatedEnginePowerF:
             Max95EngineSpeedFinal = EngineSpeedLimitVMax
 
     EngineSpeedAtGearAtMaxRequiredSpeed = NdvRatios[GearAtMaxVehicleSpeed] * np.max(
@@ -741,6 +1329,40 @@ def determine_maximum_engine_speed(
 def calculate_required_powers(
     RequiredVehicleSpeeds, Accelerations, f0, f1, f2, VehicleTestMass
 ):
+    """
+    Calculate required powers (3.1)
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: array
+
+    :param Accelerations:
+         The acceleration required for the whole cycle re-sampled in 1Hz
+    :type Accelerations: array
+
+    :param f0:
+        The constant road load coefficient,
+        i.e. independent of velocity, caused by internal frictional resistances.
+    :type f0: float
+
+    :param f1:
+        The linear road load coefficient,
+        i.e. proportional to velocity, caused by tyres rolling resistances.
+    :type f1: float
+
+    :param f2:
+        The quadratic road load coefficient,
+        i.e. quadratical to velocity, caused by aerodynamic resistances.
+    :type f2: float
+
+    :param VehicleTestMass:
+        The test mass of the vehicle.
+    :type VehicleTestMass: float
+
+    :return requiredPowersF:
+        The requiered powers for each time.
+    :rtype requiredPowersF: array
+    """
     requiredPowers = (
         f0 * RequiredVehicleSpeeds
         + f1 * np.power(RequiredVehicleSpeeds, 2)
@@ -783,6 +1405,27 @@ def determine_possible_gears(
     PowerCurveEngineSpeeds,
     InDecelerationToStandstill,
 ):
+    """
+    Determine possible gears based on required engine speeds (3.3)
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: array
+
+    :param NdvRatios:
+        The ratio obtained by dividing the engine speed n by the vehicle speed v
+        for each gear i form 1 to ng after apply the exclusion of first gear if
+        is necessary.
+    :type NdvRatios: array
+
+
+
+    :return RequiredEngineSpeeds:
+        The engine speeds required
+        for each gear i from 1 to ng and
+        for each second j of the cycle trace.
+    :rtype RequiredEngineSpeeds: array
+    """
     from functools import reduce
 
     RequiredEngineSpeeds = NdvRatios * np.transpose(

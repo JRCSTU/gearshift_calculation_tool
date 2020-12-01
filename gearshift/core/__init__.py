@@ -5,11 +5,11 @@
 # You may not use this work except in compliance with the Licence.
 # You may obtain a copy of the Licence at: http://ec.europa.eu/idabc/eupl
 """
-Functions and `dsp` model to processes a CO2MPAS input file.
+Functions and `dsp` model to processes a GEARSHIFT input file.
 
 Sub-Modules:
 
-.. currentmodule:: co2mpas.core
+.. currentmodule:: gearshift.core
 
 .. autosummary::
     :nosignatures:
@@ -42,7 +42,7 @@ def register_model():
     Register core model.
 
     :return:
-        CO2MPAS core model.
+        GEARSHIFT core model.
     :rtype: schedula.Dispatcher
     """
     from .model import dsp

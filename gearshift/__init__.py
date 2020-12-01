@@ -15,13 +15,9 @@ Defines the file processing chain model `dsp`.
 
     ~core
     ~cli
-    ~utils
-    ~defaults
 """
-import os
 import tqdm
 import logging
-import webbrowser
 import os.path as osp
 import schedula as sh
 
@@ -72,7 +68,7 @@ def register_core():
     Register core model.
 
     :return:
-        CO2MPAS core model.
+        GEARSHIFT core model.
     :rtype: schedula.Dispatcher
     """
     from .core import dsp
@@ -129,7 +125,7 @@ def run_core(
     Run core model.
 
     :param core_model:
-        CO2MPAS core model.
+        GEARSHIFT core model.
     :type core_model: schedula.Dispatcher
 
     :param cmd_flags:

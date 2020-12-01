@@ -20,7 +20,7 @@ import schedula as sh
 from gearshift import dsp as _process
 
 log = logging.getLogger("gearshift.cli")
-CO2MPAS_HOME = os.environ.get("CO2MPAS_HOME", ".")
+GEARSHIFT_HOME = os.environ.get("GEARSHIFT_HOME", ".")
 
 log_config = dict(format="%(asctime)-15s:%(levelname)5.5s:%(name)s:%(message)s")
 
