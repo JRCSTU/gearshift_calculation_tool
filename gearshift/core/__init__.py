@@ -85,8 +85,6 @@ def _obtain_inputs(case, base):
         "n_max1": "Max95EngineSpeed",
         "#g": "NoOfGears",
         "m_test": "VehicleTestMass",
-        "f_dsc": "DownscalingPercentage",
-        "n_lim": "EngineSpeedLimitVMaxVehicle",
         "f0": "f0",
         "f1": "f1",
         "f2": "f2",

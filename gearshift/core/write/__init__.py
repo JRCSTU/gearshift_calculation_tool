@@ -35,8 +35,7 @@ dsp = sh.BlueDispatcher(
 )
 
 
-@sh.add_function(dsp, outputs=["fp"])
-def default_output_file_name(output_folder, timestamp, case, output_format):
+def _default_output_file_name(output_folder, timestamp, case, output_format):
     """
     Returns the output file name.
 
@@ -67,17 +66,10 @@ def default_output_file_name(output_folder, timestamp, case, output_format):
     return fp
 
 
-@sh.add_function(dsp, outputs=["case"])
-def get_case(sol):
-    if len(sol) == 1:
-        case = "case-" + str(sol[0]["Case"])
-    else:
-        case = "multiple-cases"
-    return case
-
 
 @sh.add_function(dsp)
-def save_output_file(sol, fp, output_folder):
+def save_output_file(sol, output_folder, timestamp, output_format):
     os.makedirs(osp.dirname(output_folder), exist_ok=True)
     for case in sol:
-        dict_df = write_to_excel(case, fp)
+        fp = _default_output_file_name(output_folder, timestamp, case["Case"], output_format)
+        write_to_excel(case, fp)
