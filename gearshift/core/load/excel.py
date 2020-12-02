@@ -13,7 +13,7 @@ import pandas as pd
 
 def _read_columns(input_data):
 
-    col_names = ["case", "vehicle", "engine", "gear_box_ratios"]
+    col_names = ["case", "vehicle", "engine", "gearbox_ratios"]
 
     columns = [x.lower().strip() for x in input_data.sheet_names]
 
@@ -70,7 +70,7 @@ def _read_dataframe(col, dataframe):
             "p": "float64",
             "ASM": "float64",
         },
-        "gear_box_ratios": {"vehicle": "int32", "gear": "int32", "ndv": "float64"},
+        "gearbox_ratios": {"vehicle": "int32", "gear": "int32", "ndv": "float64"},
     }
 
     dataframe = dataframe.drop([0], axis=0)

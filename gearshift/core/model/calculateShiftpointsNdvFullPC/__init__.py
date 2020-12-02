@@ -1845,7 +1845,7 @@ def determine_initial_gears(
         gears = InitialGears[phase]
         if np.where(gears == 2)[0].size != 0:
             secondGearEngaged = np.where(gears == 2)[0][0] - 1
-            gears[1:secondGearEngaged] = 1
+            gears[0:secondGearEngaged] = 1
             InitialGears[phase] = gears
 
     # Changed requirement:
