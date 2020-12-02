@@ -277,7 +277,7 @@ def applyCorrection4a(
         if np.array_equal(PreviousInitialGears, InitialGears, equal_nan=True):
             break
         else:
-            PreviousInitialGears = InitialGears
+            PreviousInitialGears = np.copy(InitialGears)
 
         minPossibleGears = np.asarray(
             np.min(np.ma.masked_array(PossibleGears, np.isnan(PossibleGears)), axis=1)
@@ -298,19 +298,19 @@ def applyCorrection4a(
             np.union1d,
             (
                 np.intersect1d(
-                    np.where(np.diff(InitialGears) == +1),
+                    np.where(np.diff(InitialGears) == 1),
                     np.where(np.diff(nextInitialGears) == -1),
                 ),
                 np.intersect1d(
-                    np.where(np.diff(InitialGears) == +1),
+                    np.where(np.diff(InitialGears) == 1),
                     np.where(np.diff(nextInitialGears) == -2),
                 ),
                 np.intersect1d(
-                    np.where(np.diff(InitialGears) == +2),
+                    np.where(np.diff(InitialGears) == 2),
                     np.where(np.diff(nextInitialGears) == -1),
                 ),
             ),
-        )
+        ) + 1
 
         for shift in upshiftsOneOrTwoGearsOneSec:
             # reduce upshift only if possible for complete duration
@@ -398,27 +398,24 @@ def applyCorrection4a(
 
         # exclude singles immediately after singles
         # as later singles will be adjusted to earlier singles
-        np.put(
-            singlesInAccelOrConstNextHigher,
-            np.intersect1d(
+        update = np.intersect1d(
                 np.where(singlesInAccelOrConstNextHigher == 1),
                 np.where(np.insert(singlesInAccelOrConstNextHigher, 0, 0)[:-1] == 0),
-            ),
-            1,
-        )
+            )
+        singlesInAccelOrConstNextHigher = np.zeros(np.shape(InAccelOrConst))
+        singlesInAccelOrConstNextHigher[update] = 1
 
         # exclude singles immediately after downshifts
-        np.put(
-            singlesInAccelOrConstNextHigher,
-            np.intersect1d(
+        update = np.intersect1d(
                 np.where(singlesInAccelOrConstNextHigher == 1),
                 np.where(
                     np.insert(InitialGears, 0, np.nan)[:-1]
                     >= np.insert(InitialGears, np.asarray([0, 0]), np.nan)[:-2]
                 ),
-            ),
-            1,
-        )
+            )
+        singlesInAccelOrConstNextHigher = np.zeros(np.shape(InAccelOrConst))
+        singlesInAccelOrConstNextHigher[update] = 1
+
         if np.where(singlesInAccelOrConstNextHigher != 0)[0].size != 0:
             InitialGears[
                 np.where(np.insert(singlesInAccelOrConstNextHigher, 0, 0)[:-1] == 1)
@@ -451,27 +448,24 @@ def applyCorrection4a(
             ),
             1,
         )
-        np.put(
-            singlesInAccelOrConstNextLower,
-            np.intersect1d(
-                np.where(singlesInAccelOrConstNextLower == 1),
-                np.where(
-                    np.insert(InitialGears, 0, np.nan)[:-1]
-                    >= np.insert(InitialGears, np.asarray([0, 0]), np.nan)[:-2]
-                ),
+
+        update = np.intersect1d(
+            np.where(singlesInAccelOrConstNextLower == 1),
+            np.where(
+                np.insert(InitialGears, 0, np.nan)[:-1]
+                >= np.insert(InitialGears, np.asarray([0, 0]), np.nan)[:-2]
             ),
-            1,
         )
+        singlesInAccelOrConstNextLower = np.zeros(np.shape(InAccelOrConst))
+        singlesInAccelOrConstNextLower[update] = 1
 
         if np.where(singlesInAccelOrConstNextLower != 0)[0].size != 0:
-            np.put(
-                singlesInAccelOrConstNextLower,
-                np.intersect1d(
+            update = np.intersect1d(
                     np.where(singlesInAccelOrConstNextLower == 1),
                     np.where(np.insert(singlesInAccelOrConstNextLower, 0, 0)[:-1] == 0),
-                ),
-                1,
-            )
+                )
+            singlesInAccelOrConstNextLower = np.zeros(np.shape(InAccelOrConst))
+            singlesInAccelOrConstNextLower[update] = 1
 
             InitialGears[
                 np.where(np.insert(singlesInAccelOrConstNextLower, 0, 0)[:-1] == 1)
