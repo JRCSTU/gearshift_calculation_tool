@@ -113,10 +113,10 @@ def _obtain_inputs(case, base):
     )
     FullPowerCurve[:, 2] *= 100
 
-    gear_box_ratios = {
+    gearbox_ratios = {
         gear_box_rename[k]: v
-        for k, v in base["gear_box_ratios"]
-        .loc[base["gear_box_ratios"]["vehicle"] == case["vehicle"]]
+        for k, v in base["gearbox_ratios"]
+        .loc[base["gearbox_ratios"]["vehicle"] == case["vehicle"]]
         .to_dict("list")
         .items()
         if not k in to_del
@@ -162,7 +162,7 @@ def _obtain_inputs(case, base):
 
     dicts = [
         {"FullPowerCurve": FullPowerCurve, "Trace": Trace},
-        gear_box_ratios,
+        gearbox_ratios,
         input_case,
         vehicle,
         scale,
