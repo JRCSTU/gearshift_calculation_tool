@@ -159,8 +159,12 @@ def run_core(
             )
     return solutions
 
-@sh.add_function(dsp, outputs=['demo'])
-def save_demo_files(output_folder):
+
+def check_demo_flag(output_folder, demo_flag):
+    return demo_flag
+
+@sh.add_function(dsp, outputs=['demo'], input_domain=check_demo_flag)
+def save_demo_files(output_folder, demo_flag):
     """
     Save CO2MPAS demo files.
 
