@@ -83,6 +83,22 @@ The files and folders of the project are listed below::
     +--README.rst
     +--LICENSE.txt
 
+Usage
+=====
+
+Cmd-line usage
+--------------
+The command-line usage below requires the Python environment to be installed, and provides for
+executing an experiment directly from the OS's shell (i.e. ``cmd`` in windows or ``bash`` in POSIX),
+and in a *single* command.  To have precise control over the inputs and outputs
+
+.. code-block:: bash
+
+    $ gearshift --help                                                  ## to get generic help for cmd-line syntax
+    $ gearshift demo                                                    ## to get demo input file
+    $ gearshift run "path_input_file" -O "path_to_save_output_file"     ## to run gearshift tool
+
+
 
 .. |python-ver| image::  https://img.shields.io/badge/PyPi%20python-3.3%20%7C%203.4%20%7C%203.5%20%7C%203.6%20%7C%203.7-informational
     :alt: Supported Python versions of latest release in PyPi
