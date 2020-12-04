@@ -79,7 +79,7 @@ The files and folders of the project are listed below::
     |   +--demos/                                       # folder that contains demo files
     |   +--docs/                                        # folder that contains documentation
     +-- AUTHORS.rst
-    +--setup.py                 # (script) The entry point for `setuptools`, installing, testing, etc
+    +--setup.py                                         # (script) The entry point for `setuptools`, installing, testing, etc
     +--README.rst
     +--LICENSE.txt
 
