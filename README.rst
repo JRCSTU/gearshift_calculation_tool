@@ -44,9 +44,44 @@ It requires **numpy/scipy** and **pandas** libraries with native backends.
     On *Windows*, it is preferable to use the `Anaconda <https://www.anaconda.com/products/individual>` distribution.
     To avoid possible incompatibilities with other projects
 
+Download:
+^^^^^^^^^
+Download the sources,
+
+- either with *git*, by giving this command to the terminal::
+
+      git clone https://github.com/AndresLaverdeMarin/gearshift_calculation_tool --depth=1
+
+Install:
+^^^^^^^^
+From within the project directory, run one of these commands to install it:
+
+- for standard python, installing with ``pip`` is enough (but might)::
+
+      pip install -e .[path_to_gearshift_calculation_tool_folder]
 
 
+Project files and folders
+-------------------------
+The files and folders of the project are listed below::
 
+    +--gearshift/                                       # main folder that contains the whole gearshift project
+    |   +--cli/                                         # folder that contains all cli scripts
+    |   +--core/                                        # folder that contains core packages
+    |       +--load/                                    # (package) python-code of the load
+    |           +--speed_phases/                        # folder that contains speed phases in ftr format
+    |           +--excel.py                             # (script) load from the excel file parameters
+    |       +--model/                                   # (package) python-code of the model
+    |           +--calculateShiftpointsNdvFullPC/       # (package) python-code of the calculate shift points, Ndv and  FullPC
+    |           +--scaleTrace/                          # (package) python-code of the calculate scale trace
+    |       +--write/                                   # (package) python-code of the write
+    |           +--excel.py                             # (script) write to the excel file output parameters
+    |   +--demos/                                       # folder that contains demo files
+    |   +--docs/                                        # folder that contains documentation
+    +-- AUTHORS.rst
+    +--setup.py                 # (script) The entry point for `setuptools`, installing, testing, etc
+    +--README.rst
+    +--LICENSE.txt
 
 
 .. |python-ver| image::  https://img.shields.io/badge/PyPi%20python-3.3%20%7C%203.4%20%7C%203.5%20%7C%203.6%20%7C%203.7-informational
