@@ -9,7 +9,6 @@ Subpackages
 
    gearshift.cli
    gearshift.core
-   gearshift.docs
 
 Module contents
 ---------------

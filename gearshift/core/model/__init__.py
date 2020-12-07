@@ -47,6 +47,6 @@ dsp.add_function(
     function_id="calculateShiftpointsNdvFullPC",
     function=sh.SubDispatch(_calculateShiftpointsNdvFullPC),
     inputs=["execution_case", "speed_trace"],
-    outputs=["shift_poits"],
+    outputs=["shift_points"],
     description="This function calibrates the speed trance, following the Sub-Annex 1",
 )

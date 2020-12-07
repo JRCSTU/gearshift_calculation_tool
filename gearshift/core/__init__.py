@@ -178,6 +178,13 @@ def _obtain_inputs(case, base):
 
 @sh.add_function(dsp, outputs=["sol"])
 def run_model(base, model):
+    """
+    Run whole model (scale trace and gearshifts) for each case.
+
+    :return sol:
+        List of dictionaries that contains the solution for different cases.
+    :rtype: list
+    """
     from tqdm import tqdm
 
     sol, input, case = [], {}, base["case"]
@@ -189,8 +196,11 @@ def run_model(base, model):
             input = _obtain_inputs(row, base)
 
             sol_case = model(dict(input))
-            dict_case = {"Case": row.to_dict()["case"], "NoOfGears": sol_case['shift_poits']['NoOfGearsFinal']}
-            for k, v in sh.stack_nested_keys(sol_case.get("shift_poits", {}), depth=2):
+            dict_case = {
+                "Case": row.to_dict()["case"],
+                "NoOfGears": sol_case["shift_points"]["NoOfGearsFinal"],
+            }
+            for k, v in sh.stack_nested_keys(sol_case.get("shift_points", {}), depth=2):
                 if len(k) >= 2:
                     dict_case[str(k[1])] = v
 

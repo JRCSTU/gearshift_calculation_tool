@@ -294,23 +294,26 @@ def applyCorrection4a(
 
         nextInitialGears = np.append(InitialGears[1:], np.nan)
 
-        upshiftsOneOrTwoGearsOneSec = reduce(
-            np.union1d,
-            (
-                np.intersect1d(
-                    np.where(np.diff(InitialGears) == 1),
-                    np.where(np.diff(nextInitialGears) == -1),
+        upshiftsOneOrTwoGearsOneSec = (
+            reduce(
+                np.union1d,
+                (
+                    np.intersect1d(
+                        np.where(np.diff(InitialGears) == 1),
+                        np.where(np.diff(nextInitialGears) == -1),
+                    ),
+                    np.intersect1d(
+                        np.where(np.diff(InitialGears) == 1),
+                        np.where(np.diff(nextInitialGears) == -2),
+                    ),
+                    np.intersect1d(
+                        np.where(np.diff(InitialGears) == 2),
+                        np.where(np.diff(nextInitialGears) == -1),
+                    ),
                 ),
-                np.intersect1d(
-                    np.where(np.diff(InitialGears) == 1),
-                    np.where(np.diff(nextInitialGears) == -2),
-                ),
-                np.intersect1d(
-                    np.where(np.diff(InitialGears) == 2),
-                    np.where(np.diff(nextInitialGears) == -1),
-                ),
-            ),
-        ) + 1
+            )
+            + 1
+        )
 
         for shift in upshiftsOneOrTwoGearsOneSec:
             # reduce upshift only if possible for complete duration
@@ -399,20 +402,20 @@ def applyCorrection4a(
         # exclude singles immediately after singles
         # as later singles will be adjusted to earlier singles
         update = np.intersect1d(
-                np.where(singlesInAccelOrConstNextHigher == 1),
-                np.where(np.insert(singlesInAccelOrConstNextHigher, 0, 0)[:-1] == 0),
-            )
+            np.where(singlesInAccelOrConstNextHigher == 1),
+            np.where(np.insert(singlesInAccelOrConstNextHigher, 0, 0)[:-1] == 0),
+        )
         singlesInAccelOrConstNextHigher = np.zeros(np.shape(InAccelOrConst))
         singlesInAccelOrConstNextHigher[update] = 1
 
         # exclude singles immediately after downshifts
         update = np.intersect1d(
-                np.where(singlesInAccelOrConstNextHigher == 1),
-                np.where(
-                    np.insert(InitialGears, 0, np.nan)[:-1]
-                    >= np.insert(InitialGears, np.asarray([0, 0]), np.nan)[:-2]
-                ),
-            )
+            np.where(singlesInAccelOrConstNextHigher == 1),
+            np.where(
+                np.insert(InitialGears, 0, np.nan)[:-1]
+                >= np.insert(InitialGears, np.asarray([0, 0]), np.nan)[:-2]
+            ),
+        )
         singlesInAccelOrConstNextHigher = np.zeros(np.shape(InAccelOrConst))
         singlesInAccelOrConstNextHigher[update] = 1
 
@@ -461,9 +464,9 @@ def applyCorrection4a(
 
         if np.where(singlesInAccelOrConstNextLower != 0)[0].size != 0:
             update = np.intersect1d(
-                    np.where(singlesInAccelOrConstNextLower == 1),
-                    np.where(np.insert(singlesInAccelOrConstNextLower, 0, 0)[:-1] == 0),
-                )
+                np.where(singlesInAccelOrConstNextLower == 1),
+                np.where(np.insert(singlesInAccelOrConstNextLower, 0, 0)[:-1] == 0),
+            )
             singlesInAccelOrConstNextLower = np.zeros(np.shape(InAccelOrConst))
             singlesInAccelOrConstNextLower[update] = 1
 

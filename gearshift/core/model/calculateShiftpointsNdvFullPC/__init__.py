@@ -57,21 +57,15 @@ def check_gears(NoOfGears, gear_nbrs, Ndv, ExcludeCrawlerGear):
         Gear 1 may be excluded at the request of . the manufacturer if
     :type ExcludeCrawlerGear: boolean
 
-    :return NoOfGearsFinal:
-        The number of forward gears after apply the exclusion of first gear
+    :return:
+        NoOfGearsFinal: The number of forward gears after apply the exclusion of first gear
         if is necessary.
-    :rtype NoOfGearsFinal: integer
-
-    :return Gears:
-        List with of gears of the vehicle after apply the exclusion of first gear
+        Gears: List with of gears of the vehicle after apply the exclusion of first gear
         if is necessary.
-    :rtype Gears: list
-
-    :return NdvRatios:
-        The ratio obtained by dividing the engine speed n by the vehicle speed v
+        NdvRatios: The ratio obtained by dividing the engine speed n by the vehicle speed v
         for each gear i form 1 to ng after apply the exclusion of first gear if
         is necessary.
-    :rtype NdvRatios: array
+    :rtype: (integer, list, array)
     """
     if ExcludeCrawlerGear:
         Gears = gear_nbrs[1:, :]
@@ -204,15 +198,15 @@ def identify_phases(TraceTimesCount, RequiredVehicleSpeeds):
 
     :return PhaseEnds:
         Contains the points that are end point from a phase
-    :rtype PhaseStarts: array
+    :rtype PhaseEnds: array
 
     :return PHASE_ACCELERATION_FROM_STANDSTILL:
         Acceleration phase following a standstill phase
-    :rtype PHASE_ACCELERATION_FROM_STANDSTILL: int
+    :rtype PHASE_ACCELERATION_FROM_STANDSTILL: integer
 
     :return PHASE_ACCELERATION:
         Acceleration phase
-    :rtype PHASE_ACCELERATION: int
+    :rtype PHASE_ACCELERATION: integer
 
     :return InAcceleration:
         Contains the points that are in acceleration phase as a True
@@ -229,7 +223,7 @@ def identify_phases(TraceTimesCount, RequiredVehicleSpeeds):
 
     :return PHASE_DECELERATION:
         time period of more than 2 seconds with required vehicle
- 		speed >= 1km/h and monotonically decreasing
+                speed >= 1km/h and monotonically decreasing
     :rtype PHASE_DECELERATION: integer
 
     :return PHASE_DECELERATION_TO_STANDSTILL:
@@ -570,8 +564,10 @@ def determine_maximum_engine_speed_95(
     :type PowerCurveEngineSpeeds: array
 
     :return Max95EngineSpeedFinal:
-        The maximum engine speed where 95 percent of the rated power is
-        reached from the full power curve
+         Annex 2 (2g) n_max1 = n_95_high adjusted
+         If n_95_high cannot be determined because the engine speed is limited to
+         a lower value n_lim for all gears and the corresponding full load power
+         is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.
     :rtype Max95EngineSpeedFinal: float
     """
     if Max95EngineSpeed <= 0 or np.isnan(Max95EngineSpeed):
@@ -693,23 +689,34 @@ def minimum_engine_speed_in_motion(
     :rtype CalculatedMinDriveEngineSpeedGreater2nd: float
 
     :return MinDrive1stTo2nd:
-        The minimum drive first to second
+        Annex 2 (2ka) n_min_drive = 1.15 x n_idle for n_gear:1->2
+        The minimum engine speed for transitions from first to second gear.
+        This is the maximum of calculated value and input parameter value.
     :rtype MinDrive1stTo2nd: float
 
-    :return MinDrive1st:
-        The minimum drive first
-    :rtype MinDrive1st: float
+    :param MinDrive1st:
+        Annex 2 (2k) n_min_drive = n_idle for n_gear:1
+        The minimum engine speed when the vehicle is in motion.
+        This is the maximum of calculated value and input parameter value.
+    :type MinDrive1st: float
 
     :return MinDrive2ndDecel:
-        The minimum drive second during deceleration phase
+        Annex 2 (2kb) n_min_drive = n_idle for n_gear:2
+        The minimum engine speed for decelerations to standstill in second gear.
+        This is the maximum of calculated value and input parameter value.
     :rtype MinDrive2ndDecel: float
 
     :return MinDrive2nd:
-        The minimum drive second
+        Annex 2 (2kc) n_min_drive = 0.9 x n_idle for n_gear:2
+        The minimum engine speed for all other driving conditions in second gear.
+        This is the maximum of calculated value and input parameter value.
     :rtype MinDrive2nd: float
 
     :return MinDriveGreater2nd:
-        The minimum drive greater than second
+        Annex 2 (2k) n_min_drive = n_idle + 0.125 × ( n_rated - n_idle ) for n_gear:3..
+        This value shall be referred to as n_min_drive_set.
+        The minimum engine speed for all driving conditions in gears greater than 2.
+        This is the maximum of calculated value and input parameter value.
     :rtype MinDriveGreater2nd: float
     """
     CalculatedMinDriveEngineSpeed1st = IdlingEngineSpeed
@@ -1212,8 +1219,10 @@ def determine_maximum_engine_speed(
     :type EngineSpeedLimitVMax: float
 
     :param Max95EngineSpeedFinal:
-        The maximum engine speed where 95 percent of the rated power is
-        reached from the full power curve
+         Annex 2 (2g) n_max1 = n_95_high adjusted
+         If n_95_high cannot be determined because the engine speed is limited to
+         a lower value n_lim for all gears and the corresponding full load power
+         is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.
     :type Max95EngineSpeedFinal: float
 
     :param PowerCurveEngineSpeeds:
@@ -1234,9 +1243,9 @@ def determine_maximum_engine_speed(
         is necessary.
     :type NdvRatios: array
 
-    :return GearAtMaxVehicleSpeed:
+    :param GearAtMaxVehicleSpeed:
         The gear that have the maximum vehicle speed
-    :rtype GearAtMaxVehicleSpeed: float
+    :type GearAtMaxVehicleSpeed: float
 
     :param RequiredVehicleSpeeds:
         The vehicle speed required for the whole cycle re-sampled in 1Hz
@@ -1256,12 +1265,15 @@ def determine_maximum_engine_speed(
     :rtype MaxEngineSpeed: float
 
     :return GearAtMaxVehicleSpeedFinal:
-        The gear that have the maximum vehicle speed after check required engine speeds
+        Annex 2 (2i) ng_vmax
+        The gear in which the maximum vehicle speed is reached.
     :rtype GearAtMaxVehicleSpeedFinal: integer
 
-    :return MaxVehicleSpeed:
-        The maximum vehicle speed after check required engine speeds
-    :rtype MaxVehicleSpeed: float
+    :return MaxVehicleSpeedFinal:
+        Annex 2 (2g, 2i) v_max,vehicle
+        The maximum vehicle speed reachable
+        using the gear in which the maximum vehicle speed can be reached.
+    :rtype MaxVehicleSpeedFinal: float
 
     :return EngineSpeedAtGearAtMaxRequiredSpeed:
         The engine speed at gear maximum required speed
@@ -1360,7 +1372,9 @@ def calculate_required_powers(
     :type VehicleTestMass: float
 
     :return requiredPowersF:
-        The requiered powers for each time.
+        Annex 2 (3.1) P_required,j
+        The power required to overcome driving resistance and to accelerate
+        for each second j of the cycle trace.
     :rtype requiredPowersF: array
     """
     requiredPowers = (
@@ -1418,13 +1432,110 @@ def determine_possible_gears(
         is necessary.
     :type NdvRatios: array
 
+    :param TraceTimesCount:
+        The length of trace times re-sampled in 1Hz
+    :type TraceTimesCount: integer
 
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: integer
+
+    :param PhaseValues:
+        Contains the points of changes phases
+    :type PhaseValues: array
+
+    :param InStandStill:
+        Contains the points that are in standstill phase as a True
+    :type InStandStill: boolean array
+
+    :param IdlingEngineSpeed:
+        Annex 2 (2c) n_idle. The idling speed.
+    :type IdlingEngineSpeed: float
+
+    :param PhaseStarts:
+        Contains the points that are start point from a phase
+    :type PhaseStarts: array
+
+    :param PHASE_ACCELERATION_FROM_STANDSTILL:
+        Acceleration phase following a standstill phase
+    :type PHASE_ACCELERATION_FROM_STANDSTILL: integer
+
+    :param Accelerations:
+         The acceleration required for the whole cycle re-sampled in 1Hz
+    :type Accelerations: array
+
+    :param MinDrives:
+        Samples which have acceleration values >= -0.1389 m/s² ( = 0.5 (km/h)/s )
+        shall belong to the acceleration/constant speed phases.
+    :type MinDrives: array
+
+    :param GearAtMaxVehicleSpeedFinal:
+        Annex 2 (2i) ng_vmax
+        The gear in which the maximum vehicle speed is reached.
+    :type GearAtMaxVehicleSpeedFinal: integer
+
+    :param Max95EngineSpeedFinal:
+         Annex 2 (2g) n_max1 = n_95_high adjusted
+         If n_95_high cannot be determined because the engine speed is limited to
+         a lower value n_lim for all gears and the corresponding full load power
+         is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.
+    :type Max95EngineSpeedFinal: float
+
+    :return EngineSpeedAtGearAtMaxRequiredSpeed:
+        The engine speed at gear maximum required speed
+    :rtype EngineSpeedAtGearAtMaxRequiredSpeed: float
+
+    :param PowerCurveEngineSpeeds:
+        Contains the power curve engine speeds
+    :type PowerCurveEngineSpeeds: array
+
+    :param InDecelerationToStandstill:
+        The array that contains the seconds from deceleration to standstill as a True
+    :type InDecelerationToStandstill: boolean array
 
     :return RequiredEngineSpeeds:
+        Annex 2 (3.2) n_i,j
         The engine speeds required
         for each gear i from 1 to ng and
         for each second j of the cycle trace.
+        Note that this are the uncorrected values n_i,j
+        ie without the increments required by Annex 2 (3.3)
     :rtype RequiredEngineSpeeds: array
+
+    :return InitialRequiredEngineSpeeds:
+        The initial engine speeds required for each gear i from 1 to ng and
+        for each second j of the cycle trace.
+    :rtype InitialRequiredEngineSpeeds: array
+
+    :return PossibleGearsByEngineSpeed:
+        The possible gear that can be used for each second.
+    :rtype PossibleGearsByEngineSpeed: boolean array
+
+    :return AccelerationFromStandstillStarts:
+        The phase start seconds when the phase is going to acceleration
+        from stand still.
+    :rtype AccelerationFromStandstillStarts: array
+
+    :return ClutchDisengagedByGear:
+        The clutch disengaged by each gear and each second.
+    :rtype ClutchDisengagedByGear: boolean array
+
+    :return ClutchUndefinedByGear:
+        The clutch undefined by each gear and each second.
+    :rtype ClutchUndefinedByGear: boolean array
+
+    :return ClutchDisengaged:
+        The clutch disengaged by each second.
+    :rtype ClutchDisengaged: boolean array
+
+    :return ClutchUndefined:
+        The clutch undefined by each second.
+    :rtype ClutchUndefined: boolean array
+
+    :return AdvancedClutchDisengage:
+        The seconds in which the advanced clutch disengage
+    :rtype AdvancedClutchDisengage: list
     """
     from functools import reduce
 
@@ -1701,6 +1812,51 @@ def calculate_available_powers(
     NoOfGearsFinal,
     InitialRequiredEngineSpeeds,
 ):
+    """deCalculate available powers (3.4)
+
+    Additional safety margins defined together with the power curve take precedence
+    over the legacy additional safety margins exponentially decaying from start to
+    end engine speed
+
+    :param DefinedPowerCurveAdditionalSafetyMargins:
+        Boolean that define if the additional save margins are present
+    :type DefinedPowerCurveAdditionalSafetyMargins: boolean
+
+    :param RequiredEngineSpeeds:
+        Annex 2 (3.2) n_i,j
+        The engine speeds required
+        for each gear i from 1 to ng and
+        for each second j of the cycle trace.
+        Note that this are the uncorrected values n_i,j
+        ie without the increments required by Annex 2 (3.3)
+    :type RequiredEngineSpeeds: array
+
+    :param IdlingEngineSpeed:
+        Annex 2 (2c) n_idle. The idling speed.
+    :type IdlingEngineSpeed: float
+
+    :param PowerCurveEngineSpeeds:
+        Contains the power curve engine speeds
+    :type PowerCurveEngineSpeeds: array
+
+    :param PowerCurveASM:
+        Contains the power curve additional save margin
+    :type PowerCurveASM: array
+
+    :param PowerCurvePowers:
+        Contains the power curve powers
+    :type PowerCurvePowers: array
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: integer
+
+    :param InitialRequiredEngineSpeeds:
+        The initial engine speeds required for each gear i from 1 to ng and
+        for each second j of the cycle trace.
+    :type InitialRequiredEngineSpeeds: array
+    """
 
     from scipy.interpolate import interp1d
 
@@ -1767,6 +1923,41 @@ def determine_possible_gears_based_available_powers(
     NoOfGearsFinal,
     PossibleGearsByEngineSpeed,
 ):
+    """
+    Determine possible gears based on available powers (3.5)
+
+    :param AvailablePowers:
+        Annex 2 (3.4) P_available_i,j
+        The power available for each gear i from 1 to ng and for each second j
+        of the cycle trace.
+        Note that this power values are determined from uncorrected values n_i,j
+        i.e. without the engine speed increments required by Annex 2 (3.3)
+    :type AvailablePowers: array
+
+    :param requiredPowersF:
+        Annex 2 (3.1) P_required,j
+        The power required to overcome driving resistance and to accelerate
+        for each second j of the cycle trace.
+    :type requiredPowersF: array
+
+    :param TraceTimesCount:
+        The length of trace times re-sampled in 1Hz
+    :type TraceTimesCount: integer
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: integer
+
+    :return PossibleGearsByEngineSpeed:
+        The possible gear that can be used for each second.
+    :rtype PossibleGearsByEngineSpeed: boolean array
+
+    :return PossibleGearsByAvailablePowersWithTotalSafetyMargin:
+        The possible gears by available powers with total safety margin
+        (following section 3.5 of Sub-Annex 2)
+    :rtype PossibleGearsByAvailablePowersWithTotalSafetyMargin: boolean array
+    """
     PossibleGearsByAvailablePowersWithTotalSafetyMargin = np.empty(
         (TraceTimesCount, NoOfGearsFinal)
     )
@@ -1811,7 +2002,63 @@ def determine_initial_gears(
     InitialRequiredEngineSpeeds,
     MinDrive1stTo2nd,
 ):
+    """
+    Determine initial gears
 
+    :param InStandStill:
+        Contains the points that are in standstill phase as a True
+    :type InStandStill: boolean array
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: integer
+
+    :param PossibleGearsByEngineSpeed:
+        The possible gear that can be used for each second.
+    :type PossibleGearsByEngineSpeed: boolean array
+
+    :param PossibleGearsByAvailablePowersWithTotalSafetyMargin:
+        The possible gears by available powers with total safety margin
+        (following section 3.5 of Sub-Annex 2)
+    :type PossibleGearsByAvailablePowersWithTotalSafetyMargin: boolean array
+
+    :param AccelerationFromStandstillStarts:
+        The phase start seconds when the phase is going to acceleration
+        from stand still.
+    :type AccelerationFromStandstillStarts: array
+
+    :param PhaseEnds:
+        Contains the points that are end point from a phase
+    :type PhaseEnds: array
+
+    :param PhaseValues:
+        Contains the points of changes phases
+    :type PhaseValues: array
+
+    :param PHASE_ACCELERATION_FROM_STANDSTILL:
+        Acceleration phase following a standstill phase
+    :type PHASE_ACCELERATION_FROM_STANDSTILL: integer
+
+    :param InitialRequiredEngineSpeeds:
+        The initial engine speeds required for each gear i from 1 to ng and
+        for each second j of the cycle trace.
+    :type InitialRequiredEngineSpeeds: array
+
+    :param MinDrive1stTo2nd:
+        Annex 2 (2ka) n_min_drive = 1.15 x n_idle for n_gear:1->2
+        The minimum engine speed for transitions from first to second gear.
+        This is the maximum of calculated value and input parameter value.
+    :type MinDrive1stTo2nd: float
+
+    :return InitialGears:
+        The initial gears calculated by each second
+    :rtype InitialGears: array
+
+    :return PossibleGears:
+        The possible gears calculated by each second
+    :rtype PossibleGears: array
+    """
     InStandStillReps = np.tile(InStandStill, (NoOfGearsFinal, 1)).T
     PossibleGears = np.copy(PossibleGearsByEngineSpeed)
     PossibleGears[np.where(InStandStillReps == 0)] = (
@@ -1915,6 +2162,135 @@ def apply_corrections(
     InDecelerationToStandstill,
     InDeceleration,
 ):
+    """
+    Apply corrections defined in section 4 of the sub-Annex 2
+
+    :param InitialGears:
+        The initial gears calculated by each second
+    :type InitialGears: array
+
+    :param PhaseValues:
+        Contains the points of changes phases
+    :type PhaseValues: array
+
+    :param PhaseStarts:
+        Contains the points that are start point from a phase
+    :type PhaseStarts: array
+
+    :param PhaseEnds:
+        Contains the points that are end point from a phase
+    :type PhaseEnds: array
+
+    :param PHASE_ACCELERATION_FROM_STANDSTILL:
+        Acceleration phase following a standstill phase
+    :type PHASE_ACCELERATION_FROM_STANDSTILL: integer
+
+    :param PHASE_ACCELERATION:
+        Acceleration phase
+    :type PHASE_ACCELERATION: integer
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: integer
+
+    :param PossibleGears:
+        The possible gears calculated by each second
+    :type PossibleGears: array
+
+    :param InAcceleration:
+        Contains the points that are in acceleration phase as a True
+    :type InAcceleration: boolean array
+
+    :param InConstantSpeed:
+        Contains the points that are in constant speed phase as a True
+    :type InConstantSpeed: boolean array
+
+    :param InAccelerationAnyDuration:
+         some gear corrections ignore the duration of acceleration phases
+         so save acceleration phases with any duration here
+    :type InAccelerationAnyDuration: boolean array
+
+    :param ClutchDisengagedByGear:
+        The clutch disengaged by each gear and each second.
+    :type ClutchDisengagedByGear: boolean array
+
+    :param ClutchUndefinedByGear:
+        The clutch undefined by each gear and each second.
+    :type ClutchUndefinedByGear: boolean array
+
+    :param PHASE_DECELERATION:
+        time period of more than 2 seconds with required vehicle
+                speed >= 1km/h and monotonically decreasing
+    :type PHASE_DECELERATION: integer
+
+    :param PHASE_DECELERATION_TO_STANDSTILL:
+        DECELERATION phase preceding a STANDSTILL phase
+    :type PHASE_DECELERATION_TO_STANDSTILL: integer
+
+    :param TraceTimesCount:
+        The length of trace times re-sampled in 1Hz
+    :type TraceTimesCount: integer
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: array
+
+    :param SuppressGear0DuringDownshifts:
+        Sub-Annex 2 (4f).If a gear is used for only 1 second during a deceleration phase
+        it shall be replaced by gear 0 with clutch disengaged, in order to avoid too high
+        engine speeds. But if this is not an issue, the manufacturer may allow to use the
+        lower gear of the following second directly instead of gear 0 for downshifts of
+        up to 3 steps.
+    :type SuppressGear0DuringDownshifts: boolean
+
+    :param ClutchDisengaged:
+        The clutch disengaged by each second.
+    :type ClutchDisengaged: boolean array
+
+    :param InitialRequiredEngineSpeeds:
+        The initial engine speeds required for each gear i from 1 to ng and
+        for each second j of the cycle trace.
+    :type InitialRequiredEngineSpeeds: array
+
+    :param IdlingEngineSpeed:
+        Annex 2 (2c) n_idle. The idling speed.
+    :type IdlingEngineSpeed: float
+
+    :param Phases:
+        The list of phases that are used during whole cycle
+    :type Phases: array
+
+    :param InStandStill:
+        Contains the points that are in standstill phase as a True
+    :type InStandStill: boolean array
+
+    :param InDecelerationToStandstill:
+        The array that contains the seconds from deceleration to standstill as a True
+    :type InDecelerationToStandstill: boolean array
+
+    :param InDeceleration:
+        Contains the points that are in deceleration phase as a True
+    :type InDeceleration: boolean array
+
+    :return InitialGearsFinal:
+        The initial gears after apply corrections calculated by each second.
+    :rtype InitialGearsFinal: array
+
+    :return CorrectionsCells:
+        Array of gear correction strings for debugging. This contains a historic
+        transformation of each gear during all execution and the transformation
+        applied.
+    :rtype CorrectionsCells: array
+
+    :return ClutchDisengagedByGearFinal:
+        The clutch disengaged by each gear and each second after apply corrections.
+    :rtype ClutchDisengagedByGearFinal: boolean array
+
+    :return ClutchUndefinedByGearFinal:
+        The clutch undefined by each gear and each second after apply corrections.
+    :rtype ClutchUndefinedByGearFinal: boolean array
+    """
     from functools import reduce
 
     CorrectionsCells = [[] for _ in range(0, len(InitialGears))]
@@ -2121,6 +2497,32 @@ def apply_corrections(
 
 @sh.add_function(dsp, outputs=["AverageGear", "PhaseSum"])
 def calculate_average_gear(Phases, PHASE_STANDSTILL, InitialGearsFinal):
+    """
+    Calculate Average Gear
+
+    :param Phases:
+        The list of phases that are used during whole cycle
+    :type Phases: array
+
+    :param PHASE_STANDSTILL:
+        Time period with required vehicle speed < 1km/h
+    :type PHASE_STANDSTILL: integer
+
+    :param InitialGearsFinal:
+        The initial gears after apply corrections calculated by each second.
+    :type InitialGearsFinal: array
+
+    :return AverageGear:
+        Annex 2 (5) average gear
+        In order to enable the assessment of the correctness of the calculation,
+        the average gear for v >= 1 km/h, rounded to four places of decimal,
+        shall be calculated and recorded.
+    :rtype AverageGear: float
+
+    :return PhaseSum:
+        The all phases that are different of standstill phase
+    :rtype PhaseSum: boolean array
+    """
     PhaseSum = np.zeros(np.shape(Phases))
     np.put(
         PhaseSum,
@@ -2138,6 +2540,25 @@ def calculate_average_gear(Phases, PHASE_STANDSTILL, InitialGearsFinal):
 
 @sh.add_function(dsp, outputs=["ChecksumVxGear"])
 def calculate_average_gear(PhaseSum, InitialGearsFinal, RequiredVehicleSpeeds):
+    """
+    Calculate average gear
+
+    :param PhaseSum:
+        The all phases that are different of standstill phase
+    :type PhaseSum: boolean array
+
+    :param InitialGearsFinal:
+        The initial gears after apply corrections calculated by each second.
+    :type InitialGearsFinal: array
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: array
+
+    :return ChecksumVxGear:
+        Checksum of v * gear for v >= 1 km/h rounded to four places of decimal
+    :rtype ChecksumVxGear: float
+    """
     ChecksumVxGear = np.sum(
         InitialGearsFinal[np.where(PhaseSum == 1)]
         * RequiredVehicleSpeeds[np.where(PhaseSum == 1)]
@@ -2164,7 +2585,66 @@ def interleave_clutch(
     InDeceleration,
     AdvancedClutchDisengage,
 ):
+    """
+    Interleave the clutch Sub-Annex 2 (1.5)
 
+    .. note::
+    The prescriptions for the clutch operation shall not be applied if the clutch
+    is operated automatically without the need of an engagement or disengagement
+    of the driver.
+
+    :param TraceTimesCount:
+        The length of trace times re-sampled in 1Hz
+    :type TraceTimesCount: integer
+
+    :param InitialGearsFinal:
+        The initial gears after apply corrections calculated by each second.
+    :type InitialGearsFinal: array
+
+    :param ClutchDisengagedByGearFinal:
+        The clutch disengaged by each gear and each second after apply corrections.
+    :type ClutchDisengagedByGearFinal: boolean array
+
+    :param ClutchDisengaged:
+        The clutch disengaged by each second.
+    :type ClutchDisengaged: boolean array
+
+    :param ClutchUndefinedByGearFinal:
+        The clutch undefined by each gear and each second after apply corrections.
+    :type ClutchUndefinedByGearFinal: boolean array
+
+    :param ClutchUndefined:
+        The clutch undefined by each second.
+    :type ClutchUndefined: boolean array
+
+    :param AutomaticClutchOperation:
+        Sub-Annex 2 (1.5)
+        The prescriptions for the clutch operation shall not be applied if the clutch
+        is operated automatically without the need of an engagement or disengagement
+        of the driver.
+    :type AutomaticClutchOperation: boolean
+
+    :param InDeceleration:
+        Contains the points that are in deceleration phase as a True
+    :type InDeceleration: boolean array
+
+    :param AdvancedClutchDisengage:
+        The seconds in which the advanced clutch disengage
+    :type AdvancedClutchDisengage: list
+
+    :return InitialGearsFinalAfterClutch:
+        The initial gears after apply corrections calculated by each second and the
+        interleave clutch.
+    :rtype InitialGearsFinalAfterClutch: array
+
+    :return ClutchDisengagedFinal:
+        The clutch disengaged by each second after apply the interleave clutch
+    :rtype ClutchDisengagedFinal: boolean array
+
+    :return ClutchUndefinedFinal:
+        The clutch undefined by each second after apply the interleave clutch
+    :rtype ClutchUndefinedFinal: boolean array
+    """
     # This is a test parameter that can be included in the inputs in the future
     DoNotMergeClutchIntoGearsOutput = True
 
@@ -2195,6 +2675,38 @@ def interleave_clutch(
 def remove_duplicate_gears(
     InitialGearsFinalAfterClutch, ClutchUndefinedFinal, ClutchDisengagedFinal
 ):
+    """
+    Remove duplicate gears
+
+    :param InitialGearsFinalAfterClutch:
+        The initial gears after apply corrections calculated by each second and the
+        interleave clutch.
+    :type InitialGearsFinalAfterClutch: array
+
+    :param ClutchUndefinedFinal:
+        The clutch undefined by each second after apply the interleave clutch
+    :type ClutchUndefinedFinal: boolean array
+
+    :param ClutchDisengagedFinal:
+        The clutch disengaged by each second after apply the interleave clutch
+    :type ClutchDisengagedFinal: boolean array
+
+    :return ClutchHST:
+        Array of clutch state names as used by the Heinz Steven Tool (HST).
+    :rtype ClutchHST: array
+
+    :return GearSequenceStarts:
+        Array that contains the position of the gear sequence start for the different
+        gears.
+        .. note::
+        A clutch disengagement and a gear change cannot be indicated at the same time
+       and the clutch disengagement will therefore be indicated one second earlier.
+    :rtype GearSequenceStarts: array
+
+    :return GearNames:
+        The name of gear to used by each gear sequence starts.
+    :rtype GearNames: array
+    """
     from functools import reduce
     import regex as re
 
@@ -2241,7 +2753,6 @@ def reduce_vehicle_speed_if_not_enough_power(
     SafetyMargin,
     PowerCurveASM,
     IdlingEngineSpeed,
-    AdditionalSafetyMargin0,
     RequiredEngineSpeeds,
     RequiredVehicleSpeeds,
     f0,
@@ -2256,6 +2767,115 @@ def reduce_vehicle_speed_if_not_enough_power(
     AvailablePowers,
     NdvRatios,
 ):
+    """
+    Reduce vehicle speed if not enough power is available
+
+    :param DefinedPowerCurveAdditionalSafetyMargins:
+        Boolean that define if the additional save margins are present
+    :type DefinedPowerCurveAdditionalSafetyMargins: boolean
+
+    :param PowerCurveEngineSpeeds:
+        Contains the power curve engine speeds
+    :type PowerCurveEngineSpeeds: array
+
+    :param PowerCurvePowers:
+        Contains the power curve powers
+    :type PowerCurvePowers: array
+
+    :param SafetyMargin:
+        Annex 2 (3.4) SM
+        The safety margin is accounting for the difference between the
+        stationary full load condition power curve and the power available
+        during transition conditions.
+        SM is set to 10 per cent.
+    :type SafetyMargin: float
+
+    :param PowerCurveASM:
+        Contains the power curve additional save margin
+    :type PowerCurveASM: array
+
+    :param IdlingEngineSpeed:
+        Annex 2 (2c) n_idle. The idling speed.
+    :type IdlingEngineSpeed: float
+
+    :param RequiredEngineSpeeds:
+        Annex 2 (3.2) n_i,j
+        The engine speeds required
+        for each gear i from 1 to ng and
+        for each second j of the cycle trace.
+        Note that this are the uncorrected values n_i,j
+        ie without the increments required by Annex 2 (3.3)
+    :type RequiredEngineSpeeds: array
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: array
+
+    :param f0:
+        The constant road load coefficient,
+        i.e. independent of velocity, caused by internal frictional resistances.
+    :type f0: float
+
+    :param f1:
+        The linear road load coefficient,
+        i.e. proportional to velocity, caused by tyres rolling resistances.
+    :type f1: float
+
+    :param f2:
+        The quadratic road load coefficient,
+        i.e. quadratical to velocity, caused by aerodynamic resistances.
+    :type f2: float
+
+    :param VehicleTestMass:
+        The test mass of the vehicle.
+    :type VehicleTestMass: float
+
+    :param requiredPowersF:
+        Annex 2 (3.1) P_required,j
+        The power required to overcome driving resistance and to accelerate
+        for each second j of the cycle trace.
+    :type requiredPowersF: array
+
+    :param ClutchDisengagedFinal:
+        The clutch disengaged by each second after apply the interleave clutch
+    :type ClutchDisengagedFinal: boolean array
+
+    :param ClutchUndefinedFinal:
+        The clutch undefined by each second after apply the interleave clutch
+    :type ClutchUndefinedFinal: boolean array
+
+    :param InitialGearsFinalAfterClutch:
+        The initial gears after apply corrections calculated by each second and the
+        interleave clutch.
+    :type InitialGearsFinalAfterClutch: array
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: integer
+
+    :param AvailablePowers:
+        Annex 2 (3.4) P_available_i,j
+        The power available for each gear i from 1 to ng and for each second j
+        of the cycle trace.
+        Note that this power values are determined from uncorrected values n_i,j
+        i.e. without the engine speed increments required by Annex 2 (3.3)
+    :type AvailablePowers: array
+
+    :param NdvRatios:
+        The ratio obtained by dividing the engine speed n by the vehicle speed v
+        for each gear i form 1 to ng after apply the exclusion of first gear if
+        is necessary.
+    :type NdvRatios: array
+
+    :return AvailablePowersFinal:
+        Annex 2 (3.4) P_available_i,j
+        The power available for each gear i from 1 to ng and for each second j
+        of the cycle trace, after check vehicle speed.
+        Note that this power values are determined from uncorrected values n_i,j
+        i.e. without the engine speed increments required by Annex 2 (3.3)
+    :rtype AvailablePowersFinal: array
+    """
 
     from scipy.interpolate import interp1d
 
@@ -2412,7 +3032,7 @@ def reduce_vehicle_speed_if_not_enough_power(
     return AvailablePowersFinal
 
 
-@sh.add_function(dsp, outputs=["shift_poits"])
+@sh.add_function(dsp, outputs=["shift_points"])
 def generate_gears(
     TraceTimes,
     GearSequenceStarts,
@@ -2444,6 +3064,174 @@ def generate_gears(
     CorrectionsCells,
     ChecksumVxGear,
 ):
+    """
+    Assign outputs in the final dictionary
+
+    :param TraceTimes:
+        Times for each vehicle speed required re-sampled in 1Hz
+    :type TraceTimes: array
+
+    :param GearSequenceStarts:
+        Array that contains the position of the gear sequence start for the different
+        gears.
+        .. note::
+        A clutch disengagement and a gear change cannot be indicated at the same time
+        and the clutch disengagement will therefore be indicated one second earlier.
+    :type GearSequenceStarts: array
+
+    :param GearNames:
+        The name of gear to used by each gear sequence starts.
+    :type GearNames: array
+
+    :return AverageGear:
+        Annex 2 (5) average gear
+        In order to enable the assessment of the correctness of the calculation,
+        the average gear for v >= 1 km/h, rounded to four places of decimal,
+        shall be calculated and recorded.
+    :rtype AverageGear: float
+
+    :param Max95EngineSpeedFinal:
+         Annex 2 (2g) n_max1 = n_95_high adjusted
+         If n_95_high cannot be determined because the engine speed is limited to
+         a lower value n_lim for all gears and the corresponding full load power
+         is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.
+    :type Max95EngineSpeedFinal: float
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: array
+
+    :param requiredPowersF:
+        Annex 2 (3.1) P_required,j
+        The power required to overcome driving resistance and to accelerate
+        for each second j of the cycle trace.
+    :type requiredPowersF: array
+
+    :param RequiredEngineSpeeds:
+        Annex 2 (3.2) n_i,j
+        The engine speeds required
+        for each gear i from 1 to ng and
+        for each second j of the cycle trace.
+        Note that this are the uncorrected values n_i,j
+        ie without the increments required by Annex 2 (3.3)
+    :type RequiredEngineSpeeds: array
+
+    :param PossibleGearsByEngineSpeed:
+        The possible gear that can be used for each second.
+    :type PossibleGearsByEngineSpeed: boolean array
+
+    :param AvailablePowersFinal:
+        Annex 2 (3.4) P_available_i,j
+        The power available for each gear i from 1 to ng and for each second j
+        of the cycle trace, after check vehicle speed.
+        Note that this power values are determined from uncorrected values n_i,j
+        i.e. without the engine speed increments required by Annex 2 (3.3)
+    :type AvailablePowersFinal: array
+
+    :param InitialRequiredEngineSpeeds:
+        The initial engine speeds required for each gear i from 1 to ng and
+        for each second j of the cycle trace.
+    :type InitialRequiredEngineSpeeds: array
+
+    :param InitialAvailablePowers:
+        Annex 2 (3.4) P_available_i,j (initials)
+        The power available for each gear i from 1 to ng and for each second j
+        of the cycle trace.
+        Note that this power values are determined from uncorrected values n_i,j
+        i.e. without the engine speed increments required by Annex 2 (3.3)
+    :type InitialAvailablePowers: array
+
+    :param FullPowerCurve:
+        Annex 2 (2h) and (3.4) n ==> P_wot(n), ASM
+        The full load power curve over the engine speed range.
+    :type FullPowerCurve: array
+
+    :param EngineSpeedAtGearAtMaxRequiredSpeed:
+        The engine speed at gear maximum required speed
+    :type EngineSpeedAtGearAtMaxRequiredSpeed: float
+
+    :param EngineSpeedAtGearAtMaxVehicleSpeed:
+        The engine speed at gear at maximum vehicle speed
+    :type EngineSpeedAtGearAtMaxVehicleSpeed: float
+
+    :param MaxEngineSpeed:
+        The maximum engine speed
+    :type MaxEngineSpeed: float
+
+    :param MaxVehicleSpeedFinal:
+        Annex 2 (2g, 2i) v_max,vehicle
+        The maximum vehicle speed reachable
+        using the gear in which the maximum vehicle speed can be reached.
+    :type MaxVehicleSpeedFinal: float
+
+    :param GearAtMaxVehicleSpeedFinal:
+        Annex 2 (2i) ng_vmax
+        The gear in which the maximum vehicle speed is reached.
+    :type GearAtMaxVehicleSpeedFinal: integer
+
+    :param MinDrive1st:
+        Annex 2 (2k) n_min_drive = n_idle for n_gear:1
+        The minimum engine speed when the vehicle is in motion.
+        This is the maximum of calculated value and input parameter value.
+    :type MinDrive1st: float
+
+    :param MinDrive1stTo2nd:
+        Annex 2 (2ka) n_min_drive = 1.15 x n_idle for n_gear:1->2
+        The minimum engine speed for transitions from first to second gear.
+        This is the maximum of calculated value and input parameter value.
+    :type MinDrive1stTo2nd: float
+
+    :param MinDrive2ndDecel:
+        Annex 2 (2kb) n_min_drive = n_idle for n_gear:2
+        The minimum engine speed for decelerations to standstill in second gear.
+        This is the maximum of calculated value and input parameter value.
+    :type MinDrive2ndDecel: float
+
+    :param MinDrive2nd:
+        Annex 2 (2kc) n_min_drive = 0.9 x n_idle for n_gear:2
+        The minimum engine speed for all other driving conditions in second gear.
+        This is the maximum of calculated value and input parameter value.
+    :type MinDrive2nd: float
+
+    :param MinDriveGreater2nd:
+        Annex 2 (2k) n_min_drive = n_idle + 0.125 × ( n_rated - n_idle ) for n_gear:3..
+        This value shall be referred to as n_min_drive_set.
+        The minimum engine speed for all driving conditions in gears greater than 2.
+        This is the maximum of calculated value and input parameter value.
+    :type MinDriveGreater2nd: float
+
+    :param InitialGearsFinalAfterClutch:
+        The initial gears after apply corrections calculated by each second and the
+        interleave clutch.
+    :type InitialGearsFinalAfterClutch: array
+
+    :param ClutchDisengagedFinal:
+        The clutch disengaged by each second after apply the interleave clutch
+    :type ClutchDisengagedFinal: boolean array
+
+    :param ClutchUndefinedFinal:
+        The clutch undefined by each second after apply the interleave clutch
+    :type ClutchUndefinedFinal: boolean array
+
+    :param ClutchHST:
+        Array of clutch state names as used by the Heinz Steven Tool (HST).
+    :type ClutchHST: array
+
+    :param CorrectionsCells:
+        Array of gear correction strings for debugging. This contains a historic
+        transformation of each gear during all execution and the transformation
+        applied.
+    :type CorrectionsCells: array
+
+    :param ChecksumVxGear:
+        Checksum of v * gear for v >= 1 km/h rounded to four places of decimal.
+    :type ChecksumVxGear: float
+
+    :return shift_points:
+        Dictionary that contains the all input parameters with the expected
+        output format.
+    :rtype shift_points: dict
+    """
     # This is a test parameter that can be included in the inputs in the future
     ReturnAdjustedEngSpeedsAndAvlPowers = True
 
@@ -2456,7 +3244,7 @@ def generate_gears(
         RequiredEngineSpeedsOutput = np.round(InitialRequiredEngineSpeeds, 4)
         AvailablePowersOutput = np.round(InitialAvailablePowers, 4)
 
-    shift_poits = {
+    shift_points = {
         "CalculatedGearsOutput": np.vstack(
             (TraceTimes[GearSequenceStarts], GearNames)
         ).T,
@@ -2487,4 +3275,4 @@ def generate_gears(
         "ChecksumVxGearOutput": np.round(ChecksumVxGear * 10000) / 10000,
     }
 
-    return shift_poits
+    return shift_points

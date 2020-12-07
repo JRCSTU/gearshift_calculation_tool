@@ -315,8 +315,10 @@ def _algorithm_wltp(
     downscaledVehicleSpeeds = np.copy(originalVehicleSpeeds)
 
     for i in range(scalingStartIndex, correctionStartIndex):
-        downscaledVehicleSpeeds[i + 1] = downscaledVehicleSpeeds[i] + accelerations[i] * (1 - downscalingFactor) * 3.6
-
+        downscaledVehicleSpeeds[i + 1] = (
+            downscaledVehicleSpeeds[i]
+            + accelerations[i] * (1 - downscalingFactor) * 3.6
+        )
 
     if scalingEndIndex < len(originalTraceTimes):
         subsequentVehicleSpeed = originalVehicleSpeeds[scalingEndIndex + 1]
@@ -332,7 +334,7 @@ def _algorithm_wltp(
             downscaledVehicleSpeeds[correctionStartIndex] - subsequentVehicleSpeed
         ) / (originalVehicleSpeeds[correctionStartIndex] - subsequentVehicleSpeed)
 
-    for i in range(correctionStartIndex + 1, scalingEndIndex+1):
+    for i in range(correctionStartIndex + 1, scalingEndIndex + 1):
         downscaledVehicleSpeeds[i] = (
             downscaledVehicleSpeeds[i - 1]
             + accelerations[i - 1] * correctionFactor * 3.6
@@ -792,14 +794,6 @@ def generate_speed_trace(
         ),
         "CalculatedDownscalingPercentage": np.round(
             (calculatedDownscalingFactor * 1000) / 1000
-        )
-        * 100,
-        "RequiredToRatedPowerRatios": requiredToRatedPowerRatios,
-        "calculatedDownscalingFactors": np.round(
-            (calculatedDownscalingFactors * 1000) / 1000
-        ),
-        "CalculatedDownscalingPercentages": np.round(
-            (calculatedDownscalingFactors * 1000) / 1000
         )
         * 100,
         "TotalChecksum": np.round(np.sum(originalVehicleSpeeds) * 10 / 10),

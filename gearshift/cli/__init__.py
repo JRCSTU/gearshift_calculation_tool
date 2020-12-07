@@ -48,10 +48,13 @@ def cli():
     GEARSHIFT command line tool.
     """
 
-@cli.command('demo', short_help='Generates sample demo files.')
+
+@cli.command("demo", short_help="Generates sample demo files.")
 @click.argument(
-    'output-folder', default='./inputs', required=False,
-    type=click.Path(writable=True, file_okay=False)
+    "output-folder",
+    default="./inputs",
+    required=False,
+    type=click.Path(writable=True, file_okay=False),
 )
 def demo(output_folder):
     """
@@ -59,7 +62,8 @@ def demo(output_folder):
 
     OUTPUT_FOLDER: Folder path. [default: ./inputs]]
     """
-    return _process({'output_folder': output_folder})
+
+    return _process({"output_folder": output_folder, "demo_flag": True})
 
 
 @cli.command("run", short_help="Run GEARSHIFT tool.")

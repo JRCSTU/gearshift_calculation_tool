@@ -44,24 +44,25 @@ def _dict2dataframes(solution_case):
 
     dict_df["Time Series"] = TimeSeries
 
-    if 'OriginalTrace' in solution_case.keys():
+    if "OriginalTrace" in solution_case.keys():
         dict_OT = {
-            "Trace Times": solution_case['OriginalTrace'][0],
-            "Vehicle Speeds": solution_case['OriginalTrace'][1]
+            "Trace Times": solution_case["OriginalTrace"][0],
+            "Vehicle Speeds": solution_case["OriginalTrace"][1],
         }
         OriginalTrace = pd.DataFrame(dict_OT)
         dict_df["Original Trace"] = OriginalTrace
 
-    if 'ApplicableTrace' in solution_case.keys():
+    if "ApplicableTrace" in solution_case.keys():
         dict_AT = {
-            "Trace Times": solution_case['ApplicableTrace']['compensatedTraceTimes'],
-            "Vehicle Speeds": solution_case['ApplicableTrace']['compensatedVehicleSpeeds']
+            "Trace Times": solution_case["ApplicableTrace"]["compensatedTraceTimes"],
+            "Vehicle Speeds": solution_case["ApplicableTrace"][
+                "compensatedVehicleSpeeds"
+            ],
         }
         ApplicableTrace = pd.DataFrame(dict_AT)
         dict_df["Applicable Trace"] = ApplicableTrace
 
-
-    dict_df['Output'] = pd.DataFrame(principal_sheet_output)
+    dict_df["Output"] = pd.DataFrame(principal_sheet_output)
 
     return dict_df
 
@@ -91,13 +92,16 @@ def write_to_excel(solution_case, fp):
 
         for idx, col in enumerate(v):  # loop through all columns
             series = v[col]
-            max_len = max((
-                series.astype(str).map(len).max(),  # len of largest item
-                len(str(series.name))  # len of column name/header
-            )) + 1  # adding a little extra space
+            max_len = (
+                max(
+                    (
+                        series.astype(str).map(len).max(),  # len of largest item
+                        len(str(series.name)),  # len of column name/header
+                    )
+                )
+                + 1
+            )  # adding a little extra space
             worksheet.set_column(idx, idx, max_len)
             worksheet.write(0, idx, col, header_format)
 
     writer.save()
-
-

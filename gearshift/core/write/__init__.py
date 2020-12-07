@@ -5,7 +5,7 @@
 # You may not use this work except in compliance with the Licence.
 # You may obtain a copy of the Licence at: http://ec.europa.eu/idabc/eupl
 """
-Functions and `dsp` model to load data from a GEARSHIFT input file.
+Functions and `dsp` model to writre data from a GEARSHIFT input file.
 
 Sub-Modules:
 
@@ -23,8 +23,6 @@ import os
 import os.path as osp
 import logging
 from .excel import write_to_excel
-import pandas as pd
-import numpy as np
 import schedula as sh
 
 log = logging.getLogger(__name__)
@@ -66,10 +64,11 @@ def _default_output_file_name(output_folder, timestamp, case, output_format):
     return fp
 
 
-
 @sh.add_function(dsp)
 def save_output_file(sol, output_folder, timestamp, output_format):
     os.makedirs(osp.dirname(output_folder), exist_ok=True)
     for case in sol:
-        fp = _default_output_file_name(output_folder, timestamp, case["Case"], output_format)
+        fp = _default_output_file_name(
+            output_folder, timestamp, case["Case"], output_format
+        )
         write_to_excel(case, fp)
