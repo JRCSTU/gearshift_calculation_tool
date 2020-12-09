@@ -1,3 +1,6 @@
+Authors
+=======
+
 DICE:
     - Andrés Marín <Andres.LAVERDE-MARIN@ext.ec.europa.eu>
 Documentation:

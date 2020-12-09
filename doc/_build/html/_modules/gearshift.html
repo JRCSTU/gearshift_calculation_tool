@@ -1,0 +1,408 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gearshift &mdash; GEARSHIFT 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GEARSHIFT
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GEARSHIFT</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>gearshift</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gearshift</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2015-2020 European Commission (JRC);</span>
+<span class="c1"># Licensed under the EUPL (the &#39;Licence&#39;);</span>
+<span class="c1"># You may not use this work except in compliance with the Licence.</span>
+<span class="c1"># You may obtain a copy of the Licence at: http://ec.europa.eu/idabc/eupl</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Defines the file processing chain model `dsp`.</span>
+
+<span class="sd">.. currentmodule:: gearshift</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :nosignatures:</span>
+<span class="sd">    :toctree: _build/gearshift/</span>
+
+<span class="sd">    ~core</span>
+<span class="sd">    ~cli</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">osp</span>
+<span class="kn">import</span> <span class="nn">schedula</span> <span class="k">as</span> <span class="nn">sh</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">dsp</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">BlueDispatcher</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;process&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="init_conf"><a class="viewcode-back" href="../gearshift.html#gearshift.init_conf">[docs]</a><span class="k">def</span> <span class="nf">init_conf</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize GEARSHIFT model configurations.</span>
+
+<span class="sd">    :param inputs:</span>
+<span class="sd">         Initialization inputs.</span>
+<span class="sd">    :type inputs: dict | schedula.Token</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        Initialization inputs.</span>
+<span class="sd">    :rtype: dict | schedula.Token</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">inputs</span></div>
+
+
+<span class="k">def</span> <span class="nf">_yield_files</span><span class="p">(</span><span class="o">*</span><span class="n">paths</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;xlsx&quot;</span><span class="p">)):</span>
+    <span class="kn">import</span> <span class="nn">glob</span>
+
+    <span class="n">cache</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> <span class="k">if</span> <span class="n">cache</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">cache</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">cache</span> <span class="ow">or</span> <span class="n">osp</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">cache</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">osp</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">yield from</span> <span class="n">_yield_files</span><span class="p">(</span>
+                <span class="o">*</span><span class="nb">filter</span><span class="p">(</span><span class="n">osp</span><span class="o">.</span><span class="n">isfile</span><span class="p">,</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">))),</span> <span class="n">cache</span><span class="o">=</span><span class="n">cache</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">osp</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Skipping file &quot;</span><span class="si">%s</span><span class="s1">&quot;.&#39;</span> <span class="o">%</span> <span class="n">path</span><span class="p">)</span>
+
+
+<span class="n">dsp</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="n">sh</span><span class="o">.</span><span class="n">START</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="n">init_conf</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">sh</span><span class="o">.</span><span class="n">NONE</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="register_core"><a class="viewcode-back" href="../gearshift.html#gearshift.register_core">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;core_model&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">register_core</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Register core model.</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        GEARSHIFT core model.</span>
+<span class="sd">    :rtype: schedula.Dispatcher</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">dsp</span>
+
+    <span class="k">return</span> <span class="n">dsp</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">memo</span><span class="o">=</span><span class="p">{})</span></div>
+
+
+<span class="k">class</span> <span class="nc">_ProgressBar</span><span class="p">(</span><span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">_format_meter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">_format_meter</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_format_meter</span> <span class="o">=</span> <span class="n">_format_meter</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">_ProgressBar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_format_meter</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: Processing </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># noinspection PyMissingOrEmptyDocstring</span>
+    <span class="k">def</span> <span class="nf">format_meter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">bar</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">_ProgressBar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">format_meter</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_meter</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterable</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">bar</span>
+
+
+<div class="viewcode-block" id="default_timestamp"><a class="viewcode-back" href="../gearshift.html#gearshift.default_timestamp">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">default_timestamp</span><span class="p">(</span><span class="n">start_time</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the default timestamp.</span>
+
+<span class="sd">    :param start_time:</span>
+<span class="sd">        Run start time.</span>
+<span class="sd">    :type start_time: datetime.datetime</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        Run timestamp.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">start_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">_%H%M%S&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="run_core"><a class="viewcode-back" href="../gearshift.html#gearshift.run_core">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;core_solutions&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">run_core</span><span class="p">(</span>
+    <span class="n">core_model</span><span class="p">,</span>
+    <span class="n">input_files</span><span class="p">,</span>
+    <span class="n">output_folder</span><span class="p">,</span>
+    <span class="n">cmd_flags</span><span class="p">,</span>
+    <span class="n">timestamp</span><span class="p">,</span>
+    <span class="n">output_format</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run core model.</span>
+
+<span class="sd">    :param core_model:</span>
+<span class="sd">        GEARSHIFT core model.</span>
+<span class="sd">    :type core_model: schedula.Dispatcher</span>
+
+<span class="sd">    :param cmd_flags:</span>
+<span class="sd">        Command line options.</span>
+<span class="sd">    :type cmd_flags: dict</span>
+
+<span class="sd">    :param timestamp:</span>
+<span class="sd">        Run timestamp.</span>
+<span class="sd">    :type timestamp: str</span>
+
+<span class="sd">    :param input_files:</span>
+<span class="sd">        List of input files and/or folders.</span>
+<span class="sd">    :type input_files: iterable</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        Core model solutions.</span>
+<span class="sd">    :rtype: dict[str, schedula.Solution]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">solutions</span><span class="p">,</span> <span class="n">it</span> <span class="o">=</span> <span class="p">{},</span> <span class="nb">list</span><span class="p">(</span><span class="n">_yield_files</span><span class="p">(</span><span class="o">*</span><span class="n">input_files</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">it</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fp</span> <span class="ow">in</span> <span class="n">_ProgressBar</span><span class="p">(</span><span class="n">it</span><span class="p">):</span>
+            <span class="n">solutions</span><span class="p">[</span><span class="n">fp</span><span class="p">]</span> <span class="o">=</span> <span class="n">core_model</span><span class="p">(</span>
+                <span class="nb">dict</span><span class="p">(</span>
+                    <span class="n">input_file_name</span><span class="o">=</span><span class="n">fp</span><span class="p">,</span>
+                    <span class="n">cmd_flags</span><span class="o">=</span><span class="n">cmd_flags</span><span class="p">,</span>
+                    <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
+                    <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+                    <span class="n">output_format</span><span class="o">=</span><span class="n">output_format</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="n">solutions</span></div>
+
+<div class="viewcode-block" id="save_demo_files"><a class="viewcode-back" href="../gearshift.html#gearshift.save_demo_files">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;demo&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">save_demo_files</span><span class="p">(</span><span class="n">output_folder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Save CO2MPAS demo files.</span>
+
+<span class="sd">    :param output_folder:</span>
+<span class="sd">        Output folder.</span>
+<span class="sd">    :type output_folder: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">glob</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copy2</span>
+    <span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_filename</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span> <span class="ow">or</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;gearshift&#39;</span><span class="p">,</span> <span class="s1">&#39;demos/*&#39;</span><span class="p">)):</span>
+        <span class="n">copy2</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">osp</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">src</span><span class="p">)))</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;CO2MPAS demos written into (</span><span class="si">%s</span><span class="s1">).&#39;</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="default_start_time"><a class="viewcode-back" href="../gearshift.html#gearshift.default_start_time">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;start_time&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">default_start_time</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the default run start time.</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        Run start time.</span>
+<span class="sd">    :rtype: datetime.datetime</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">datetime</span>
+
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="log_done"><a class="viewcode-back" href="../gearshift.html#gearshift.log_done">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;done&quot;</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="n">sh</span><span class="o">.</span><span class="n">inf</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">log_done</span><span class="p">(</span><span class="n">start_time</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Logs the overall execution time.</span>
+
+<span class="sd">    :param start_time:</span>
+<span class="sd">        Run start time.</span>
+<span class="sd">    :type start_time: datetime.datetime</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        Execution time [s].</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">datetime</span>
+
+    <span class="n">sec</span> <span class="o">=</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; Done! [</span><span class="si">%.2f</span><span class="s2"> sec]&quot;</span> <span class="o">%</span> <span class="n">sec</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sec</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2015-2019, European Commission (JRC)
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
