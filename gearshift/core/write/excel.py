@@ -68,6 +68,17 @@ def _dict2dataframes(solution_case):
 
 
 def write_to_excel(solution_case, fp):
+    """
+    Save output file.
+
+    :param solution_case:
+        Dictionary that contain outputs.
+    :type solution_case: dict
+
+    :param fp:
+        Output path and file name.
+    :type fp: str
+    """
 
     writer = pd.ExcelWriter(fp, engine="xlsxwriter")
 

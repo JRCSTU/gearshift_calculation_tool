@@ -37,19 +37,19 @@ def appendCorrectionCells(
 
     :param CorrectionsCells:
         A cell array of gear correction strings BEFORE the current correction
-    :type CorrectionsCells: array
+    :type CorrectionsCells: numpy.array
 
     :param InitialGears:
         A cell array of gear numbers AFTER the current correction
-    :type InitialGears: array
+    :type InitialGears: numpy.array
 
     :param InitialGearsPrev:
         A cell array of gear numbers BEFORE the current correction
-    :type InitialGearsPrev: array
+    :type InitialGearsPrev: numpy.array
 
     :param InitialGearsPrev:
         A cell array of gear numbers BEFORE the current correction
-    :type InitialGearsPrev: array
+    :type InitialGearsPrev: numpy.array
 
     :param correctionType:
         A string indicating the type of the current correction
@@ -60,21 +60,23 @@ def appendCorrectionCells(
         A number indicating the iteration of the current correction
     :type correctionNbr: Integer
 
-    :return CorrectionsCells:
-        A cell array of gear correction strings AFTER the current correction
-        eg
-        ...
-        '4 --- 4 4b1 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2'
-        '4 --- 4 4b1 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3'
-        '5 --- 5 4b1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4b2 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3'
-        '5 --- 5 --- 5 4c1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4g2 3 --- 3 --- 3 --- 3 --- 3'
-        '5 --- 5 --- 5 4c1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4g2 3 --- 3 --- 3 --- 3 --- 3'
-        ...
-    :rtype CorrectionsCells: array
+    :returns:
+        - CorrectionsCells (:py:class:`numpy.array`):
+            A cell array of gear correction strings AFTER the current correction.
+            For example:
 
-    :return CorrectionsCells:
-        A cell array of gear numbers AFTER current correction ie before next correction
-    :rtype CorrectionsCells: array
+            '4 --- 4 4b1 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2'
+
+            '4 --- 4 4b1 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3'
+
+            '5 --- 5 4b1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4b2 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3'
+
+            '5 --- 5 --- 5 4c1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4g2 3 --- 3 --- 3 --- 3 --- 3'
+
+            '5 --- 5 --- 5 4c1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4g2 3 --- 3 --- 3 --- 3 --- 3'
+
+        - InitialGearsPrev (:py:class:`numpy.array`):
+            A cell array of gear numbers AFTER current correction i.e. before next correction
     """
 
     InitialGearsCells = list(map(str, list(map(int, list(InitialGears)))))
@@ -142,6 +144,86 @@ def applyCorrection4b(
     PHASE_ACCELERATION,
     NoOfGearsFinal,
 ):
+    """
+    Sub-Annex 2 in section 4.(b) :
+
+    If a downshift is required during an acceleration phase
+    or at the beginning of the acceleration phase
+    the gear required during this downshift shall be noted (i_DS).
+
+    The starting point of a correction procedure is defined by either
+    the last previous second when i_DS was identified
+    or by the starting point of the acceleration phase,
+    if all time samples before have gears > i_DS.
+
+    The highest gear of the time samples before the downshift
+    determines the reference gear i_ref for the downshift.
+    A downshift where i_DS = i_ref - 1
+    is referred to as a one step downshift,
+    a downshift where i_DS = i_ref - 2
+    is referred to as a two step downshift,
+    a downshift where i_DS = i_ref – 3
+    is referred to as a three step downshift.
+
+    Visualization of rules implemented:
+
+    initial gear sequence:
+
+    .. image:: ../doc/_static/images/initial_gears_correction_4b.*
+    .. image:: ../doc/_static/images/correction_4b_1.*
+    .. image:: ../doc/_static/images/correction_4b_2.*
+    .. image:: ../doc/_static/images/correction_4b_3.*
+    .. image:: ../doc/_static/images/correction_4b_4.*
+
+    final gear sequence:
+
+    .. image:: ../doc/_static/images/correction_4b_5.*
+
+    :param InitialGears:
+        A cell array of gear numbers AFTER the previous correction
+    :type InitialGears: numpy.array
+
+    :param Corr4bToBeDoneAfterCorr4a:
+        Boolean that check if the correction 4b to be done after correction 4a
+    :type Corr4bToBeDoneAfterCorr4a: bool
+
+    :param Corr4bToBeDoneAfterCorr4d:
+        Boolean that check if the correction 4b to be done after correction 4d
+    :type Corr4bToBeDoneAfterCorr4d: bool
+
+    :param PhaseValues:
+        Contains the points of changes phases
+    :type PhaseValues: numpy.array
+
+    :param PhaseStarts:
+        Contains the points that are start point from a phase
+    :type PhaseStarts: numpy.array
+
+    :param PhaseEnds:
+        Contains the points that are end point from a phase
+    :type PhaseEnds: numpy.array
+
+    :param PHASE_ACCELERATION_FROM_STANDSTILL:
+        Acceleration phase following a standstill phase
+    :type PHASE_ACCELERATION_FROM_STANDSTILL: int
+
+    :param PHASE_ACCELERATION:
+        Acceleration phase
+    :type PHASE_ACCELERATION: int
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: int
+
+    :returns:
+        - InitialGears (:py:class:`numpy.array`):
+            A cell array of gear numbers AFTER the current correction
+        - Corr4bToBeDoneAfterCorr4a (:py:class:`bool`):
+            Boolean that check if the correction 4b to be done after correction 4a
+        - Corr4bToBeDoneAfterCorr4d (:py:class:`bool`):
+            Boolean that check if the correction 4b to be done after correction 4d
+    """
     AnyAccelerationStarts = PhaseStarts[
         np.union1d(
             np.where(PhaseValues == PHASE_ACCELERATION),
@@ -264,6 +346,43 @@ def applyCorrection4a(
     InConstantSpeed,
     InAccelerationAnyDuration,
 ):
+    """
+    Sub-Annex 2 in sectoin 4.(a)
+
+    If a one step higher gear (n+1) is required for only 1 second
+    and the gears before and after are the same (n),
+    or one of them is one step lower (n-1),
+    gear (n+1) shall be corrected to gear n.
+
+    :param InitialGears:
+        A cell array of gear numbers AFTER the previous correction
+    :type InitialGears: numpy.array
+
+    :param Corr4bToBeDoneAfterCorr4a:
+        Boolean that check if the correction 4b to be done after correction 4a
+    :type Corr4bToBeDoneAfterCorr4a: bool
+
+    :param PossibleGears:
+        The possible gears calculated by each second
+    :type PossibleGears: numpy.array
+
+    :param InAcceleration:
+        Contains the points that are in acceleration phase as a True
+    :type InAcceleration: boolean numpy.array
+
+    :param InConstantSpeed:
+        Contains the points that are in constant speed phase as a True
+    :type InConstantSpeed: boolean numpy.array
+
+    :param InAccelerationAnyDuration:
+         some gear corrections ignore the duration of acceleration phases
+         so save acceleration phases with any duration here
+    :type InAccelerationAnyDuration: boolean numpy.array
+
+    :returns:
+        - InitialGears (:py:class:`numpy.array`):
+            A cell array of gear numbers AFTER the current correction
+    """
     from functools import reduce
 
     PreviousInitialGears = np.empty(np.shape(InitialGears))
@@ -630,7 +749,8 @@ def applyCorrection4a(
 
 def applyCorrection4c(InitialGears, PossibleGears):
     """
-    Regulation Annex 2, 4.(c) :
+    Sub-Annex 2 in section 4.(c)
+
     If gear i is used for a time sequence of 1 to 5 seconds
     and the gear prior to this sequence is one step lower
     and the gear after this sequence is one or two steps lower than within this sequence
@@ -639,10 +759,21 @@ def applyCorrection4c(InitialGears, PossibleGears):
     the gear for the sequence shall be corrected to
     the maximum of the gears before and after the sequence.
     In all cases i-1 >= i_min shall be fulfilled.
-    NOTE:
-    The corrected gear will be i-1 in all cases.
-    3.5. Determination of possible gears to be used.
-    The lowest final possible gear is i_min.
+
+    .. note:: The corrected gear will be i-1 in all cases. 3.5. Determination of possible
+        gears to be used. The lowest final possible gear is i_min.
+
+    :param InitialGears:
+        A cell array of gear numbers AFTER the previous correction
+    :type InitialGears: numpy.array
+
+    :param PossibleGears:
+        The possible gears calculated by each second
+    :type PossibleGears: numpy.array
+
+    :returns:
+        - InitialGears (:py:class:`numpy.array`):
+            A cell array of gear numbers AFTER the current correction
     """
     minPossibleGears = np.asarray(
         np.min(np.ma.masked_array(PossibleGears, np.isnan(PossibleGears)), axis=1)
@@ -702,9 +833,9 @@ def applyCorrection4d(
     """
     Regulation Annex 2, 4.(d) :
     No upshift to a higher gear shall be performed within a deceleration phase.
-    NOTE:
-    The newest regulation ECE/TRANS/WP.29/GRPE/2019/2 moved the text part below to paragraph Annex 2, 4.(e).
-    But we keep it here as it does not matter whether it will be executed at the end of 4.(d) or at the begin of 4.(e).
+
+    .. note:: The newest regulation ECE/TRANS/WP.29/GRPE/2019/2 moved the text part below to paragraph Annex 2, 4.(e).
+        But we keep it here as it does not matter whether it will be executed at the end of 4.(d) or at the begin of 4.(e).
     No upshift to a higher gear at the transition
     from an acceleration or constant speed phase
     to a deceleration phase shall be performed
@@ -716,6 +847,52 @@ def applyCorrection4d(
     an upshift by 1 gear shall be performed instead.
     In this case, no further modifications shall be perfomed
     in the following gear use checks.
+
+    :param InitialGears:
+        A cell array of gear numbers AFTER the previous correction
+    :type InitialGears: numpy.array
+
+    :param PhaseStarts:
+        Contains the points that are start point from a phase
+    :type PhaseStarts: numpy.array
+
+    :param PhaseEnds:
+        Contains the points that are end point from a phase
+    :type PhaseEnds: numpy.array
+
+    :param PhaseValues:
+        Contains the points of changes phases
+    :type PhaseValues: numpy.array
+
+    :param PHASE_DECELERATION:
+        time period of more than 2 seconds with required vehicle
+                speed >= 1km/h and monotonically decreasing
+    :type PHASE_DECELERATION: int
+
+    :param PHASE_DECELERATION_TO_STANDSTILL:
+        DECELERATION phase preceding a STANDSTILL phase
+    :type PHASE_DECELERATION_TO_STANDSTILL: int
+
+    :param corr_4d_applied_before:
+        Boolean array that check if correction 4d have been applied before as True
+    :type corr_4d_applied_before: boolean numpy.array
+
+    :param TraceTimesCount:
+        The length of trace times re-sampled in 1Hz
+    :type TraceTimesCount: int
+
+    :param NoOfGearsFinal:
+        The number of forward gears after apply the exclusion of first gear
+        if is necessary.
+    :type NoOfGearsFinal: int
+
+    :param RequiredVehicleSpeeds:
+        The vehicle speed required for the whole cycle re-sampled in 1Hz
+    :type RequiredVehicleSpeeds: numpy.array
+
+    :returns:
+        - InitialGears (:py:class:`numpy.array`):
+            A cell array of gear numbers AFTER the current correction
     """
     AnyDecelerationStarts = PhaseStarts[
         np.union1d(
@@ -838,12 +1015,11 @@ def applyCorrection4e(
     """
     Regulation Annex 2, 4.(e) :
 
-        NOTE:
-    The newest regulation ECE/TRANS/WP.29/GRPE/2019/2
-    moved this gear correction to paragraph
-    3.3. Selection of possible gears with respect to engine speed.
-    But we keep it here to check also additional usages of gear 2,
-    which may result from other gear corrections done before.
+    .. note:: The newest regulation ECE/TRANS/WP.29/GRPE/2019/2
+        moved this gear correction to paragraph
+        3.3. Selection of possible gears with respect to engine speed.
+        But we keep it here to check also additional usages of gear 2,
+        which may result from other gear corrections done before.
 
     During a deceleration phase, gears with n_gear > 2 shall be used
     as long as the engine speed does not drop below n_min_drive.
@@ -853,6 +1029,54 @@ def applyCorrection4e(
     If the engine speed drops below n_idle, the clutch shall be disengaged.
     If the deceleration phase is the last part of a short trip shortly before a stop phase,
     the second gear shall be used as long as the engine speed does not drop below n_idle.
+
+    :param InitialGears:
+        A cell array of gear numbers AFTER the previous correction
+    :type InitialGears: numpy.array
+
+    :param PhaseStarts:
+        Contains the points that are start point from a phase
+    :type PhaseStarts: numpy.array
+
+    :param PhaseEnds:
+        Contains the points that are end point from a phase
+    :type PhaseEnds: numpy.array
+
+    :param PhaseValues:
+        Contains the points of changes phases
+    :type PhaseValues: numpy.array
+
+    :param ClutchDisengaged:
+        The clutch disengaged by each second.
+    :type ClutchDisengaged: boolean numpy.array
+
+    :param InitialRequiredEngineSpeeds:
+        The initial engine speeds required for each gear i from 1 to ng and
+        for each second j of the cycle trace.
+    :type InitialRequiredEngineSpeeds: numpy.array
+
+    :param IdlingEngineSpeed:
+        Annex 2 (2c) n_idle. The idling speed.
+    :type IdlingEngineSpeed: float
+
+    :param PHASE_DECELERATION:
+        time period of more than 2 seconds with required vehicle
+                speed >= 1km/h and monotonically decreasing
+    :type PHASE_DECELERATION: int
+
+    :param PHASE_DECELERATION_TO_STANDSTILL:
+        DECELERATION phase preceding a STANDSTILL phase
+    :type PHASE_DECELERATION_TO_STANDSTILL: int
+
+    :param Phases:
+        The list of phases that are used during whole cycle
+    :type Phases: numpy.array
+
+    :returns:
+        - InitialGears (:py:class:`numpy.array`):
+            A cell array of gear numbers AFTER the current correction
+        - ClutchDisengaged (:py:class:`boolean numpy.array`):
+            The clutch disengaged by each second AFTER the current correction
     """
     AnyDecelerationStarts = PhaseStarts[
         np.union1d(
@@ -928,6 +1152,51 @@ def applyCorrection4f(
     InDecelerationToStandstill,
     InDeceleration,
 ):
+    """
+    Sub-Annex 2 in section 4.(f)
+
+    If during a deceleration phase the duration of a gear sequence between
+    two gear sequences of 3 seconds or more is only 1 second, it shall be
+    replaced by gear 0 and the clutch shall be disengaged.
+
+    :param InitialGears:
+        A cell array of gear numbers AFTER the previous correction
+    :type InitialGears: numpy.array
+
+    :param ClutchDisengaged:
+        The clutch disengaged by each second.
+    :type ClutchDisengaged: boolean numpy.array
+
+    :param SuppressGear0DuringDownshifts:
+        Sub-Annex 2 (4f).If a gear is used for only 1 second during a deceleration phase
+        it shall be replaced by gear 0 with clutch disengaged, in order to avoid too high
+        engine speeds. But if this is not an issue, the manufacturer may allow to use the
+        lower gear of the following second directly instead of gear 0 for downshifts of
+        up to 3 steps.
+    :type SuppressGear0DuringDownshifts: bool
+
+    :param PossibleGears:
+        The possible gears calculated by each second
+    :type PossibleGears: numpy.array
+
+    :param InStandStill:
+        Contains the points that are in standstill phase as a True
+    :type InStandStill: boolean numpy.array
+
+    :param InDecelerationToStandstill:
+        The array that contains the seconds from deceleration to standstill as a True
+    :type InDecelerationToStandstill: boolean numpy.array
+
+    :param InDeceleration:
+        Contains the points that are in deceleration phase as a True
+    :type InDeceleration: boolean array
+
+    :returns:
+        - InitialGears (:py:class:`numpy.array`):
+            A cell array of gear numbers AFTER the current correction
+        - ClutchDisengaged (:py:class:`boolean numpy.array`):
+            The clutch disengaged by each second AFTER the current correction
+    """
     from functools import reduce
 
     gear = np.copy(InitialGears)

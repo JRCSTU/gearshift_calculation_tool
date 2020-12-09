@@ -5,7 +5,7 @@
 # You may not use this work except in compliance with the Licence.
 # You may obtain a copy of the Licence at: http://ec.europa.eu/idabc/eupl
 """
-It provides GEARSHIFT model `dsp` to obtain the speed trace following Sub-Annex 1 of the Annex XXI from the
+It provides GEARSHIFT model `dsp` to obtain the gearshifts following Sub-Annex 2 of the Annex XXI from the
 COMMISSION REGULATION (EU) 2017/1151.
 
 Docstrings should provide sufficient understanding for any individual function.
@@ -57,15 +57,19 @@ def check_gears(NoOfGears, gear_nbrs, Ndv, ExcludeCrawlerGear):
         Gear 1 may be excluded at the request of . the manufacturer if
     :type ExcludeCrawlerGear: boolean
 
-    :return:
-        NoOfGearsFinal: The number of forward gears after apply the exclusion of first gear
-        if is necessary.
-        Gears: List with of gears of the vehicle after apply the exclusion of first gear
-        if is necessary.
-        NdvRatios: The ratio obtained by dividing the engine speed n by the vehicle speed v
-        for each gear i form 1 to ng after apply the exclusion of first gear if
-        is necessary.
-    :rtype: (integer, list, array)
+    :returns:
+        - NoOfGearsFinal (:py:class:`int`):
+            The number of forward gears after apply the exclusion of first gear
+            if is necessary.
+
+        - Gears (:py:class:`list`):
+            List with of gears of the vehicle after apply the exclusion of first
+            gear if is necessary.
+
+        - NdvRatios (:py:class:`numpy.array`):
+            The ratio obtained by dividing the engine speed n by the vehicle speed
+            v for each gear i form 1 to ng after apply the exclusion of first gear
+            if is necessary.
     """
     if ExcludeCrawlerGear:
         Gears = gear_nbrs[1:, :]
@@ -89,13 +93,11 @@ def parse_speed_trace(speed_trace):
         The vehicle speed at second i.
     :type speed_trace: array
 
-    :return TraceTimesInput:
-        Times for each vehicle speed required
-    :rtype TraceTimesInput: array
-
-    :return RequiredVehicleSpeedsInput:
-        The vehicle speed required for the whole cycle.
-    :rtype RequiredVehicleSpeedsInput: array
+    :returns:
+        - TraceTimesInput (:py:class:`numpy.array`):
+            Times for each vehicle speed required
+        - RequiredVehicleSpeedsInput (:py:class:`numpy.array`):
+            The vehicle speed required for the whole cycle.
     """
     TraceTimesInput = speed_trace["ApplicableTrace"]["compensatedTraceTimes"]
     RequiredVehicleSpeedsInput = speed_trace["ApplicableTrace"][
@@ -111,8 +113,6 @@ def parse_speed_trace(speed_trace):
 def resample_trace(TraceTimesInput, RequiredVehicleSpeedsInput):
     """
     Re-sample the trace in 1Hz
-    If the trace was provided with higher sample rate, this may lead to data
-    loss.
 
     :param TraceTimesInput:
         Times for each vehicle speed required
@@ -122,17 +122,15 @@ def resample_trace(TraceTimesInput, RequiredVehicleSpeedsInput):
         The vehicle speed required for the whole cycle.
     :type RequiredVehicleSpeedsInput: array
 
-    :return TraceTimes:
-        Times for each vehicle speed required re-sampled in 1Hz
-    :rtype TraceTimes: array
+    :returns:
+        - TraceTimes (:py:class:`numpy.array`):
+            Times for each vehicle speed required re-sampled in 1Hz
+        - RequiredVehicleSpeeds (:py:class:`numpy.array`):
+            The vehicle speed required for the whole cycle re-sampled in 1Hz
+        - TraceTimesCount (:py:class:`int`):
+            The length of trace times re-sampled in 1Hz
 
-    :return RequiredVehicleSpeeds:
-        The vehicle speed required for the whole cycle re-sampled in 1Hz
-    :rtype RequiredVehicleSpeeds: array
-
-    :return TraceTimesCount:
-        The length of trace times re-sampled in 1Hz
-    :rtype TraceTimesCount: integer
+    .. note:: If the trace was provided with higher sample rate, this may lead to data loss.
     """
     from scipy.interpolate import interp1d
 
@@ -176,67 +174,39 @@ def identify_phases(TraceTimesCount, RequiredVehicleSpeeds):
         The vehicle speed required for the whole cycle re-sampled in 1Hz
     :type RequiredVehicleSpeeds: array
 
-    :return Phases:
-        The list of phases that are used during whole cycle
-    :rtype Phases: array
-
-    :return InDecelerationToStandstill:
-        The array that contains the seconds from deceleration to standstill as a True
-    :rtype InDecelerationToStandstill: boolean array
-
-    :return PhaseValues:
-        Contains the points of changes phases
-    :rtype PhaseValues: array
-
-    :return InStandStill:
-        Contains the points that are in standstill phase as a True
-    :rtype InStandStill: boolean array
-
-    :return PhaseStarts:
-        Contains the points that are start point from a phase
-    :rtype PhaseStarts: array
-
-    :return PhaseEnds:
-        Contains the points that are end point from a phase
-    :rtype PhaseEnds: array
-
-    :return PHASE_ACCELERATION_FROM_STANDSTILL:
-        Acceleration phase following a standstill phase
-    :rtype PHASE_ACCELERATION_FROM_STANDSTILL: integer
-
-    :return PHASE_ACCELERATION:
-        Acceleration phase
-    :rtype PHASE_ACCELERATION: integer
-
-    :return InAcceleration:
-        Contains the points that are in acceleration phase as a True
-    :rtype InAcceleration: boolean array
-
-    :return InConstantSpeed:
-        Contains the points that are in constant speed phase as a True
-    :rtype InConstantSpeed: boolean array
-
-    :return InAccelerationAnyDuration:
-         some gear corrections ignore the duration of acceleration phases
-         so save acceleration phases with any duration here
-    :rtype InAccelerationAnyDuration: boolean array
-
-    :return PHASE_DECELERATION:
-        time period of more than 2 seconds with required vehicle
+    :returns:
+        - Phases (:py:class:`numpy.array`):
+            The list of phases that are used during whole cycle
+        - InDecelerationToStandstill (:py:class:`boolean numpy.array`):
+            The array that contains the seconds from deceleration to standstill as a True
+        - PhaseValues (:py:class:`numpy.array`):
+            Contains the points of changes phases
+        - InStandStill (:py:class:`boolean numpy.array`):
+            Contains the points that are in standstill phase as a True
+        -  PhaseStarts (:py:class:`numpy.array`):
+            Contains the points that are start point from a phase
+        - PhaseEnds (:py:class:`numpy.array`):
+            Contains the points that are end point from a phase
+        - PHASE_ACCELERATION_FROM_STANDSTILL (:py:class:`int`):
+            Acceleration phase following a standstill phase
+        - PHASE_ACCELERATION (:py:class:`int`):
+            Acceleration phase
+        - InAcceleration (:py:class:`boolean numpy.array`):
+            Contains the points that are in acceleration phase as a True
+        - InConstantSpeed (:py:class:`boolean numpy.array`):
+            Contains the points that are in constant speed phase as a True
+        - InAccelerationAnyDuration (:py:class:`boolean numpy.array`):
+            Some gear corrections ignore the duration of acceleration phases so save acceleration phases
+            with any duration here.
+        - PHASE_DECELERATION (:py:class:`int`):
+            Time period of more than 2 seconds with required vehicle:
                 speed >= 1km/h and monotonically decreasing
-    :rtype PHASE_DECELERATION: integer
-
-    :return PHASE_DECELERATION_TO_STANDSTILL:
-        DECELERATION phase preceding a STANDSTILL phase
-    :rtype PHASE_DECELERATION_TO_STANDSTILL: integer
-
-    :return InDeceleration:
-        Contains the points that are in deceleration phase as a True
-    :rtype InDeceleration: boolean array
-
-    :return PHASE_STANDSTILL:
-        Time period with required vehicle speed < 1km/h
-    :rtype PHASE_STANDSTILL: integer
+        - PHASE_DECELERATION_TO_STANDSTILL (:py:class:`int`):
+            DECELERATION phase preceding a STANDSTILL phase
+        -  InDeceleration (:py:class:`boolean numpy.array`):
+            Contains the points that are in deceleration phase as a True
+        - PHASE_STANDSTILL (:py:class:`int`):
+            Time period with required vehicle speed < 1km/h
     """
     PHASE_TOO_SHORT = 0
     PHASE_STANDSTILL = 1
@@ -401,7 +371,6 @@ def load_full_power_curve(
 ):
     """
     Load full power curve
-    This function split the different components of full power curve in a independent array
 
     :param FullPowerCurve:
         Annex 2 (2h) and (3.4) n ==> P_wot(n), ASM
@@ -426,21 +395,17 @@ def load_full_power_curve(
         The engine speed at which ASM approching zero ends.
     :type EndEngineSpeed: array
 
-    :result PowerCurveEngineSpeeds:
-        Contains the power curve engine speeds
-    :rtype PowerCurveEngineSpeeds: array
+    :returns:
+        - PowerCurveEngineSpeeds (:py:class:`numpy.array`):
+            Contains the power curve engine speeds
+        - PowerCurvePowers (:py:class:`numpy.array`):
+            Contains the power curve powers
+        - PowerCurveASM (:py:class:`numpy.array`):
+            Contains the power curve additional save margin
+        - DefinedPowerCurveAdditionalSafetyMargins (:py:class:`bool`):
+            Boolean that define if the additional save margins are present
 
-    :result PowerCurvePowers:
-        Contains the power curve powers
-    :rtype PowerCurvePowers: array
-
-    :result PowerCurveASM:
-        Contains the power curve additional save margin
-    :rtype PowerCurveASM: array
-
-    :result DefinedPowerCurveAdditionalSafetyMargins:
-        Boolean that define if the additional save margins are present
-    :rtype DefinedPowerCurveAdditionalSafetyMargins: boolean
+    .. note:: This function split the different components of full power curve in a independent array
     """
     if np.shape(FullPowerCurve)[1] == 2:
         ASM = []
@@ -496,7 +461,7 @@ def determine_rated_engine_power(
         For backward compatibility this parameter may still be used to override the
         value calculated from FullPowerCurve. Set RatedEnginePower and RatedEngineSpeed
         to 0 to use the calculated values.
-    :type RatedEnginePower: array
+    :type RatedEnginePower: numpy.array
 
     :param RatedEngineSpeed:
         Annex 2 (2b) n_rated. This is a legacy parameter used until regulation GRPE-75-23.
@@ -510,23 +475,22 @@ def determine_rated_engine_power(
         For backward compatibility this parameter may still be used to override the value
         calculated from FullPowerCurve. Set RatedEnginePower and RatedEngineSpeed to 0
         to use the calculated values.
-    :type RatedEngineSpeed: array
+    :type RatedEngineSpeed: numpy.array
 
     :param PowerCurvePowers:
         Contains the power curve powers
-    :type PowerCurvePowers: array
+    :type PowerCurvePowers: numpy.array
 
     :param PowerCurveEngineSpeeds:
         Contains the power curve engine speeds
-    :type PowerCurveEngineSpeeds: array
+    :type PowerCurveEngineSpeeds: numpy.array
 
-    :return RatedEnginePowerF:
-        Contains the rated engine power corrected if is necessary
-    :rtype RatedEnginePowerF: float
 
-    :return RatedEngineSpeedF:
-        Contains the rated engine speed corrected if is necessary
-    :rtype RatedEngineSpeedF: float
+    :returns:
+        - RatedEnginePowerF (:py:class:`float`):
+            Contains the rated engine power corrected if is necessary
+        - RatedEngineSpeedF (:py:class:`float`):
+            Contains the rated engine speed corrected if is necessary
     """
     if (RatedEnginePower is None or RatedEnginePower <= 0) and (
         RatedEngineSpeed is None or RatedEngineSpeed <= 0
@@ -545,9 +509,6 @@ def determine_maximum_engine_speed_95(
     Determine the maximum engine speed where 95 percent of the rated power is
     reached from the full power curve
 
-    .. note::
-    This will only be done if this value was not set as input parameter
-
     :param Max95EngineSpeed:
         Annex 2 (2g) n_max1 = n_95_high
         The maximum engine speed where 95 per cent of rated power is reached.
@@ -563,12 +524,14 @@ def determine_maximum_engine_speed_95(
         Contains the power curve engine speeds
     :type PowerCurveEngineSpeeds: array
 
-    :return Max95EngineSpeedFinal:
-         Annex 2 (2g) n_max1 = n_95_high adjusted
-         If n_95_high cannot be determined because the engine speed is limited to
-         a lower value n_lim for all gears and the corresponding full load power
-         is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.
-    :rtype Max95EngineSpeedFinal: float
+    :returns:
+        - Max95EngineSpeedFinal (:py:class:`float`):
+            Annex 2 (2g) n_max1 = n_95_high adjusted.
+            If n_95_high cannot be determined because the engine speed is limited to
+            a lower value n_lim for all gears and the corresponding full load power
+            is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.
+
+    .. note:: This will only be done if this value was not set as input parameter.
     """
     if Max95EngineSpeed <= 0 or np.isnan(Max95EngineSpeed):
         PowerCurvePowerMax95 = 0.95 * np.max(PowerCurvePowers)
@@ -618,11 +581,6 @@ def minimum_engine_speed_in_motion(
 ):
     """
     Define minimum engine speeds when vehicle is in motion (2k)
-
-    .. note::
-    The calculation of minimum engine speeds for the second gear does
-    not fully confirm to the latest legislation text, but rather reflects
-    the previous revision of it until (2ka) is clarified.
 
     :param IdlingEngineSpeed:
         Annex 2 (2c) n_idle. The idling speed.
@@ -680,44 +638,36 @@ def minimum_engine_speed_in_motion(
         The array that contains the seconds from deceleration to standstill as a True
     :type InDecelerationToStandstill: boolean array
 
-    :return MinDrivesI:
-        Minimum engine speeds when vehicle is in motion
-    :rtype MinDrivesI: array
+    :returns:
+        - MinDrivesI (:py:class:`numpy.array`):
+            Minimum engine speeds when vehicle is in motion
+        - CalculatedMinDriveEngineSpeedGreater2nd (:py:class:`float`):
+            The minimum drive engine speed grater than second
+        - MinDrive1stTo2nd (:py:class:`float`):
+            Annex 2 (2ka) n_min_drive = 1.15 x n_idle for n_gear:1->2
+            The minimum engine speed for transitions from first to second gear.
+            This is the maximum of calculated value and input parameter value.
+        - MinDrive1st (:py:class:`float`):
+            Annex 2 (2k) n_min_drive = n_idle for n_gear:1
+            The minimum engine speed when the vehicle is in motion.
+            This is the maximum of calculated value and input parameter value.
+        - MinDrive2ndDecel (:py:class:`float`):
+            Annex 2 (2kb) n_min_drive = n_idle for n_gear:2
+            The minimum engine speed for decelerations to standstill in second gear.
+            This is the maximum of calculated value and input parameter value.
+        - MinDrive2nd (:py:class:`float`):
+            Annex 2 (2kc) n_min_drive = 0.9 x n_idle for n_gear:2
+            The minimum engine speed for all other driving conditions in second gear.
+            This is the maximum of calculated value and input parameter value.
+        - MinDriveGreater2nd (:py:class:`float`):
+            Annex 2 (2k) n_min_drive = n_idle + 0.125 × ( n_rated - n_idle ) for n_gear:3..
+            This value shall be referred to as n_min_drive_set.
+            The minimum engine speed for all driving conditions in gears greater than 2.
+            This is the maximum of calculated value and input parameter value.
 
-    :return CalculatedMinDriveEngineSpeedGreater2nd:
-        The minimum drive engine speed grater than second
-    :rtype CalculatedMinDriveEngineSpeedGreater2nd: float
-
-    :return MinDrive1stTo2nd:
-        Annex 2 (2ka) n_min_drive = 1.15 x n_idle for n_gear:1->2
-        The minimum engine speed for transitions from first to second gear.
-        This is the maximum of calculated value and input parameter value.
-    :rtype MinDrive1stTo2nd: float
-
-    :param MinDrive1st:
-        Annex 2 (2k) n_min_drive = n_idle for n_gear:1
-        The minimum engine speed when the vehicle is in motion.
-        This is the maximum of calculated value and input parameter value.
-    :type MinDrive1st: float
-
-    :return MinDrive2ndDecel:
-        Annex 2 (2kb) n_min_drive = n_idle for n_gear:2
-        The minimum engine speed for decelerations to standstill in second gear.
-        This is the maximum of calculated value and input parameter value.
-    :rtype MinDrive2ndDecel: float
-
-    :return MinDrive2nd:
-        Annex 2 (2kc) n_min_drive = 0.9 x n_idle for n_gear:2
-        The minimum engine speed for all other driving conditions in second gear.
-        This is the maximum of calculated value and input parameter value.
-    :rtype MinDrive2nd: float
-
-    :return MinDriveGreater2nd:
-        Annex 2 (2k) n_min_drive = n_idle + 0.125 × ( n_rated - n_idle ) for n_gear:3..
-        This value shall be referred to as n_min_drive_set.
-        The minimum engine speed for all driving conditions in gears greater than 2.
-        This is the maximum of calculated value and input parameter value.
-    :rtype MinDriveGreater2nd: float
+    .. note:: The calculation of minimum engine speeds for the second gear does
+        not fully confirm to the latest legislation text, but rather reflects
+        the previous revision of it until (2ka) is clarified.
     """
     CalculatedMinDriveEngineSpeed1st = IdlingEngineSpeed
     CalculatedMinDriveEngineSpeed1stTo2nd = np.round(1.15 * IdlingEngineSpeed)
@@ -777,9 +727,9 @@ def get_accelerations(RequiredVehicleSpeeds, TraceTimes):
         Times for each vehicle speed required re-sampled in 1Hz
     :type TraceTimes: array
 
-    :return Accelerations:
-         The acceleration required for the whole cycle re-sampled in 1Hz
-    :rtype accelerations: array
+    :returns:
+        - Accelerations (:py:class:`numpy.array`):
+            The acceleration required for the whole cycle re-sampled in 1Hz
     """
     Accelerations = np.around(
         np.append(np.diff(RequiredVehicleSpeeds) / (3.6 * np.diff(TraceTimes)), 0),
@@ -789,7 +739,7 @@ def get_accelerations(RequiredVehicleSpeeds, TraceTimes):
     return Accelerations
 
 
-def check_minimum_engine_speed(
+def _check_minimum_engine_speed(
     MinDrivesI,
     CalculatedMinDriveEngineSpeedGreater2nd,
     MinDriveEngineSpeedGreater2ndAccel,
@@ -875,7 +825,7 @@ def check_minimum_engine_speed(
     return all(check)
 
 
-@sh.add_function(dsp, outputs=["MinDrives"], input_domain=check_minimum_engine_speed)
+@sh.add_function(dsp, outputs=["MinDrives"], input_domain=_check_minimum_engine_speed)
 def define_minimum_engine_speed_in_motion(
     MinDrivesI,
     CalculatedMinDriveEngineSpeedGreater2nd,
@@ -944,7 +894,7 @@ def define_minimum_engine_speed_in_motion(
 
     :param RequiredVehicleSpeeds:
         The vehicle speed required for the whole cycle re-sampled in 1Hz
-    :type RequiredVehicleSpeeds: array
+    :type RequiredVehicleSpeeds: numpy.array
 
     :param TimeEndOfStartPhase:
         Annex 2 (2j) t_start_phase
@@ -956,11 +906,11 @@ def define_minimum_engine_speed_in_motion(
         The input parameter here is used in combination with
         MinDriveEngineSpeedGreater2ndAccelStartPhase and
         MinDriveEngineSpeedGreater2ndDecelStartPhase.
-    :type TimeEndOfStartPhase: array
+    :type TimeEndOfStartPhase: numpy.array
 
     :param TraceTimes:
         Times for each vehicle speed required re-sampled in 1Hz
-    :type TraceTimes: array
+    :type TraceTimes: numpy.array
 
     :param NoOfGearsFinal:
         The number of forward gears after apply the exclusion of first gear
@@ -969,12 +919,12 @@ def define_minimum_engine_speed_in_motion(
 
     :param Accelerations:
          The acceleration required for the whole cycle re-sampled in 1Hz
-    :type Accelerations: array
+    :type Accelerations: numpy.array
 
-    :return MinDrives:
-        Samples which have acceleration values >= -0.1389 m/s² ( = 0.5 (km/h)/s )
-        shall belong to the acceleration/constant speed phases.
-    :rtype MinDrives: array
+    :returns:
+        - MinDrives (:py:class:`numpy.array`):
+            Samples which have acceleration values >= -0.1389 m/s² ( = 0.5 (km/h)/s )
+            shall belong to the acceleration/constant speed phases.
     """
 
     NoOfGears = NoOfGearsFinal
@@ -1060,7 +1010,7 @@ def determine_gear_in_maximum_vehicle_speed(
 
     :param PowerCurveEngineSpeeds:
         Contains the power curve engine speeds
-    :type PowerCurveEngineSpeeds: array
+    :type PowerCurveEngineSpeeds: numpy.array
 
     :param f0:
         The constant road load coefficient,
@@ -1081,7 +1031,7 @@ def determine_gear_in_maximum_vehicle_speed(
         The ratio obtained by dividing the engine speed n by the vehicle speed v
         for each gear i form 1 to ng after apply the exclusion of first gear if
         is necessary.
-    :type NdvRatios: array
+    :type NdvRatios: numpy.array
 
     :param NoOfGearsFinal:
         The number of forward gears after apply the exclusion of first gear
@@ -1090,15 +1040,13 @@ def determine_gear_in_maximum_vehicle_speed(
 
     :param PowerCurvePowers:
         Contains the power curve powers
-    :type PowerCurvePowers: array
+    :type PowerCurvePowers: numpy.array
 
-    :return GearAtMaxVehicleSpeed:
-        The gear that have the maximum vehicle speed
-    :rtype GearAtMaxVehicleSpeed: float
-
-    :return MaxVehicleSpeed:
-        The maximum vehicle speed
-    :rtype MaxVehicleSpeed: float
+    :returns:
+        - MinDrives (:py:class:`float`):
+            The gear that have the maximum vehicle speed
+        - MaxVehicleSpeed (:py:class:`float`):
+            The maximum vehicle speed
     """
     from scipy.interpolate import interp1d
 
@@ -1158,7 +1106,7 @@ def determine_gear_in_maximum_vehicle_speed(
     return GearAtMaxVehicleSpeed, MaxVehicleSpeed
 
 
-def check_gear_max_vehicle_speed(
+def _check_gear_max_vehicle_speed(
     EngineSpeedLimitVMax,
     Max95EngineSpeedFinal,
     PowerCurveEngineSpeeds,
@@ -1189,7 +1137,7 @@ def check_gear_max_vehicle_speed(
         "EngineSpeedAtGearAtMaxRequiredSpeed",
         "EngineSpeedAtGearAtMaxVehicleSpeed",
     ],
-    input_domain=check_gear_max_vehicle_speed,
+    input_domain=_check_gear_max_vehicle_speed,
 )
 def determine_maximum_engine_speed(
     EngineSpeedLimitVMax,
@@ -1207,6 +1155,7 @@ def determine_maximum_engine_speed(
     Determine maximum engine speed (2g)
 
     n_max1 = n_95_high
+
     If n_95_high cannot be determined
     because the engine speed is limited to a lower value n_lim for all gears
     and the corresponding full load power is higher than 95 per cent of rated power,
@@ -1227,11 +1176,11 @@ def determine_maximum_engine_speed(
 
     :param PowerCurveEngineSpeeds:
         Contains the power curve engine speeds
-    :type PowerCurveEngineSpeeds: array
+    :type PowerCurveEngineSpeeds: numpy.array
 
     :param PowerCurvePowers:
         Contains the power curve powers
-    :type PowerCurvePowers: array
+    :type PowerCurvePowers: numpy.array
 
     :param RatedEnginePowerF:
         Contains the rated engine power corrected if is necessary
@@ -1241,7 +1190,7 @@ def determine_maximum_engine_speed(
         The ratio obtained by dividing the engine speed n by the vehicle speed v
         for each gear i form 1 to ng after apply the exclusion of first gear if
         is necessary.
-    :type NdvRatios: array
+    :type NdvRatios: numpy.array
 
     :param GearAtMaxVehicleSpeed:
         The gear that have the maximum vehicle speed
@@ -1249,7 +1198,7 @@ def determine_maximum_engine_speed(
 
     :param RequiredVehicleSpeeds:
         The vehicle speed required for the whole cycle re-sampled in 1Hz
-    :type RequiredVehicleSpeeds: array
+    :type RequiredVehicleSpeeds: numpy.array
 
     :param MaxVehicleSpeed:
         The maximum vehicle speed
@@ -1258,30 +1207,22 @@ def determine_maximum_engine_speed(
     :param NoOfGearsFinal:
         The number of forward gears after apply the exclusion of first gear
         if is necessary.
-    :type NoOfGearsFinal: integer
+    :type NoOfGearsFinal: int
 
-    :return MaxEngineSpeed:
-        The maximum engine speed
-    :rtype MaxEngineSpeed: float
-
-    :return GearAtMaxVehicleSpeedFinal:
-        Annex 2 (2i) ng_vmax
-        The gear in which the maximum vehicle speed is reached.
-    :rtype GearAtMaxVehicleSpeedFinal: integer
-
-    :return MaxVehicleSpeedFinal:
-        Annex 2 (2g, 2i) v_max,vehicle
-        The maximum vehicle speed reachable
-        using the gear in which the maximum vehicle speed can be reached.
-    :rtype MaxVehicleSpeedFinal: float
-
-    :return EngineSpeedAtGearAtMaxRequiredSpeed:
-        The engine speed at gear maximum required speed
-    :rtype EngineSpeedAtGearAtMaxRequiredSpeed: float
-
-    :return EngineSpeedAtGearAtMaxVehicleSpeed:
-        The engine speed at gear at maximum vehicle speed
-    :rtype EngineSpeedAtGearAtMaxVehicleSpeed: float
+    :returns:
+        - MaxEngineSpeed (:py:class:`float`):
+            The maximum engine speed
+        - GearAtMaxVehicleSpeedFinal (:py:class:`int`):
+            Annex 2 (2i) ng_vmax
+            The gear in which the maximum vehicle speed is reached.
+        - MaxVehicleSpeedFinal (:py:class:`float`):
+            Annex 2 (2g, 2i) v_max,vehicle
+            The maximum vehicle speed reachable
+            using the gear in which the maximum vehicle speed can be reached.
+        - EngineSpeedAtGearAtMaxRequiredSpeed (:py:class:`float`):
+            The engine speed at gear maximum required speed
+        - EngineSpeedAtGearAtMaxVehicleSpeed (:py:class:`float`):
+            The engine speed at gear at maximum vehicle speed
     """
     NoOfGears = NoOfGearsFinal
 
@@ -1371,11 +1312,11 @@ def calculate_required_powers(
         The test mass of the vehicle.
     :type VehicleTestMass: float
 
-    :return requiredPowersF:
-        Annex 2 (3.1) P_required,j
-        The power required to overcome driving resistance and to accelerate
-        for each second j of the cycle trace.
-    :rtype requiredPowersF: array
+    :returns:
+        - requiredPowersF (:py:class:`float`):
+            Annex 2 (3.1) P_required,j
+            The power required to overcome driving resistance and to accelerate
+            for each second j of the cycle trace.
     """
     requiredPowers = (
         f0 * RequiredVehicleSpeeds
@@ -1482,9 +1423,9 @@ def determine_possible_gears(
          is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.
     :type Max95EngineSpeedFinal: float
 
-    :return EngineSpeedAtGearAtMaxRequiredSpeed:
+    :param EngineSpeedAtGearAtMaxRequiredSpeed:
         The engine speed at gear maximum required speed
-    :rtype EngineSpeedAtGearAtMaxRequiredSpeed: float
+    :type EngineSpeedAtGearAtMaxRequiredSpeed: float
 
     :param PowerCurveEngineSpeeds:
         Contains the power curve engine speeds
@@ -1494,48 +1435,32 @@ def determine_possible_gears(
         The array that contains the seconds from deceleration to standstill as a True
     :type InDecelerationToStandstill: boolean array
 
-    :return RequiredEngineSpeeds:
-        Annex 2 (3.2) n_i,j
-        The engine speeds required
-        for each gear i from 1 to ng and
-        for each second j of the cycle trace.
-        Note that this are the uncorrected values n_i,j
-        ie without the increments required by Annex 2 (3.3)
-    :rtype RequiredEngineSpeeds: array
-
-    :return InitialRequiredEngineSpeeds:
-        The initial engine speeds required for each gear i from 1 to ng and
-        for each second j of the cycle trace.
-    :rtype InitialRequiredEngineSpeeds: array
-
-    :return PossibleGearsByEngineSpeed:
-        The possible gear that can be used for each second.
-    :rtype PossibleGearsByEngineSpeed: boolean array
-
-    :return AccelerationFromStandstillStarts:
-        The phase start seconds when the phase is going to acceleration
-        from stand still.
-    :rtype AccelerationFromStandstillStarts: array
-
-    :return ClutchDisengagedByGear:
-        The clutch disengaged by each gear and each second.
-    :rtype ClutchDisengagedByGear: boolean array
-
-    :return ClutchUndefinedByGear:
-        The clutch undefined by each gear and each second.
-    :rtype ClutchUndefinedByGear: boolean array
-
-    :return ClutchDisengaged:
-        The clutch disengaged by each second.
-    :rtype ClutchDisengaged: boolean array
-
-    :return ClutchUndefined:
-        The clutch undefined by each second.
-    :rtype ClutchUndefined: boolean array
-
-    :return AdvancedClutchDisengage:
-        The seconds in which the advanced clutch disengage
-    :rtype AdvancedClutchDisengage: list
+    :returns:
+        - RequiredEngineSpeeds (:py:class:`numpy.array`):
+            Annex 2 (3.2) n_i,j
+            The engine speeds required
+            for each gear i from 1 to ng and
+            for each second j of the cycle trace.
+            .. note::  Note that this are the uncorrected values n_i,j
+                i.e. without the increments required by Annex 2 (3.3)
+        - InitialRequiredEngineSpeeds (:py:class:`numpy.array`):
+            The initial engine speeds required for each gear i from 1 to ng and
+            for each second j of the cycle trace.
+        - PossibleGearsByEngineSpeed (:py:class:`boolean numpy.array`):
+            The possible gear that can be used for each second.
+        - AccelerationFromStandstillStarts (:py:class:`numpy.array`):
+            The phase start seconds when the phase is going to acceleration
+            from stand still.
+        - ClutchDisengagedByGear (:py:class:`numpy.array`):
+            The clutch disengaged by each gear and each second.
+        - ClutchUndefinedByGear (:py:class:`boolean numpy.array`):
+            The clutch undefined by each gear and each second.
+        - ClutchDisengaged (:py:class:`boolean numpy.array`):
+            The clutch disengaged by each second.
+        - ClutchUndefined (:py:class:`boolean numpy.array`):
+            The clutch undefined by each second.
+        - AdvancedClutchDisengage (:py:class:`list`):
+            The seconds in which the advanced clutch disengaget
     """
     from functools import reduce
 
@@ -1812,7 +1737,8 @@ def calculate_available_powers(
     NoOfGearsFinal,
     InitialRequiredEngineSpeeds,
 ):
-    """deCalculate available powers (3.4)
+    """
+    Calculate available powers (3.4)
 
     Additional safety margins defined together with the power curve take precedence
     over the legacy additional safety margins exponentially decaying from start to
@@ -1856,6 +1782,25 @@ def calculate_available_powers(
         The initial engine speeds required for each gear i from 1 to ng and
         for each second j of the cycle trace.
     :type InitialRequiredEngineSpeeds: array
+
+    :returns:
+        - SafetyMargin (:py:class:`float`):
+            Annex 2 (3.4) SM. The safety margin is accounting for the difference between the
+            stationary full load condition power curve and the power available
+            during transition conditions.
+            SM is set to 10 per cent.
+        - AvailablePowers (:py:class:`numpy.array`):
+            Annex 2 (3.4) P_available_i,j
+            The power available for each gear i from 1 to ng and for each second j
+            of the cycle trace. Note that this power values are determined from
+            uncorrected values n_i,j i.e. without the engine speed increments
+            required by Annex 2 (3.3)
+        - InitialAvailablePowers (:py:class:`numpy.array`):
+            Annex 2 (3.4) P_available_i,j (initials)
+            The power available for each gear i from 1 to ng and for each second j
+            of the cycle trace.
+            Note that this power values are determined from uncorrected values n_i,j
+            i.e. without the engine speed increments required by Annex 2 (3.3)
     """
 
     from scipy.interpolate import interp1d
@@ -1910,7 +1855,7 @@ def calculate_available_powers(
     return AvailablePowers, InitialAvailablePowers
 
 
-def sub2ind(array_shape, rows, cols):
+def _sub2ind(array_shape, rows, cols):
     ind = rows * array_shape[0] + cols
     return ind
 
@@ -1949,14 +1894,12 @@ def determine_possible_gears_based_available_powers(
         if is necessary.
     :type NoOfGearsFinal: integer
 
-    :return PossibleGearsByEngineSpeed:
-        The possible gear that can be used for each second.
-    :rtype PossibleGearsByEngineSpeed: boolean array
-
-    :return PossibleGearsByAvailablePowersWithTotalSafetyMargin:
-        The possible gears by available powers with total safety margin
-        (following section 3.5 of Sub-Annex 2)
-    :rtype PossibleGearsByAvailablePowersWithTotalSafetyMargin: boolean array
+    :returns:
+        - PossibleGearsByEngineSpeed (:py:class:`boolean numpy.array`):
+            The possible gear that can be used for each second.
+        - PossibleGearsByAvailablePowersWithTotalSafetyMargin (:py:class:`boolean numpy.array`):
+            The possible gears by available powers with total safety margin
+            (following section 3.5 of Sub-Annex 2)
     """
     PossibleGearsByAvailablePowersWithTotalSafetyMargin = np.empty(
         (TraceTimesCount, NoOfGearsFinal)
@@ -1978,7 +1921,7 @@ def determine_possible_gears_based_available_powers(
 
     m, n = np.shape(AvailablePowers)
 
-    linearInd = sub2ind(np.shape(AvailablePowers), I, np.arange(0, m))
+    linearInd = _sub2ind(np.shape(AvailablePowers), I, np.arange(0, m))
 
     PossibleGearsByAvailablePowersWithTotalSafetyMargin[
         np.unravel_index(
@@ -2051,13 +1994,11 @@ def determine_initial_gears(
         This is the maximum of calculated value and input parameter value.
     :type MinDrive1stTo2nd: float
 
-    :return InitialGears:
-        The initial gears calculated by each second
-    :rtype InitialGears: array
-
-    :return PossibleGears:
-        The possible gears calculated by each second
-    :rtype PossibleGears: array
+    :returns:
+        - InitialGears (:py:class:`numpy.array`):
+            The initial gears calculated by each second
+        - PossibleGears (:py:class:`numpy.array`):
+            The possible gears calculated by each second
     """
     InStandStillReps = np.tile(InStandStill, (NoOfGearsFinal, 1)).T
     PossibleGears = np.copy(PossibleGearsByEngineSpeed)
@@ -2273,23 +2214,17 @@ def apply_corrections(
         Contains the points that are in deceleration phase as a True
     :type InDeceleration: boolean array
 
-    :return InitialGearsFinal:
-        The initial gears after apply corrections calculated by each second.
-    :rtype InitialGearsFinal: array
-
-    :return CorrectionsCells:
-        Array of gear correction strings for debugging. This contains a historic
-        transformation of each gear during all execution and the transformation
-        applied.
-    :rtype CorrectionsCells: array
-
-    :return ClutchDisengagedByGearFinal:
-        The clutch disengaged by each gear and each second after apply corrections.
-    :rtype ClutchDisengagedByGearFinal: boolean array
-
-    :return ClutchUndefinedByGearFinal:
-        The clutch undefined by each gear and each second after apply corrections.
-    :rtype ClutchUndefinedByGearFinal: boolean array
+    :returns:
+        - InitialGearsFinal (:py:class:`numpy.array`):
+            The initial gears after apply corrections calculated by each second.
+        - CorrectionsCells (:py:class:`numpy.array`):
+            Array of gear correction strings for debugging. This contains a historic
+            transformation of each gear during all execution and the transformation
+            applied.
+        - ClutchDisengagedByGearFinal (:py:class:`boolean numpy.array`):
+            The clutch disengaged by each gear and each second after apply corrections.
+        - ClutchUndefinedByGearFinal (:py:class:`boolean numpy.array`):
+            The clutch undefined by each gear and each second after apply corrections.
     """
     from functools import reduce
 
@@ -2512,16 +2447,17 @@ def calculate_average_gear(Phases, PHASE_STANDSTILL, InitialGearsFinal):
         The initial gears after apply corrections calculated by each second.
     :type InitialGearsFinal: array
 
-    :return AverageGear:
-        Annex 2 (5) average gear
-        In order to enable the assessment of the correctness of the calculation,
-        the average gear for v >= 1 km/h, rounded to four places of decimal,
-        shall be calculated and recorded.
-    :rtype AverageGear: float
-
-    :return PhaseSum:
-        The all phases that are different of standstill phase
-    :rtype PhaseSum: boolean array
+    :returns:
+        - InitialGearsFinal (:py:class:`float`):
+            Annex 2 (5) average gear
+            In order to enable the assessment of the correctness of the calculation,
+            the average gear for v >= 1 km/h, rounded to four places of decimal,
+            shall be calculated and recorded.
+        - PhaseSum (:py:class:`boolean numpy.array`):
+            Annex 2 (5) average gear
+            In order to enable the assessment of the correctness of the calculation,
+            the average gear for v >= 1 km/h, rounded to four places of decimal,
+            shall be calculated and recorded.
     """
     PhaseSum = np.zeros(np.shape(Phases))
     np.put(
@@ -2555,9 +2491,9 @@ def calculate_average_gear(PhaseSum, InitialGearsFinal, RequiredVehicleSpeeds):
         The vehicle speed required for the whole cycle re-sampled in 1Hz
     :type RequiredVehicleSpeeds: array
 
-    :return ChecksumVxGear:
-        Checksum of v * gear for v >= 1 km/h rounded to four places of decimal
-    :rtype ChecksumVxGear: float
+    :returns:
+        - ChecksumVxGear (:py:class:`float`):
+            Checksum of v * gear for v >= 1 km/h rounded to four places of decimal
     """
     ChecksumVxGear = np.sum(
         InitialGearsFinal[np.where(PhaseSum == 1)]
@@ -2691,21 +2627,17 @@ def remove_duplicate_gears(
         The clutch disengaged by each second after apply the interleave clutch
     :type ClutchDisengagedFinal: boolean array
 
-    :return ClutchHST:
-        Array of clutch state names as used by the Heinz Steven Tool (HST).
-    :rtype ClutchHST: array
+    :returns:
+        - ClutchHST (:py:class:`float`):
+            Array of clutch state names as used by the Heinz Steven Tool (HST).
+        - GearSequenceStarts (:py:class:`numpy.array`):
+            Array that contains the position of the gear sequence start for the different
+            gears.
+        - GearSequenceStarts (:py:class:`numpy.array`):
+            The name of gear to used by each gear sequence starts.
 
-    :return GearSequenceStarts:
-        Array that contains the position of the gear sequence start for the different
-        gears.
-        .. note::
-        A clutch disengagement and a gear change cannot be indicated at the same time
-       and the clutch disengagement will therefore be indicated one second earlier.
-    :rtype GearSequenceStarts: array
-
-    :return GearNames:
-        The name of gear to used by each gear sequence starts.
-    :rtype GearNames: array
+    .. note:: A clutch disengagement and a gear change cannot be indicated at the same time
+        and the clutch disengagement will therefore be indicated one second earlier.
     """
     from functools import reduce
     import regex as re
@@ -2868,13 +2800,14 @@ def reduce_vehicle_speed_if_not_enough_power(
         is necessary.
     :type NdvRatios: array
 
-    :return AvailablePowersFinal:
-        Annex 2 (3.4) P_available_i,j
-        The power available for each gear i from 1 to ng and for each second j
-        of the cycle trace, after check vehicle speed.
-        Note that this power values are determined from uncorrected values n_i,j
-        i.e. without the engine speed increments required by Annex 2 (3.3)
-    :rtype AvailablePowersFinal: array
+    :returns:
+        - AvailablePowersFinal (:py:class:`numpy.array`):
+            Annex 2 (3.4) P_available_i,j
+            The power available for each gear i from 1 to ng and for each second j
+            of the cycle trace, after check vehicle speed.
+            Note that this power values are determined from uncorrected values n_i,j
+            i.e. without the engine speed increments required by Annex 2 (3.3)
+
     """
 
     from scipy.interpolate import interp1d
@@ -3083,12 +3016,12 @@ def generate_gears(
         The name of gear to used by each gear sequence starts.
     :type GearNames: array
 
-    :return AverageGear:
+    :param AverageGear:
         Annex 2 (5) average gear
         In order to enable the assessment of the correctness of the calculation,
         the average gear for v >= 1 km/h, rounded to four places of decimal,
         shall be calculated and recorded.
-    :rtype AverageGear: float
+    :type AverageGear: float
 
     :param Max95EngineSpeedFinal:
          Annex 2 (2g) n_max1 = n_95_high adjusted
@@ -3227,10 +3160,10 @@ def generate_gears(
         Checksum of v * gear for v >= 1 km/h rounded to four places of decimal.
     :type ChecksumVxGear: float
 
-    :return shift_points:
-        Dictionary that contains the all input parameters with the expected
-        output format.
-    :rtype shift_points: dict
+    :returns:
+        - shift_points (:py:class:`dict`):
+            Dictionary that contains the all input parameters with the expected
+            output format.
     """
     # This is a test parameter that can be included in the inputs in the future
     ReturnAdjustedEngSpeedsAndAvlPowers = True

@@ -56,7 +56,6 @@ def _default_output_file_name(output_folder, timestamp, case, output_format):
     :return:
         Output file name.
     :rtype: str
-
     """
     fp = osp.join(output_folder, "%s-%s" % (timestamp, case))
     if output_format is not None:
@@ -66,6 +65,25 @@ def _default_output_file_name(output_folder, timestamp, case, output_format):
 
 @sh.add_function(dsp)
 def save_output_file(sol, output_folder, timestamp, output_format):
+    """
+    Create a excel file for each input
+
+    :param sol:
+        List of dictionaries that contains the solution for the different inputs cases
+    :type sol: list
+
+    :param output_folder:
+        Path to save the different outputs files
+    :type output_folder: os.path
+
+    :param timestamp:
+        The current datetime
+    :type timestamp: datetime.datetime
+
+    :param output_format:
+        The extension format of the output file
+    :type output_format: str
+    """
     os.makedirs(osp.dirname(output_folder), exist_ok=True)
     for case in sol:
         fp = _default_output_file_name(
