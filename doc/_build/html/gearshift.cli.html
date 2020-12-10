@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gearshift.cli package &mdash; GEARSHIFT TOOL 1.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gearshift.core package" href="gearshift.core.html" />
+    <link rel="prev" title="gearshift package" href="gearshift.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GEARSHIFT TOOL
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">gearshift</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="gearshift.html">gearshift package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="gearshift.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">gearshift.cli package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gearshift.core.html">gearshift.core package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gearshift.html#module-gearshift">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Gearshift Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GEARSHIFT TOOL</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">gearshift</a> &raquo;</li>
+        
+          <li><a href="gearshift.html">gearshift package</a> &raquo;</li>
+        
+      <li>gearshift.cli package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/gearshift.cli.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gearshift-cli-package">
+<h1>gearshift.cli package<a class="headerlink" href="#gearshift-cli-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-gearshift.cli">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gearshift.cli" title="Permalink to this headline">¶</a></h2>
+<p>Define gearshift command line interface.</p>
+<div class="section" id="gearshift">
+<h3>gearshift<a class="headerlink" href="#gearshift" title="Permalink to this headline">¶</a></h3>
+<p>GEARSHIFT command line tool.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gearshift <span class="o">[</span>OPTIONS<span class="o">]</span> COMMAND <span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-gearshift-v">
+<span id="cmdoption-gearshift-verbosity"></span><code class="sig-name descname">-v</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--verbosity</code><code class="sig-prename descclassname"> &lt;LVL&gt;</code><a class="headerlink" href="#cmdoption-gearshift-v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Either CRITICAL, ERROR, WARNING, INFO or DEBUG</p>
+</dd></dl>
+
+<div class="section" id="gearshift-demo">
+<h4>demo<a class="headerlink" href="#gearshift-demo" title="Permalink to this headline">¶</a></h4>
+<p>Writes a GEARSHIFT demo files into OUTPUT_FOLDER.</p>
+<p>OUTPUT_FOLDER: Folder path. [default: ./inputs]]</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gearshift demo <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>OUTPUT_FOLDER<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-gearshift-demo-arg-OUTPUT_FOLDER">
+<span id="cmdoption-gearshift-demo-arg-output-folder"></span><code class="sig-name descname">OUTPUT_FOLDER</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-gearshift-demo-arg-OUTPUT_FOLDER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional argument</p>
+</dd></dl>
+
+</div>
+<div class="section" id="gearshift-run">
+<h4>run<a class="headerlink" href="#gearshift-run" title="Permalink to this headline">¶</a></h4>
+<p>Run GEARSHIFT for all files into INPUT_FILES.</p>
+<dl class="simple">
+<dt>INPUT_FILES: List of input files and/or folders</dt><dd><p>(format: .xlsx).</p>
+</dd>
+</dl>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>gearshift run <span class="o">[</span>OPTIONS<span class="o">]</span> <span class="o">[</span>INPUT_FILES<span class="o">]</span>...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt id="cmdoption-gearshift-run-O">
+<span id="cmdoption-gearshift-run-o"></span><span id="cmdoption-gearshift-run-output-folder"></span><code class="sig-name descname">-O</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--output-folder</code><code class="sig-prename descclassname"> &lt;output_folder&gt;</code><a class="headerlink" href="#cmdoption-gearshift-run-O" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>./outputs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-gearshift-run-OT">
+<span id="cmdoption-gearshift-run-ot"></span><span id="cmdoption-gearshift-run-output-template"></span><code class="sig-name descname">-OT</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--output-template</code><code class="sig-prename descclassname"> &lt;output_template&gt;</code><a class="headerlink" href="#cmdoption-gearshift-run-OT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Template output.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-gearshift-run-PL">
+<span id="cmdoption-gearshift-run-pl"></span><span id="cmdoption-gearshift-run-plot-workflow"></span><code class="sig-name descname">-PL</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--plot-workflow</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-gearshift-run-PL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open workflow-plot in browser, after run finished.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-gearshift-run-OF">
+<span id="cmdoption-gearshift-run-of"></span><span id="cmdoption-gearshift-run-output-format"></span><code class="sig-name descname">-OF</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--output-format</code><code class="sig-prename descclassname"> &lt;output_format&gt;</code><a class="headerlink" href="#cmdoption-gearshift-run-OF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>xlsx</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt id="cmdoption-gearshift-run-arg-INPUT_FILES">
+<span id="cmdoption-gearshift-run-arg-input-files"></span><code class="sig-name descname">INPUT_FILES</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-gearshift-run-arg-INPUT_FILES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional argument(s)</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gearshift.core.html" class="btn btn-neutral float-right" title="gearshift.core package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gearshift.html" class="btn btn-neutral float-left" title="gearshift package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2015-2019, European Commission (JRC)
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

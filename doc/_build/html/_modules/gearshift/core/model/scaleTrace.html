@@ -1,0 +1,1025 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gearshift.core.model.scaleTrace &mdash; GEARSHIFT TOOL 1.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home" alt="Documentation Home"> GEARSHIFT TOOL
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">gearshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../model.html">Gearshift Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">GEARSHIFT TOOL</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../gearshift.html">gearshift</a> &raquo;</li>
+        
+          <li><a href="../../core.html">gearshift.core</a> &raquo;</li>
+        
+      <li>gearshift.core.model.scaleTrace</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gearshift.core.model.scaleTrace</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2015-2020 European Commission (JRC);</span>
+<span class="c1"># Licensed under the EUPL (the &#39;Licence&#39;);</span>
+<span class="c1"># You may not use this work except in compliance with the Licence.</span>
+<span class="c1"># You may obtain a copy of the Licence at: http://ec.europa.eu/idabc/eupl</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">It provides GEARSHIFT model `dsp` to obtain the speed trace following Sub-Annex 1 of the Annex XXI from the</span>
+<span class="sd">COMMISSION REGULATION (EU) 2017/1151.</span>
+
+<span class="sd">Docstrings should provide sufficient understanding for any individual function.</span>
+
+<span class="sd">Sub-Modules:</span>
+
+<span class="sd">.. currentmodule:: gearshift.core.model.scaleTrace</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :nosignatures:</span>
+<span class="sd">    :toctree: scaleTrace/</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">schedula</span> <span class="k">as</span> <span class="nn">sh</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">dsp</span> <span class="o">=</span> <span class="n">sh</span><span class="o">.</span><span class="n">BlueDispatcher</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;GEARSHIFT speedTrace model&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;This function calibrates the speed trance, following the Sub-Annex 1&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="resample_trace"><a class="viewcode-back" href="../../../../gearshift.core.model.scaleTrace.html#gearshift.core.model.scaleTrace.resample_trace">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span>
+    <span class="n">dsp</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;originalTraceTimes&quot;</span><span class="p">,</span> <span class="s2">&quot;originalVehicleSpeeds&quot;</span><span class="p">,</span> <span class="s2">&quot;originalTraceTimesCount&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">resample_trace</span><span class="p">(</span><span class="n">Trace</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Re-sample the trace in 1Hz. If the trace was provided with higher sample rate, this may lead to data loss.</span>
+
+<span class="sd">    :param Trace:</span>
+<span class="sd">        Velocities and times from the phases of the WLTC cycle.</span>
+<span class="sd">    :type Trace: array</span>
+
+<span class="sd">    :return: originalTraceTimes, originalVehicleSpeeds, originalTraceTimesCount</span>
+<span class="sd">        Data required to calculate the final Trace</span>
+<span class="sd">    :rtype: array, array, int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+
+    <span class="n">originalTraceTimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">Trace</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">originalVehicleSpeeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span>
+        <span class="n">interp1d</span><span class="p">(</span><span class="n">Trace</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">Trace</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])(</span><span class="n">originalTraceTimes</span><span class="p">),</span> <span class="mi">4</span>
+    <span class="p">)</span>
+    <span class="n">originalTraceTimesCount</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">originalTraceTimes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">originalTraceTimes</span><span class="p">,</span> <span class="n">originalVehicleSpeeds</span><span class="p">,</span> <span class="n">originalTraceTimesCount</span></div>
+
+
+<div class="viewcode-block" id="identify_phases"><a class="viewcode-back" href="../../../../gearshift.core.model.scaleTrace.html#gearshift.core.model.scaleTrace.identify_phases">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;phaseStarts&quot;</span><span class="p">,</span> <span class="s2">&quot;phaseEnds&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">identify_phases</span><span class="p">(</span><span class="n">PhaseLengths</span><span class="p">,</span> <span class="n">originalTraceTimes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function determines the starts and ends of different phases of the whole cycles.</span>
+
+<span class="sd">    :param PhaseLengths:</span>
+<span class="sd">        Contains the lengths of the different phases.</span>
+<span class="sd">    :type PhaseLengths: list</span>
+
+<span class="sd">    :param originalTraceTimes:</span>
+<span class="sd">        Contains the total times of the whole WLTC cycles.</span>
+<span class="sd">    :type originalTraceTimes: array</span>
+
+<span class="sd">    :return: phaseStarts, phaseEnds</span>
+<span class="sd">        The position of the beginning and the end of each cycle.</span>
+<span class="sd">    :rtype: array, array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">originalPhaseLengths</span> <span class="o">=</span> <span class="n">PhaseLengths</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">phaseEnds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">originalPhaseLengths</span><span class="p">)</span>
+    <span class="n">originalPhaseLengths</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">phaseStarts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">originalPhaseLengths</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">PhaseLengths</span><span class="p">)</span> <span class="o">!=</span> <span class="n">originalTraceTimes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="s2">&quot;INVALID_INPUT:PhaseLengths&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Sum of phase lengths must equal the trace length&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">sh</span><span class="o">.</span><span class="n">NONE</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">phaseStarts</span><span class="p">,</span> <span class="n">phaseEnds</span></div>
+
+
+<div class="viewcode-block" id="calculate_accelerations"><a class="viewcode-back" href="../../../../gearshift.core.model.scaleTrace.html#gearshift.core.model.scaleTrace.calculate_accelerations">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accelerations&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">calculate_accelerations</span><span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">,</span> <span class="n">originalTraceTimes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate accelerations.</span>
+
+<span class="sd">    :param originalVehicleSpeeds:</span>
+<span class="sd">        Contains the speeds of the whole WLTC cycles.</span>
+<span class="sd">    :type originalVehicleSpeeds: array</span>
+
+<span class="sd">    :param originalTraceTimes:</span>
+<span class="sd">        Contains the times of the whole WLTC cycles.</span>
+<span class="sd">    :type originalTraceTimes: array</span>
+
+<span class="sd">    :return: accelerations</span>
+<span class="sd">        Accelerations from the whole WLTC cycles.</span>
+<span class="sd">    :rtype accelerations: array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">accelerations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">3.6</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">originalTraceTimes</span><span class="p">)),</span> <span class="mi">0</span>
+        <span class="p">),</span>
+        <span class="mi">4</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">accelerations</span></div>
+
+
+<div class="viewcode-block" id="calculate_required_powers"><a class="viewcode-back" href="../../../../gearshift.core.model.scaleTrace.html#gearshift.core.model.scaleTrace.calculate_required_powers">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;requiredPowers&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">calculate_required_powers</span><span class="p">(</span>
+    <span class="n">originalVehicleSpeeds</span><span class="p">,</span> <span class="n">accelerations</span><span class="p">,</span> <span class="n">VehicleTestMass</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate required powers, following the P_req,max,i function in section 8.3.</span>
+
+<span class="sd">    :param originalVehicleSpeeds:</span>
+<span class="sd">        Contains the speeds of the whole WLTC cycles.</span>
+<span class="sd">    :type originalVehicleSpeeds: array</span>
+
+<span class="sd">    :param accelerations:</span>
+<span class="sd">        Accelerations from the whole WLTC cycles.</span>
+<span class="sd">    :type accelerations: array</span>
+
+<span class="sd">    :param VehicleTestMass:</span>
+<span class="sd">        Vehicle test mass used during the cycle execution.</span>
+<span class="sd">    :type VehicleTestMass: float</span>
+
+<span class="sd">    :param f0:</span>
+<span class="sd">        Represents the constant road load coefficient, i.e. independent of velocity, caused by internal</span>
+<span class="sd">        frictional resistances.</span>
+<span class="sd">    :type f0: float</span>
+
+<span class="sd">    :param f1:</span>
+<span class="sd">        Represents the linear road load coefficient, i.e. proportional to velocity, caused by tyres rolling</span>
+<span class="sd">        resistances.</span>
+<span class="sd">    :type f1: float</span>
+
+<span class="sd">    :param f2:</span>
+<span class="sd">        Represents the exponential road load coefficient, i.e. quadratical to velocity, caused by</span>
+<span class="sd">        aerodynamic resistances.</span>
+<span class="sd">    :type f2: float</span>
+
+<span class="sd">    :return: requiredPowers:</span>
+<span class="sd">        The power required to overcome driving resistance and to accelerate.</span>
+<span class="sd">    :rtype: array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">requiredPowers</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">f0</span> <span class="o">*</span> <span class="n">originalVehicleSpeeds</span>
+        <span class="o">+</span> <span class="n">f1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">f2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="o">+</span> <span class="mf">1.03</span> <span class="o">*</span> <span class="n">accelerations</span> <span class="o">*</span> <span class="n">originalVehicleSpeeds</span> <span class="o">*</span> <span class="n">VehicleTestMass</span>
+    <span class="p">)</span>
+    <span class="n">requiredPowers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">requiredPowers</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">requiredPowers</span></div>
+
+
+<span class="k">def</span> <span class="nf">_calculate_required_to_rated_power_ratio</span><span class="p">(</span>
+    <span class="n">indexing</span><span class="p">,</span> <span class="n">requiredPowers</span><span class="p">,</span> <span class="n">RatedEnginePower</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param indexing:</span>
+<span class="sd">        Boolean array that select the required powers to take into account to calculate the rated power ratio</span>
+<span class="sd">    :rtype indexing: boolean array</span>
+
+<span class="sd">    :param requiredPowers:</span>
+<span class="sd">        The power required to overcome driving resistance and to accelerate.</span>
+<span class="sd">    :rtype requiredPowers: array</span>
+
+<span class="sd">    :param RatedEnginePower:</span>
+<span class="sd">        The maximum rated engine required</span>
+<span class="sd">    :return RatedEnginePower: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">requiredPowersInd</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">requiredPowers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">requiredPowers</span><span class="p">))</span> <span class="k">if</span> <span class="n">indexing</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="p">]</span>
+    <span class="n">requiredToRatedPowerRatio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">requiredPowersInd</span><span class="p">)</span> <span class="o">/</span> <span class="n">RatedEnginePower</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">requiredToRatedPowerRatio</span>
+
+
+<span class="k">def</span> <span class="nf">_calculate_downscaling_factor</span><span class="p">(</span>
+    <span class="n">r0</span><span class="p">,</span>
+    <span class="n">a1</span><span class="p">,</span>
+    <span class="n">b1</span><span class="p">,</span>
+    <span class="n">UseCalculatedDownscalingPercentage</span><span class="p">,</span>
+    <span class="n">DownscalingPercentage</span><span class="p">,</span>
+    <span class="n">requiredPowers</span><span class="p">,</span>
+    <span class="n">RatedEnginePower</span><span class="p">,</span>
+    <span class="n">indexing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine the downscaling factor for the entire trace (8.3)</span>
+
+<span class="sd">    :param r0:</span>
+<span class="sd">        Factor to determine the downscaling factor</span>
+<span class="sd">    :type r0: float</span>
+
+<span class="sd">    :param a1:</span>
+<span class="sd">        Factor to determine the downscaling factor</span>
+<span class="sd">    :type a1: float</span>
+
+<span class="sd">    :param b1:</span>
+<span class="sd">        Factor to determine the downscaling factor</span>
+<span class="sd">    :type b1: float</span>
+
+<span class="sd">    :param UseCalculatedDownscalingPercentage:</span>
+<span class="sd">        Boolean variable to check if is necessary calculates the downscaling factor</span>
+<span class="sd">    :type UseCalculatedDownscalingPercentage: boolean</span>
+
+<span class="sd">    :param DownscalingPercentage:</span>
+<span class="sd">        The degree of downscaling. This value will only be used if the input parameter</span>
+<span class="sd">        UseCalculatedDownscalingPercentage is false.</span>
+<span class="sd">    :type DownscalingPercentage: float</span>
+
+<span class="sd">    :param requiredPowers:</span>
+<span class="sd">        The power required to overcome driving resistance and to accelerate.</span>
+<span class="sd">    :rtype requiredPowers: array</span>
+
+<span class="sd">    :param RatedEnginePower:</span>
+<span class="sd">        The maximum rated engine required</span>
+<span class="sd">    :return RatedEnginePower: float</span>
+
+<span class="sd">    :param indexing:</span>
+<span class="sd">        (optional) Boolean array that select the required powers to take into account to calculate the rated</span>
+<span class="sd">        power ratio</span>
+<span class="sd">    :rtype indexing: boolean array</span>
+
+<span class="sd">    :return: downscalingFactor, requiredToRatedPowerRatio</span>
+<span class="sd">        The downscaling factor for the cycle and the required rated power ratio after apply the downscaling factor</span>
+<span class="sd">    :rtype: float, float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">UseCalculatedDownscalingPercentage</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">indexing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">indexing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">requiredPowers</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">requiredToRatedPowerRatio</span> <span class="o">=</span> <span class="n">_calculate_required_to_rated_power_ratio</span><span class="p">(</span>
+            <span class="n">indexing</span><span class="p">,</span> <span class="n">requiredPowers</span><span class="p">,</span> <span class="n">RatedEnginePower</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">requiredToRatedPowerRatio</span> <span class="o">&gt;=</span> <span class="n">r0</span><span class="p">:</span>
+            <span class="n">downscalingFactor</span> <span class="o">=</span> <span class="n">a1</span> <span class="o">*</span> <span class="n">requiredToRatedPowerRatio</span> <span class="o">+</span> <span class="n">b1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">downscalingFactor</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">downscalingFactor</span><span class="p">,</span> <span class="n">requiredToRatedPowerRatio</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">indexing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">indexing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">requiredPowers</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">requiredToRatedPowerRatio</span> <span class="o">=</span> <span class="n">_calculate_required_to_rated_power_ratio</span><span class="p">(</span>
+            <span class="n">indexing</span><span class="p">,</span> <span class="n">requiredPowers</span><span class="p">,</span> <span class="n">RatedEnginePower</span>
+        <span class="p">)</span>
+        <span class="n">downscalingFactor</span> <span class="o">=</span> <span class="n">DownscalingPercentage</span>
+        <span class="k">return</span> <span class="n">downscalingFactor</span><span class="p">,</span> <span class="n">requiredToRatedPowerRatio</span>
+
+
+<span class="k">def</span> <span class="nf">_algorithm_wltp</span><span class="p">(</span>
+    <span class="n">ScalingStartTimes</span><span class="p">,</span>
+    <span class="n">ScalingCorrectionTimes</span><span class="p">,</span>
+    <span class="n">ScalingEndTimes</span><span class="p">,</span>
+    <span class="n">originalTraceTimes</span><span class="p">,</span>
+    <span class="n">originalVehicleSpeeds</span><span class="p">,</span>
+    <span class="n">downscalingFactor</span><span class="p">,</span>
+    <span class="n">accelerations</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Algorithm WLTP</span>
+
+<span class="sd">    :param ScalingStartTimes:</span>
+<span class="sd">         Contains the start times of the segments to scale in seconds.</span>
+<span class="sd">    :type ScalingStartTimes: array</span>
+
+<span class="sd">    :param ScalingCorrectionTimes:</span>
+<span class="sd">        Contains the times to begin the scaling correction at in seconds. The size must correspond to the size of</span>
+<span class="sd">        ScalingStartTimes. Each value must be between the corresponding start and end times.</span>
+<span class="sd">    :type ScalingCorrectionTimes: array</span>
+
+<span class="sd">    :param ScalingEndTimes:</span>
+<span class="sd">        Contains the end times of the segments to scale in seconds. The size must correspond to the</span>
+<span class="sd">        size of ScalingStartTimes.</span>
+<span class="sd">    :type ScalingEndTimes: array</span>
+
+<span class="sd">    :param originalTraceTimes:</span>
+<span class="sd">        Contains the times of the whole WLTC cycles.</span>
+<span class="sd">    :type originalTraceTimes: array</span>
+
+<span class="sd">    :param originalVehicleSpeeds:</span>
+<span class="sd">        Contains the speeds of the whole WLTC cycles.</span>
+<span class="sd">    :type originalVehicleSpeeds: array</span>
+
+<span class="sd">    :param downscalingFactor:</span>
+<span class="sd">        The downscaling factor for the cycle</span>
+<span class="sd">    :type downscalingFactor: float</span>
+
+<span class="sd">    :param accelerations:</span>
+<span class="sd">        Accelerations from the whole WLTC cycles.</span>
+<span class="sd">    :type accelerations: array</span>
+
+<span class="sd">    :return downscaledVehicleSpeeds:</span>
+<span class="sd">        Contains the speeds of the whole WLTC cycles downscaled.</span>
+<span class="sd">    :rtype downscaledVehicleSpeeds: array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">scalingStartIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">originalTraceTimes</span> <span class="o">&gt;=</span> <span class="n">ScalingStartTimes</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">correctionStartIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">originalTraceTimes</span> <span class="o">&gt;=</span> <span class="n">ScalingCorrectionTimes</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">scalingEndIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">originalTraceTimes</span> <span class="o">&gt;=</span> <span class="n">ScalingEndTimes</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">downscaledVehicleSpeeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">scalingStartIndex</span><span class="p">,</span> <span class="n">correctionStartIndex</span><span class="p">):</span>
+        <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">accelerations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">downscalingFactor</span><span class="p">)</span> <span class="o">*</span> <span class="mf">3.6</span>
+
+
+    <span class="k">if</span> <span class="n">scalingEndIndex</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">originalTraceTimes</span><span class="p">):</span>
+        <span class="n">subsequentVehicleSpeed</span> <span class="o">=</span> <span class="n">originalVehicleSpeeds</span><span class="p">[</span><span class="n">scalingEndIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">subsequentVehicleSpeed</span> <span class="o">=</span> <span class="n">originalVehicleSpeeds</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">originalVehicleSpeeds</span><span class="p">[</span><span class="n">correctionStartIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">subsequentVehicleSpeed</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># This would result in division by zero.</span>
+        <span class="c1"># The correction factor is explicitly set to 0.</span>
+        <span class="n">correctionFactor</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">correctionFactor</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">correctionStartIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">subsequentVehicleSpeed</span>
+        <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">[</span><span class="n">correctionStartIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">subsequentVehicleSpeed</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">correctionStartIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">scalingEndIndex</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">accelerations</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">correctionFactor</span> <span class="o">*</span> <span class="mf">3.6</span>
+        <span class="p">)</span>
+
+    <span class="n">downscaledVehicleSpeeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">downscaledVehicleSpeeds</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span>
+
+    <span class="k">return</span> <span class="n">downscaledVehicleSpeeds</span>
+
+
+<div class="viewcode-block" id="downscale_trace"><a class="viewcode-back" href="../../../../gearshift.core.model.scaleTrace.html#gearshift.core.model.scaleTrace.downscale_trace">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span>
+    <span class="n">dsp</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;downscaled&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;downscaledVehicleSpeeds&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;requiredToRatedPowerRatios&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;calculatedDownscalingFactors&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;downscalingFactor&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;requiredToRatedPowerRatio&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">downscale_trace</span><span class="p">(</span>
+    <span class="n">r0</span><span class="p">,</span>
+    <span class="n">a1</span><span class="p">,</span>
+    <span class="n">b1</span><span class="p">,</span>
+    <span class="n">UseCalculatedDownscalingPercentage</span><span class="p">,</span>
+    <span class="n">DownscalingPercentage</span><span class="p">,</span>
+    <span class="n">requiredPowers</span><span class="p">,</span>
+    <span class="n">RatedEnginePower</span><span class="p">,</span>
+    <span class="n">ScalingStartTimes</span><span class="p">,</span>
+    <span class="n">ScalingCorrectionTimes</span><span class="p">,</span>
+    <span class="n">ScalingEndTimes</span><span class="p">,</span>
+    <span class="n">originalTraceTimes</span><span class="p">,</span>
+    <span class="n">ScalingAlgorithms</span><span class="p">,</span>
+    <span class="n">originalVehicleSpeeds</span><span class="p">,</span>
+    <span class="n">ApplyDownscaling</span><span class="p">,</span>
+    <span class="n">accelerations</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Downscaling applies to very low powered class 1 vehicles or vehicles with power to mass ratios close to class</span>
+<span class="sd">    borderlines, thus causing driveability issues.</span>
+
+<span class="sd">    :param r0:</span>
+<span class="sd">        Factor to determine the downscaling factor</span>
+<span class="sd">    :type r0: float</span>
+
+<span class="sd">    :param a1:</span>
+<span class="sd">        Factor to determine the downscaling factor</span>
+<span class="sd">    :type a1: float</span>
+
+<span class="sd">    :param b1:</span>
+<span class="sd">        Factor to determine the downscaling factor</span>
+<span class="sd">    :type b1: float</span>
+
+<span class="sd">    :param UseCalculatedDownscalingPercentage:</span>
+<span class="sd">        Boolean variable to check if is necessary calculates the downscaling factor</span>
+<span class="sd">    :type UseCalculatedDownscalingPercentage: boolean</span>
+
+<span class="sd">    :param DownscalingPercentage:</span>
+<span class="sd">        The degree of downscaling. This value will only be used if the input parameter</span>
+<span class="sd">        UseCalculatedDownscalingPercentage is false.</span>
+<span class="sd">    :type DownscalingPercentage: float</span>
+
+<span class="sd">    :param requiredPowers:</span>
+<span class="sd">        The power required to overcome driving resistance and to accelerate.</span>
+<span class="sd">    :rtype requiredPowers: array</span>
+
+<span class="sd">    :param RatedEnginePower:</span>
+<span class="sd">        The maximum rated engine required</span>
+<span class="sd">    :return RatedEnginePower: float</span>
+
+<span class="sd">    :param ScalingStartTimes:</span>
+<span class="sd">         Contains the start times of the segments to scale in seconds.</span>
+<span class="sd">    :type ScalingStartTimes: array</span>
+
+<span class="sd">    :param ScalingCorrectionTimes:</span>
+<span class="sd">        Contains the times to begin the scaling correction at in seconds. The size must correspond to the size of</span>
+<span class="sd">        ScalingStartTimes. Each value must be between the corresponding start and end times.</span>
+<span class="sd">    :type ScalingCorrectionTimes: array</span>
+
+<span class="sd">    :param ScalingEndTimes:</span>
+<span class="sd">        Contains the end times of the segments to scale in seconds. The size must correspond to the</span>
+<span class="sd">        size of ScalingStartTimes.</span>
+<span class="sd">    :type ScalingEndTimes: array</span>
+
+<span class="sd">    :param originalTraceTimes:</span>
+<span class="sd">        The times used in the whole trace.</span>
+<span class="sd">    :type originalTraceTimes: array</span>
+
+<span class="sd">    :param ScalingAlgorithms:</span>
+<span class="sd">        Represents a strings, that denotes the algorithm to use for the specific segment.</span>
+<span class="sd">    :type ScalingAlgorithms: String</span>
+
+<span class="sd">    :param originalVehicleSpeeds:</span>
+<span class="sd">        The speeds used in the whole trace.</span>
+<span class="sd">    :type originalVehicleSpeeds: array</span>
+
+<span class="sd">    :param ApplyDownscaling:</span>
+<span class="sd">        Specifies if the trace shall be downscaled.</span>
+<span class="sd">    :type ApplyDownscaling: boolen</span>
+
+<span class="sd">    :param accelerations:</span>
+<span class="sd">        Accelerations from the whole WLTC cycles.</span>
+<span class="sd">    :type accelerations: array</span>
+
+<span class="sd">    :return downscaled, downscaledVehicleSpeeds, requiredToRatedPowerRatios, calculatedDownscalingFactors,</span>
+<span class="sd">            downscalingFactor, requiredToRatedPowerRatio:</span>
+<span class="sd">        Data required to calculate the final Trace</span>
+<span class="sd">    :type downscaled, downscaledVehicleSpeeds, requiredToRatedPowerRatios, calculatedDownscalingFactors,</span>
+<span class="sd">    downscalingFactor, requiredToRatedPowerRatio: boolean array, boolean array, array, array, float, float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">downscalingFactor</span><span class="p">,</span> <span class="n">requiredToRatedPowerRatio</span> <span class="o">=</span> <span class="n">_calculate_downscaling_factor</span><span class="p">(</span>
+        <span class="n">r0</span><span class="p">,</span>
+        <span class="n">a1</span><span class="p">,</span>
+        <span class="n">b1</span><span class="p">,</span>
+        <span class="n">UseCalculatedDownscalingPercentage</span><span class="p">,</span>
+        <span class="n">DownscalingPercentage</span><span class="p">,</span>
+        <span class="n">requiredPowers</span><span class="p">,</span>
+        <span class="n">RatedEnginePower</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">downscaledVehicleSpeeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ApplyDownscaling</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ScalingAlgorithms</span> <span class="o">==</span> <span class="s2">&quot;WLTP&quot;</span><span class="p">:</span>
+            <span class="n">downscaledVehicleSpeeds</span> <span class="o">=</span> <span class="n">_algorithm_wltp</span><span class="p">(</span>
+                <span class="n">ScalingStartTimes</span><span class="p">,</span>
+                <span class="n">ScalingCorrectionTimes</span><span class="p">,</span>
+                <span class="n">ScalingEndTimes</span><span class="p">,</span>
+                <span class="n">originalTraceTimes</span><span class="p">,</span>
+                <span class="n">originalVehicleSpeeds</span><span class="p">,</span>
+                <span class="n">downscalingFactor</span><span class="p">,</span>
+                <span class="n">accelerations</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="n">indexing</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mi">1</span> <span class="k">if</span> <span class="n">ScalingStartTimes</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">ScalingEndTimes</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">originalTraceTimes</span>
+    <span class="p">]</span>
+
+    <span class="n">requiredToRatedPowerRatios</span> <span class="o">=</span> <span class="n">_calculate_required_to_rated_power_ratio</span><span class="p">(</span>
+        <span class="n">indexing</span><span class="p">,</span> <span class="n">requiredPowers</span><span class="p">,</span> <span class="n">RatedEnginePower</span>
+    <span class="p">)</span>
+
+    <span class="p">(</span>
+        <span class="n">calculatedDownscalingFactors</span><span class="p">,</span>
+        <span class="n">requiredToRatedPowerRatio</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">=</span> <span class="n">_calculate_downscaling_factor</span><span class="p">(</span>
+        <span class="n">r0</span><span class="p">,</span>
+        <span class="n">a1</span><span class="p">,</span>
+        <span class="n">b1</span><span class="p">,</span>
+        <span class="n">UseCalculatedDownscalingPercentage</span><span class="p">,</span>
+        <span class="n">DownscalingPercentage</span><span class="p">,</span>
+        <span class="n">requiredPowers</span><span class="p">,</span>
+        <span class="n">RatedEnginePower</span><span class="p">,</span>
+        <span class="n">indexing</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">downscaled</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mi">1</span> <span class="k">if</span> <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">originalVehicleSpeeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">downscaledVehicleSpeeds</span><span class="p">))</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">downscaled</span><span class="p">,</span>
+        <span class="n">downscaledVehicleSpeeds</span><span class="p">,</span>
+        <span class="n">requiredToRatedPowerRatios</span><span class="p">,</span>
+        <span class="n">calculatedDownscalingFactors</span><span class="p">,</span>
+        <span class="n">downscalingFactor</span><span class="p">,</span>
+        <span class="n">requiredToRatedPowerRatio</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cap_trace"><a class="viewcode-back" href="../../../../gearshift.core.model.scaleTrace.html#gearshift.core.model.scaleTrace.cap_trace">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;capped&quot;</span><span class="p">,</span> <span class="s2">&quot;cappedVehicleSpeeds&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">cap_trace</span><span class="p">(</span><span class="n">ApplySpeedCap</span><span class="p">,</span> <span class="n">CappedSpeed</span><span class="p">,</span> <span class="n">downscaledVehicleSpeeds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Speed cap applies to vehicles that are technically able to follow the given trace, but whose maximum speed</span>
+<span class="sd">    is limited to a value lower than the maximum speed of that trace.</span>
+
+<span class="sd">    :param ApplySpeedCap:</span>
+<span class="sd">        Specifies if the trace shall be capped to the given CappedSpeed.</span>
+<span class="sd">    :type ApplySpeedCap: boolean</span>
+
+<span class="sd">    :param CappedSpeed:</span>
+<span class="sd">        The maximum speed of vehicles, which are technically able to follow the speed of the given trace but are not</span>
+<span class="sd">        able to reach the maximum speed of that trace.</span>
+<span class="sd">    :type CappedSpeed: array</span>
+
+<span class="sd">    :return capped, cappedVehicleSpeeds:</span>
+<span class="sd">        The boolean array that show the vehicle speeds capped and the vehicle speeds capped according to</span>
+<span class="sd">        the maximum value available</span>
+<span class="sd">    :rtype cappedVehicleSpeeds: array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cappedVehicleSpeeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">downscaledVehicleSpeeds</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ApplySpeedCap</span><span class="p">:</span>
+        <span class="n">cappedVehicleSpeeds</span><span class="p">[</span><span class="n">cappedVehicleSpeeds</span> <span class="o">&gt;</span> <span class="n">CappedSpeed</span><span class="p">]</span> <span class="o">=</span> <span class="n">CappedSpeed</span>
+
+    <span class="n">capped</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="mi">1</span> <span class="k">if</span> <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">cappedVehicleSpeeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cappedVehicleSpeeds</span><span class="p">))</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">capped</span><span class="p">,</span> <span class="n">cappedVehicleSpeeds</span></div>
+
+
+<div class="viewcode-block" id="compensate_trace"><a class="viewcode-back" href="../../../../gearshift.core.model.scaleTrace.html#gearshift.core.model.scaleTrace.compensate_trace">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span>
+    <span class="n">dsp</span><span class="p">,</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;compensated&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;compensatedTraceTimes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;compensatedVehicleSpeeds&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;downscaledCompensated&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cappedCompensated&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;compensatedTraceTimes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;additionalSamples&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">compensate_trace</span><span class="p">(</span>
+    <span class="n">originalTraceTimesCount</span><span class="p">,</span>
+    <span class="n">originalTraceTimes</span><span class="p">,</span>
+    <span class="n">cappedVehicleSpeeds</span><span class="p">,</span>
+    <span class="n">PhaseLengths</span><span class="p">,</span>
+    <span class="n">ApplyDistanceCompensation</span><span class="p">,</span>
+    <span class="n">phaseStarts</span><span class="p">,</span>
+    <span class="n">phaseEnds</span><span class="p">,</span>
+    <span class="n">downscaledVehicleSpeeds</span><span class="p">,</span>
+    <span class="n">CappedSpeed</span><span class="p">,</span>
+    <span class="n">capped</span><span class="p">,</span>
+    <span class="n">downscaled</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A capped trace may need compensations to achieve the same distance as for the original trace.</span>
+
+<span class="sd">    :param originalTraceTimesCount:</span>
+<span class="sd">        The original length of the trace time</span>
+<span class="sd">    :type originalTraceTimesCount: integer</span>
+
+<span class="sd">    :param originalTraceTimes:</span>
+<span class="sd">        The times used in the whole trace.</span>
+<span class="sd">    :type originalTraceTimes: array</span>
+
+<span class="sd">    :param cappedVehicleSpeeds:</span>
+<span class="sd">        The vehicle speeds capped according to the maximum value available</span>
+<span class="sd">    :type cappedVehicleSpeeds: array</span>
+
+<span class="sd">    :param PhaseLengths:</span>
+<span class="sd">        Contains the lengths of the different phases.</span>
+<span class="sd">    :type PhaseLengths: list</span>
+
+<span class="sd">    :param ApplyDistanceCompensation:</span>
+<span class="sd">        Specifies it the trace shall be compensated for distance due to capped speeds.</span>
+<span class="sd">    :type ApplyDistanceCompensation: boolean</span>
+
+<span class="sd">    :param phaseStarts:</span>
+<span class="sd">        The position of the beginning of each cycle.</span>
+<span class="sd">    :type phaseStarts: array</span>
+
+<span class="sd">    :param phaseEnds:</span>
+<span class="sd">        The position of the end of each cycle.</span>
+<span class="sd">    :type phaseEnds: array</span>
+
+<span class="sd">    :param downscaledVehicleSpeeds:</span>
+<span class="sd">        Contains the speeds of the whole WLTC cycles downscaled.</span>
+<span class="sd">    :type downscaledVehicleSpeeds: array</span>
+
+<span class="sd">    :param CappedSpeed:</span>
+<span class="sd">        The maximum speed of vehicles, which are technically able to follow the speed of the given trace but are not</span>
+<span class="sd">        able to reach the maximum speed of that trace.</span>
+<span class="sd">    :type CappedSpeed: array</span>
+
+<span class="sd">    :param capped:</span>
+<span class="sd">        The boolean array that show the vehicle speeds capped.</span>
+<span class="sd">    :type capped: boolean array</span>
+
+<span class="sd">    :param downscaled:</span>
+<span class="sd">        The boolean array that show the vehicle speeds downscaled.</span>
+<span class="sd">    :type  downscaled: boolean array</span>
+<span class="sd">    :return compensated, compensatedTraceTimes, compensatedVehicleSpeeds, downscaledCompensated, cappedCompensated,</span>
+<span class="sd">            compensatedTraceTimes, additionalSamples:</span>
+<span class="sd">        Data required to calculate the final Trace</span>
+<span class="sd">    :rtype compensated, compensatedTraceTimes, compensatedVehicleSpeeds, downscaledCompensated, cappedCompensated,</span>
+<span class="sd">            compensatedTraceTimes, additionalSamples: boolean array, array, array, boolean array, boolean array,</span>
+<span class="sd">            array, array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">compensated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">originalTraceTimesCount</span><span class="p">)</span>
+    <span class="n">compensatedTraceTimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">originalTraceTimes</span><span class="p">)</span>
+    <span class="n">compensatedVehicleSpeeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cappedVehicleSpeeds</span><span class="p">)</span>
+    <span class="n">downscaledCompensated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">downscaled</span><span class="p">)</span>
+    <span class="n">cappedCompensated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">capped</span><span class="p">)</span>
+    <span class="n">additionalSamples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">PhaseLengths</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">ApplyDistanceCompensation</span><span class="p">:</span>
+        <span class="n">compensationStarts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">PhaseLengths</span><span class="p">))</span>
+        <span class="n">compensationEnds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">PhaseLengths</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">phase</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">PhaseLengths</span><span class="p">)):</span>
+            <span class="n">phaseStart</span> <span class="o">=</span> <span class="n">phaseStarts</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span>
+            <span class="n">phaseEnd</span> <span class="o">=</span> <span class="n">phaseEnds</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">phaseStart</span> <span class="o">&lt;</span> <span class="n">phaseEnd</span><span class="p">:</span>
+                <span class="n">cappedDistance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cappedVehicleSpeeds</span><span class="p">[</span><span class="n">phaseStart</span><span class="p">:</span><span class="n">phaseEnd</span><span class="p">])</span>
+                <span class="n">downscaledDistance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+                    <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">phaseStart</span><span class="p">:</span><span class="n">phaseEnd</span><span class="p">]</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">cappedDistance</span> <span class="o">!=</span> <span class="n">downscaledDistance</span><span class="p">:</span>
+                    <span class="n">additionalSamples</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+                        <span class="p">(</span><span class="n">downscaledDistance</span> <span class="o">-</span> <span class="n">cappedDistance</span><span class="p">)</span> <span class="o">/</span> <span class="n">CappedSpeed</span>
+                    <span class="p">)</span>
+                    <span class="n">compensationStarts</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">additionalSamples</span><span class="p">[</span><span class="mi">1</span> <span class="p">:</span> <span class="n">phase</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+                        <span class="o">+</span> <span class="n">phaseStart</span>
+                        <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">capped</span><span class="p">[</span><span class="n">phaseStart</span><span class="p">:</span><span class="n">phaseEnd</span><span class="p">]))</span>
+                        <span class="o">+</span> <span class="mi">1</span>
+                    <span class="p">)</span>
+                    <span class="n">compensationEnds</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">compensationStarts</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span> <span class="o">+</span> <span class="n">additionalSamples</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span>
+                    <span class="p">)</span>
+
+        <span class="n">compensated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">originalTraceTimesCount</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">additionalSamples</span><span class="p">)))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">compensated</span><span class="p">,</span> <span class="n">compensationStarts</span><span class="p">[</span><span class="n">compensationStarts</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">compensated</span><span class="p">,</span> <span class="n">compensationEnds</span><span class="p">[</span><span class="n">compensationEnds</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">compensated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">compensated</span><span class="p">)</span>
+        <span class="n">compensated</span><span class="p">[</span><span class="n">compensated</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">compensatedTraceTimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">originalTraceTimes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">compensated</span><span class="p">))</span>
+        <span class="n">compensatedVehicleSpeeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">compensated</span><span class="p">))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">compensatedVehicleSpeeds</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">compensated</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="n">CappedSpeed</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="n">compensatedVehicleSpeeds</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">compensated</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">),</span> <span class="n">cappedVehicleSpeeds</span>
+        <span class="p">)</span>
+
+        <span class="n">downscaledCompensated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">compensated</span><span class="p">))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">downscaledCompensated</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">compensated</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">downscaled</span><span class="p">))</span>
+
+        <span class="n">cappedCompensated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">compensated</span><span class="p">))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">cappedCompensated</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">compensated</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">capped</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">compensated</span><span class="p">,</span>
+        <span class="n">compensatedTraceTimes</span><span class="p">,</span>
+        <span class="n">compensatedVehicleSpeeds</span><span class="p">,</span>
+        <span class="n">downscaledCompensated</span><span class="p">,</span>
+        <span class="n">cappedCompensated</span><span class="p">,</span>
+        <span class="n">compensatedTraceTimes</span><span class="p">,</span>
+        <span class="n">additionalSamples</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_speed_trace"><a class="viewcode-back" href="../../../../gearshift.core.model.scaleTrace.html#gearshift.core.model.scaleTrace.generate_speed_trace">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;speed_trace&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">generate_speed_trace</span><span class="p">(</span>
+    <span class="n">downscalingFactor</span><span class="p">,</span>
+    <span class="n">requiredToRatedPowerRatio</span><span class="p">,</span>
+    <span class="n">requiredToRatedPowerRatios</span><span class="p">,</span>
+    <span class="n">calculatedDownscalingFactors</span><span class="p">,</span>
+    <span class="n">originalVehicleSpeeds</span><span class="p">,</span>
+    <span class="n">PhaseLengths</span><span class="p">,</span>
+    <span class="n">phaseStarts</span><span class="p">,</span>
+    <span class="n">phaseEnds</span><span class="p">,</span>
+    <span class="n">compensatedVehicleSpeeds</span><span class="p">,</span>
+    <span class="n">additionalSamples</span><span class="p">,</span>
+    <span class="n">originalTraceTimes</span><span class="p">,</span>
+    <span class="n">compensatedTraceTimes</span><span class="p">,</span>
+    <span class="n">downscaledCompensated</span><span class="p">,</span>
+    <span class="n">cappedCompensated</span><span class="p">,</span>
+    <span class="n">compensated</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function creates a dictionary with the final results of the Scale trace</span>
+
+<span class="sd">    :param downscalingFactor:</span>
+<span class="sd">        The downscaling factor for the cycle</span>
+<span class="sd">    :type downscalingFactor: float</span>
+
+<span class="sd">    :return: requiredToRatedPowerRatio</span>
+<span class="sd">        The required rated power ratio after apply the downscaling factor.</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :return: requiredToRatedPowerRatio</span>
+<span class="sd">        The required rated power ratio after apply the downscaling factors.</span>
+<span class="sd">    :rtype: float</span>
+
+<span class="sd">    :param calculatedDownscalingFactors:</span>
+<span class="sd">            The downscaling factor for the cycle</span>
+<span class="sd">    :type calculatedDownscalingFactors: float</span>
+
+<span class="sd">    :param originalVehicleSpeeds:</span>
+<span class="sd">        The speeds used in the whole trace.</span>
+<span class="sd">    :type originalVehicleSpeeds: array</span>
+
+<span class="sd">    :param PhaseLengths:</span>
+<span class="sd">        Contains the lengths of the different phases.</span>
+<span class="sd">    :type PhaseLengths: list</span>
+
+<span class="sd">    :param phaseStarts:</span>
+<span class="sd">        The position of the beginning of each cycle.</span>
+<span class="sd">    :type phaseStarts: array</span>
+
+<span class="sd">    :param phaseEnds:</span>
+<span class="sd">        The position of the end of each cycle.</span>
+<span class="sd">    :type phaseEnds: array</span>
+
+<span class="sd">    :param compensatedVehicleSpeeds:</span>
+<span class="sd">        The vehicle speeds after apply compensation.</span>
+<span class="sd">    :type compensatedVehicleSpeeds: array</span>
+
+<span class="sd">    :param additionalSamples:</span>
+<span class="sd">        The additional samples added to compensate the capped speed correction.</span>
+<span class="sd">    :type additionalSamples: array</span>
+
+<span class="sd">    :param originalTraceTimes:</span>
+<span class="sd">        The times used in the whole trace.</span>
+<span class="sd">    :type originalTraceTimes: array</span>
+
+<span class="sd">    :param compensatedTraceTimes:</span>
+<span class="sd">        The final times after applied compensation</span>
+<span class="sd">    :type compensatedTraceTimes: array</span>
+
+<span class="sd">    :param downscaledCompensated:</span>
+<span class="sd">        The boolean array that shows the vehicle speeds downscaled and compensated</span>
+<span class="sd">    :type downscaledCompensated: boolean array</span>
+
+<span class="sd">    :param cappedCompensated:</span>
+<span class="sd">        The boolean array that shows the vehicle speeds capped and compensated</span>
+<span class="sd">    :param compensated:boolean array</span>
+
+<span class="sd">    :return speed_trace:</span>
+<span class="sd">        The dictionary that contains the all final values of speed trace</span>
+<span class="sd">    :type speed_trace: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">calculatedDownscalingFactor</span> <span class="o">=</span> <span class="n">downscalingFactor</span>
+    <span class="k">if</span> <span class="n">calculatedDownscalingFactor</span> <span class="o">&lt;=</span> <span class="mf">0.01</span><span class="p">:</span>
+        <span class="n">calculatedDownscalingFactor</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">calculatedDownscalingFactors</span> <span class="o">&lt;=</span> <span class="mf">0.01</span><span class="p">:</span>
+        <span class="n">calculatedDownscalingFactors</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">PhaseChecksums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">PhaseLengths</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">phase</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">PhaseLengths</span><span class="p">)):</span>
+        <span class="n">PhaseChecksums</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+                    <span class="n">originalVehicleSpeeds</span><span class="p">[</span><span class="n">phaseStarts</span><span class="p">[</span><span class="n">phase</span><span class="p">]</span> <span class="p">:</span> <span class="n">phaseEnds</span><span class="p">[</span><span class="n">phase</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">10</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="o">/</span> <span class="mi">10</span>
+        <span class="p">)</span>
+
+    <span class="n">speed_trace</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;RequiredToRatedPowerRatio&quot;</span><span class="p">:</span> <span class="n">requiredToRatedPowerRatio</span><span class="p">,</span>
+        <span class="s2">&quot;calculatedDownscalingFactor&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">calculatedDownscalingFactor</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;CalculatedDownscalingPercentage&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">calculatedDownscalingFactor</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+        <span class="p">)</span>
+        <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s2">&quot;RequiredToRatedPowerRatios&quot;</span><span class="p">:</span> <span class="n">requiredToRatedPowerRatios</span><span class="p">,</span>
+        <span class="s2">&quot;calculatedDownscalingFactors&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">calculatedDownscalingFactors</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;CalculatedDownscalingPercentages&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">calculatedDownscalingFactors</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+        <span class="p">)</span>
+        <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s2">&quot;TotalChecksum&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="s2">&quot;MaxVehicleSpeed&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">compensatedVehicleSpeeds</span><span class="p">),</span>
+        <span class="s2">&quot;TotalDistance&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">compensatedVehicleSpeeds</span> <span class="o">/</span> <span class="mf">3.6</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">&quot;DistanceCompensatedPhaseLengths&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+            <span class="n">PhaseLengths</span><span class="p">,</span> <span class="n">additionalSamples</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+        <span class="s2">&quot;OriginalTrace&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">originalTraceTimes</span><span class="p">,</span> <span class="n">originalVehicleSpeeds</span><span class="p">],</span>
+        <span class="s2">&quot;ApplicableTrace&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;compensatedTraceTimes&quot;</span><span class="p">:</span> <span class="n">compensatedTraceTimes</span><span class="p">,</span>
+            <span class="s2">&quot;compensatedVehicleSpeeds&quot;</span><span class="p">:</span> <span class="n">compensatedVehicleSpeeds</span><span class="p">,</span>
+            <span class="s2">&quot;downscaled&quot;</span><span class="p">:</span> <span class="n">downscaledCompensated</span><span class="p">,</span>
+            <span class="s2">&quot;capped&quot;</span><span class="p">:</span> <span class="n">cappedCompensated</span><span class="p">,</span>
+            <span class="s2">&quot;compensated&quot;</span><span class="p">:</span> <span class="n">compensated</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">speed_trace</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2015-2019, European Commission (JRC)
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

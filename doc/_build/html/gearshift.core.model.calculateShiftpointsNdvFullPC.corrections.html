@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gearshift.core.model.calculateShiftpointsNdvFullPC.corrections package &mdash; GEARSHIFT TOOL 1.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gearshift.core.model.scaleTrace package" href="gearshift.core.model.scaleTrace.html" />
+    <link rel="prev" title="gearshift.core.model.calculateShiftpointsNdvFullPC package" href="gearshift.core.model.calculateShiftpointsNdvFullPC.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GEARSHIFT TOOL
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">gearshift</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="gearshift.html">gearshift package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="gearshift.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="gearshift.cli.html">gearshift.cli package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="gearshift.core.html">gearshift.core package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gearshift.html#module-gearshift">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Gearshift Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GEARSHIFT TOOL</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">gearshift</a> &raquo;</li>
+        
+          <li><a href="gearshift.html">gearshift package</a> &raquo;</li>
+        
+          <li><a href="gearshift.core.html">gearshift.core package</a> &raquo;</li>
+        
+          <li><a href="gearshift.core.model.html">gearshift.core.model package</a> &raquo;</li>
+        
+          <li><a href="gearshift.core.model.calculateShiftpointsNdvFullPC.html">gearshift.core.model.calculateShiftpointsNdvFullPC package</a> &raquo;</li>
+        
+      <li>gearshift.core.model.calculateShiftpointsNdvFullPC.corrections package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gearshift-core-model-calculateshiftpointsndvfullpc-corrections-package">
+<h1>gearshift.core.model.calculateShiftpointsNdvFullPC.corrections package<a class="headerlink" href="#gearshift-core-model-calculateshiftpointsndvfullpc-corrections-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-gearshift.core.model.calculateShiftpointsNdvFullPC.corrections">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gearshift.core.model.calculateShiftpointsNdvFullPC.corrections" title="Permalink to this headline">¶</a></h2>
+<p>It provides the corrections defined in section 4 of the Sub-Annex 2 from Annex XXI from the
+COMMISSION REGULATION (EU) 2017/1151.</p>
+<p>Docstrings should provide sufficient understanding for any individual function.</p>
+<p>Sub-Modules:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<dl class="py function">
+<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.appendCorrectionCells">
+<code class="sig-name descname">appendCorrectionCells</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">CorrectionsCells</span></em>, <em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">InitialGearsPrev</span></em>, <em class="sig-param"><span class="n">correctionType</span></em>, <em class="sig-param"><span class="n">correctionNbr</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#appendCorrectionCells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.appendCorrectionCells" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This function is just for debugging of gear corrections.
+It extends a cell array of gear correction strings by the current corrections and the resulting corrected gears.
+Each gear correction is indicated by a string combining correction type and number.
+If eg gear 2 is corrected to gear 3 by correction ‘4a’ during the first iteration then the gear correction string
+will be extended by ‘ 4a1 3’.
+If eg gear 2 is not corrected then the gear correction string will be extended by ‘ — 2’.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>CorrectionsCells</strong> (<em>array</em>) – A cell array of gear correction strings BEFORE the current correction</p></li>
+<li><p><strong>InitialGears</strong> (<em>array</em>) – A cell array of gear numbers AFTER the current correction</p></li>
+<li><p><strong>InitialGearsPrev</strong> (<em>array</em>) – A cell array of gear numbers BEFORE the current correction</p></li>
+<li><p><strong>InitialGearsPrev</strong> – A cell array of gear numbers BEFORE the current correction</p></li>
+<li><p><strong>correctionType</strong> (<em>String</em>) – A string indicating the type of the current correction
+eg ‘4c’</p></li>
+<li><p><strong>correctionNbr</strong> (<em>Integer</em>) – A number indicating the iteration of the current correction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return CorrectionsCells</dt>
+<dd class="field-even"><p>A cell array of gear correction strings AFTER the current correction
+eg
+…
+‘4 — 4 4b1 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2’
+‘4 — 4 4b1 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3’
+‘5 — 5 4b1 4 — 4 — 4 — 4 — 4 — 4 — 4 4b2 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3’
+‘5 — 5 — 5 4c1 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 4g2 3 — 3 — 3 — 3 — 3’
+‘5 — 5 — 5 4c1 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 4g2 3 — 3 — 3 — 3 — 3’
+…</p>
+</dd>
+<dt class="field-odd">Rtype CorrectionsCells</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+<dt class="field-even">Return CorrectionsCells</dt>
+<dd class="field-even"><p>A cell array of gear numbers AFTER current correction ie before next correction</p>
+</dd>
+<dt class="field-odd">Rtype CorrectionsCells</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4b">
+<code class="sig-name descname">applyCorrection4b</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">Corr4bToBeDoneAfterCorr4a</span></em>, <em class="sig-param"><span class="n">Corr4bToBeDoneAfterCorr4d</span></em>, <em class="sig-param"><span class="n">PhaseValues</span></em>, <em class="sig-param"><span class="n">PhaseStarts</span></em>, <em class="sig-param"><span class="n">PhaseEnds</span></em>, <em class="sig-param"><span class="n">PHASE_ACCELERATION_FROM_STANDSTILL</span></em>, <em class="sig-param"><span class="n">PHASE_ACCELERATION</span></em>, <em class="sig-param"><span class="n">NoOfGearsFinal</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4b"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4a">
+<code class="sig-name descname">applyCorrection4a</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">Corr4bToBeDoneAfterCorr4a</span></em>, <em class="sig-param"><span class="n">PossibleGears</span></em>, <em class="sig-param"><span class="n">InAcceleration</span></em>, <em class="sig-param"><span class="n">InConstantSpeed</span></em>, <em class="sig-param"><span class="n">InAccelerationAnyDuration</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4a"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4a" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4c">
+<code class="sig-name descname">applyCorrection4c</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">PossibleGears</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4c"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4c" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regulation Annex 2, 4.(c) :
+If gear i is used for a time sequence of 1 to 5 seconds
+and the gear prior to this sequence is one step lower
+and the gear after this sequence is one or two steps lower than within this sequence
+or the gear prior to this sequence is two steps lower
+and the gear after this sequence is one step lower than within the sequence,
+the gear for the sequence shall be corrected to
+the maximum of the gears before and after the sequence.
+In all cases i-1 &gt;= i_min shall be fulfilled.
+NOTE:
+The corrected gear will be i-1 in all cases.
+3.5. Determination of possible gears to be used.
+The lowest final possible gear is i_min.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4d">
+<code class="sig-name descname">applyCorrection4d</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">PhaseStarts</span></em>, <em class="sig-param"><span class="n">PhaseEnds</span></em>, <em class="sig-param"><span class="n">PhaseValues</span></em>, <em class="sig-param"><span class="n">PHASE_DECELERATION</span></em>, <em class="sig-param"><span class="n">PHASE_DECELERATION_TO_STANDSTILL</span></em>, <em class="sig-param"><span class="n">corr_4d_applied_before</span></em>, <em class="sig-param"><span class="n">TraceTimesCount</span></em>, <em class="sig-param"><span class="n">NoOfGearsFinal</span></em>, <em class="sig-param"><span class="n">RequiredVehicleSpeeds</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regulation Annex 2, 4.(d) :
+No upshift to a higher gear shall be performed within a deceleration phase.
+NOTE:
+The newest regulation ECE/TRANS/WP.29/GRPE/2019/2 moved the text part below to paragraph Annex 2, 4.(e).
+But we keep it here as it does not matter whether it will be executed at the end of 4.(d) or at the begin of 4.(e).
+No upshift to a higher gear at the transition
+from an acceleration or constant speed phase
+to a deceleration phase shall be performed
+if one of the gears in the first two seconds
+following the end of the deceleration phase
+is lower than the upshifted gear or is gear 0.
+If there is an upshift during the transition
+and the initial deceleration phase by 2 gears,
+an upshift by 1 gear shall be performed instead.
+In this case, no further modifications shall be perfomed
+in the following gear use checks.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4e">
+<code class="sig-name descname">applyCorrection4e</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">PhaseStarts</span></em>, <em class="sig-param"><span class="n">PhaseEnds</span></em>, <em class="sig-param"><span class="n">PhaseValues</span></em>, <em class="sig-param"><span class="n">ClutchDisengaged</span></em>, <em class="sig-param"><span class="n">InitialRequiredEngineSpeeds</span></em>, <em class="sig-param"><span class="n">IdlingEngineSpeed</span></em>, <em class="sig-param"><span class="n">PHASE_DECELERATION</span></em>, <em class="sig-param"><span class="n">PHASE_DECELERATION_TO_STANDSTILL</span></em>, <em class="sig-param"><span class="n">Phases</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4e"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4e" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regulation Annex 2, 4.(e) :</p>
+<blockquote>
+<div><p>NOTE:</p>
+</div></blockquote>
+<p>The newest regulation ECE/TRANS/WP.29/GRPE/2019/2
+moved this gear correction to paragraph
+3.3. Selection of possible gears with respect to engine speed.
+But we keep it here to check also additional usages of gear 2,
+which may result from other gear corrections done before.</p>
+<p>During a deceleration phase, gears with n_gear &gt; 2 shall be used
+as long as the engine speed does not drop below n_min_drive.
+Gear 2 shall be used during a deceleration phase within a short trip
+of the cycle (not at the end of a short trip)as long as the engine
+speed does not drop below (0.9 × n_idle).
+If the engine speed drops below n_idle, the clutch shall be disengaged.
+If the deceleration phase is the last part of a short trip shortly before a stop phase,
+the second gear shall be used as long as the engine speed does not drop below n_idle.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4f">
+<code class="sig-name descname">applyCorrection4f</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">ClutchDisengaged</span></em>, <em class="sig-param"><span class="n">SuppressGear0DuringDownshifts</span></em>, <em class="sig-param"><span class="n">PossibleGears</span></em>, <em class="sig-param"><span class="n">InStandStill</span></em>, <em class="sig-param"><span class="n">InDecelerationToStandstill</span></em>, <em class="sig-param"><span class="n">InDeceleration</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4f"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4f" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gearshift.core.model.scaleTrace.html" class="btn btn-neutral float-right" title="gearshift.core.model.scaleTrace package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gearshift.core.model.calculateShiftpointsNdvFullPC.html" class="btn btn-neutral float-left" title="gearshift.core.model.calculateShiftpointsNdvFullPC package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2015-2019, European Commission (JRC)
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
