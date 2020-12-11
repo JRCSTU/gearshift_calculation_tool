@@ -2,17 +2,25 @@
     :theme-color:   #CCCC00
 
 .. include:: ../README.rst
+    :start-after: .. _start-info:
+    :end-before: .. _end-info:
+
+.. include:: ../README.rst
+    :start-after: .. _start-sub:
+    :end-before: .. _end-sub:
+
+.. include:: ../AUTHORS.rst
 
 .. toctree::
     :maxdepth: 1
     :caption: Table of Contents
     :name: mastertoc
 
-    modules
+    intro
+    installation
     model
+    usage
     api
-
-.. note:: This is an example
 
 Indices and tables
 ==================
@@ -21,4 +29,3 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. include:: ../AUTHORS.rst

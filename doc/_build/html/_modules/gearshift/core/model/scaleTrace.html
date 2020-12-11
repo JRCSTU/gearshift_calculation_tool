@@ -83,8 +83,10 @@
             
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">gearshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../model.html">Gearshift Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Reference</a></li>
 </ul>
 
@@ -199,9 +201,13 @@
 <span class="sd">        Velocities and times from the phases of the WLTC cycle.</span>
 <span class="sd">    :type Trace: array</span>
 
-<span class="sd">    :return: originalTraceTimes, originalVehicleSpeeds, originalTraceTimesCount</span>
-<span class="sd">        Data required to calculate the final Trace</span>
-<span class="sd">    :rtype: array, array, int</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - originalTraceTimes (:py:class:`numpy.array`):</span>
+<span class="sd">            Times for each vehicle speed required re-sampled in 1Hz</span>
+<span class="sd">        - originalVehicleSpeeds (:py:class:`numpy.array`):</span>
+<span class="sd">            The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
+<span class="sd">        - originalTraceTimesCount (:py:class:`int`):</span>
+<span class="sd">            The length of trace times re-sampled in 1Hz</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 
@@ -226,9 +232,11 @@
 <span class="sd">        Contains the total times of the whole WLTC cycles.</span>
 <span class="sd">    :type originalTraceTimes: array</span>
 
-<span class="sd">    :return: phaseStarts, phaseEnds</span>
-<span class="sd">        The position of the beginning and the end of each cycle.</span>
-<span class="sd">    :rtype: array, array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - phaseStarts (:py:class:`numpy.array`):</span>
+<span class="sd">            The position of the beginning of each cycle</span>
+<span class="sd">        - phaseEnds (:py:class:`numpy.array`):</span>
+<span class="sd">            The position of the end of each cycle</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">originalPhaseLengths</span> <span class="o">=</span> <span class="n">PhaseLengths</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
@@ -259,9 +267,9 @@
 <span class="sd">        Contains the times of the whole WLTC cycles.</span>
 <span class="sd">    :type originalTraceTimes: array</span>
 
-<span class="sd">    :return: accelerations</span>
-<span class="sd">        Accelerations from the whole WLTC cycles.</span>
-<span class="sd">    :rtype accelerations: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - accelerations (:py:class:`numpy.array`):</span>
+<span class="sd">            Accelerations from the whole WLTC cycles.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">accelerations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -306,9 +314,9 @@
 <span class="sd">        aerodynamic resistances.</span>
 <span class="sd">    :type f2: float</span>
 
-<span class="sd">    :return: requiredPowers:</span>
-<span class="sd">        The power required to overcome driving resistance and to accelerate.</span>
-<span class="sd">    :rtype: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - requiredPowers (:py:class:`numpy.array`):</span>
+<span class="sd">            The power required to overcome driving resistance and to accelerate.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">requiredPowers</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">f0</span> <span class="o">*</span> <span class="n">originalVehicleSpeeds</span>
@@ -326,15 +334,19 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    :param indexing:</span>
 <span class="sd">        Boolean array that select the required powers to take into account to calculate the rated power ratio</span>
-<span class="sd">    :rtype indexing: boolean array</span>
+<span class="sd">    :type indexing: boolean array</span>
 
 <span class="sd">    :param requiredPowers:</span>
 <span class="sd">        The power required to overcome driving resistance and to accelerate.</span>
-<span class="sd">    :rtype requiredPowers: array</span>
+<span class="sd">    :type requiredPowers: array</span>
 
 <span class="sd">    :param RatedEnginePower:</span>
 <span class="sd">        The maximum rated engine required</span>
-<span class="sd">    :return RatedEnginePower: float</span>
+<span class="sd">    :type RatedEnginePower: float</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - requiredToRatedPowerRatio (:py:class:`float`):</span>
+<span class="sd">            The required power ratio</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">requiredPowersInd</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">requiredPowers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">requiredPowers</span><span class="p">))</span> <span class="k">if</span> <span class="n">indexing</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
@@ -379,20 +391,22 @@
 
 <span class="sd">    :param requiredPowers:</span>
 <span class="sd">        The power required to overcome driving resistance and to accelerate.</span>
-<span class="sd">    :rtype requiredPowers: array</span>
+<span class="sd">    :type requiredPowers: array</span>
 
 <span class="sd">    :param RatedEnginePower:</span>
 <span class="sd">        The maximum rated engine required</span>
-<span class="sd">    :return RatedEnginePower: float</span>
+<span class="sd">    :type RatedEnginePower: float</span>
 
 <span class="sd">    :param indexing:</span>
 <span class="sd">        (optional) Boolean array that select the required powers to take into account to calculate the rated</span>
 <span class="sd">        power ratio</span>
-<span class="sd">    :rtype indexing: boolean array</span>
+<span class="sd">    :type indexing: boolean array</span>
 
-<span class="sd">    :return: downscalingFactor, requiredToRatedPowerRatio</span>
-<span class="sd">        The downscaling factor for the cycle and the required rated power ratio after apply the downscaling factor</span>
-<span class="sd">    :rtype: float, float</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - downscalingFactor (:py:class:`float`):</span>
+<span class="sd">            The downscaling factor to apply to the whole cycle</span>
+<span class="sd">        - requiredToRatedPowerRatio (:py:class:`float`):</span>
+<span class="sd">            The required rated power ratio after apply the downscaling factor</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">UseCalculatedDownscalingPercentage</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">indexing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -457,9 +471,9 @@
 <span class="sd">        Accelerations from the whole WLTC cycles.</span>
 <span class="sd">    :type accelerations: array</span>
 
-<span class="sd">    :return downscaledVehicleSpeeds:</span>
-<span class="sd">        Contains the speeds of the whole WLTC cycles downscaled.</span>
-<span class="sd">    :rtype downscaledVehicleSpeeds: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - downscaledVehicleSpeeds (:py:class:`numpy.array`):</span>
+<span class="sd">            Contains the speeds of the whole WLTC cycles downscaled.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">scalingStartIndex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">originalTraceTimes</span> <span class="o">&gt;=</span> <span class="n">ScalingStartTimes</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
@@ -471,8 +485,10 @@
     <span class="n">downscaledVehicleSpeeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">scalingStartIndex</span><span class="p">,</span> <span class="n">correctionStartIndex</span><span class="p">):</span>
-        <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">accelerations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">downscalingFactor</span><span class="p">)</span> <span class="o">*</span> <span class="mf">3.6</span>
-
+        <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">accelerations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">downscalingFactor</span><span class="p">)</span> <span class="o">*</span> <span class="mf">3.6</span>
+        <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">scalingEndIndex</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">originalTraceTimes</span><span class="p">):</span>
         <span class="n">subsequentVehicleSpeed</span> <span class="o">=</span> <span class="n">originalVehicleSpeeds</span><span class="p">[</span><span class="n">scalingEndIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
@@ -488,7 +504,7 @@
             <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">correctionStartIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">subsequentVehicleSpeed</span>
         <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">[</span><span class="n">correctionStartIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">subsequentVehicleSpeed</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">correctionStartIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">scalingEndIndex</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">correctionStartIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">scalingEndIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">downscaledVehicleSpeeds</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
             <span class="o">+</span> <span class="n">accelerations</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">correctionFactor</span> <span class="o">*</span> <span class="mf">3.6</span>
@@ -554,11 +570,11 @@
 
 <span class="sd">    :param requiredPowers:</span>
 <span class="sd">        The power required to overcome driving resistance and to accelerate.</span>
-<span class="sd">    :rtype requiredPowers: array</span>
+<span class="sd">    :type requiredPowers: array</span>
 
 <span class="sd">    :param RatedEnginePower:</span>
 <span class="sd">        The maximum rated engine required</span>
-<span class="sd">    :return RatedEnginePower: float</span>
+<span class="sd">    :type RatedEnginePower: float</span>
 
 <span class="sd">    :param ScalingStartTimes:</span>
 <span class="sd">         Contains the start times of the segments to scale in seconds.</span>
@@ -594,11 +610,19 @@
 <span class="sd">        Accelerations from the whole WLTC cycles.</span>
 <span class="sd">    :type accelerations: array</span>
 
-<span class="sd">    :return downscaled, downscaledVehicleSpeeds, requiredToRatedPowerRatios, calculatedDownscalingFactors,</span>
-<span class="sd">            downscalingFactor, requiredToRatedPowerRatio:</span>
-<span class="sd">        Data required to calculate the final Trace</span>
-<span class="sd">    :type downscaled, downscaledVehicleSpeeds, requiredToRatedPowerRatios, calculatedDownscalingFactors,</span>
-<span class="sd">    downscalingFactor, requiredToRatedPowerRatio: boolean array, boolean array, array, array, float, float</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - downscaled (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            Array that contains the values that have been downscaled as True</span>
+<span class="sd">        - downscaledVehicleSpeeds (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The vehicle speed after have been downscaled</span>
+<span class="sd">        - requiredToRatedPowerRatios (:py:class:`numpy.array`):</span>
+<span class="sd">            The required power ratios after apply the downscaling factor</span>
+<span class="sd">        - calculatedDownscalingFactors (:py:class:`numpy.array`):</span>
+<span class="sd">            The downscaling factor for each time of the whole cycle</span>
+<span class="sd">        - downscalingFactor (:py:class:`float`):</span>
+<span class="sd">            The downscaling factor applicable</span>
+<span class="sd">        - requiredToRatedPowerRatio (:py:class:`float`):</span>
+<span class="sd">            The maximum required to rated power ratio</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">downscalingFactor</span><span class="p">,</span> <span class="n">requiredToRatedPowerRatio</span> <span class="o">=</span> <span class="n">_calculate_downscaling_factor</span><span class="p">(</span>
@@ -678,10 +702,11 @@
 <span class="sd">        able to reach the maximum speed of that trace.</span>
 <span class="sd">    :type CappedSpeed: array</span>
 
-<span class="sd">    :return capped, cappedVehicleSpeeds:</span>
-<span class="sd">        The boolean array that show the vehicle speeds capped and the vehicle speeds capped according to</span>
-<span class="sd">        the maximum value available</span>
-<span class="sd">    :rtype cappedVehicleSpeeds: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - capped (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The boolean array that show the vehicle speeds capped</span>
+<span class="sd">        - cappedVehicleSpeeds (:py:class:`numpy.array`):</span>
+<span class="sd">            The vehicle speeds capped according to the maximum value available</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">cappedVehicleSpeeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">downscaledVehicleSpeeds</span><span class="p">)</span>
 
@@ -704,7 +729,6 @@
         <span class="s2">&quot;compensatedVehicleSpeeds&quot;</span><span class="p">,</span>
         <span class="s2">&quot;downscaledCompensated&quot;</span><span class="p">,</span>
         <span class="s2">&quot;cappedCompensated&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;compensatedTraceTimes&quot;</span><span class="p">,</span>
         <span class="s2">&quot;additionalSamples&quot;</span><span class="p">,</span>
     <span class="p">],</span>
 <span class="p">)</span>
@@ -768,12 +792,24 @@
 <span class="sd">    :param downscaled:</span>
 <span class="sd">        The boolean array that show the vehicle speeds downscaled.</span>
 <span class="sd">    :type  downscaled: boolean array</span>
-<span class="sd">    :return compensated, compensatedTraceTimes, compensatedVehicleSpeeds, downscaledCompensated, cappedCompensated,</span>
-<span class="sd">            compensatedTraceTimes, additionalSamples:</span>
-<span class="sd">        Data required to calculate the final Trace</span>
-<span class="sd">    :rtype compensated, compensatedTraceTimes, compensatedVehicleSpeeds, downscaledCompensated, cappedCompensated,</span>
-<span class="sd">            compensatedTraceTimes, additionalSamples: boolean array, array, array, boolean array, boolean array,</span>
-<span class="sd">            array, array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - compensated (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The boolean array that contains the values that have been compensated as True</span>
+<span class="sd">        - compensatedTraceTimes (:py:class:`numpy.array`):</span>
+<span class="sd">            The trace times that array contains the new values of the compensation if</span>
+<span class="sd">            compensation has been necessary</span>
+<span class="sd">        - compensatedVehicleSpeeds (:py:class:`numpy.array`):</span>
+<span class="sd">            The vehicle speeds array that contains the new values of the compensation if</span>
+<span class="sd">            compensation has been necessary</span>
+<span class="sd">        - downscaledCompensated (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The boolean array that contains the values that have been downscaled and</span>
+<span class="sd">            compensated as True</span>
+<span class="sd">        - cappedCompensated (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The boolean array that contains the values that have been capped and</span>
+<span class="sd">            compensated as True</span>
+<span class="sd">        - additionalSamples (:py:class:`numpy.array`):</span>
+<span class="sd">            The additional samples after apply compensation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">compensated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">originalTraceTimesCount</span><span class="p">)</span>
@@ -836,7 +872,6 @@
         <span class="n">compensatedVehicleSpeeds</span><span class="p">,</span>
         <span class="n">downscaledCompensated</span><span class="p">,</span>
         <span class="n">cappedCompensated</span><span class="p">,</span>
-        <span class="n">compensatedTraceTimes</span><span class="p">,</span>
         <span class="n">additionalSamples</span><span class="p">,</span>
     <span class="p">)</span></div>
 
@@ -866,13 +901,13 @@
 <span class="sd">        The downscaling factor for the cycle</span>
 <span class="sd">    :type downscalingFactor: float</span>
 
-<span class="sd">    :return: requiredToRatedPowerRatio</span>
+<span class="sd">    :param requiredToRatedPowerRatio:</span>
 <span class="sd">        The required rated power ratio after apply the downscaling factor.</span>
-<span class="sd">    :rtype: float</span>
+<span class="sd">    :type requiredToRatedPowerRatio: float</span>
 
-<span class="sd">    :return: requiredToRatedPowerRatio</span>
+<span class="sd">    :param requiredToRatedPowerRatio:</span>
 <span class="sd">        The required rated power ratio after apply the downscaling factors.</span>
-<span class="sd">    :rtype: float</span>
+<span class="sd">    :type requiredToRatedPowerRatio: float</span>
 
 <span class="sd">    :param calculatedDownscalingFactors:</span>
 <span class="sd">            The downscaling factor for the cycle</span>
@@ -918,9 +953,9 @@
 <span class="sd">        The boolean array that shows the vehicle speeds capped and compensated</span>
 <span class="sd">    :param compensated:boolean array</span>
 
-<span class="sd">    :return speed_trace:</span>
-<span class="sd">        The dictionary that contains the all final values of speed trace</span>
-<span class="sd">    :type speed_trace: dict</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - speed_trace (:py:class:`dict`):</span>
+<span class="sd">            The dictionary that contains the all final values of speed trace</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">calculatedDownscalingFactor</span> <span class="o">=</span> <span class="n">downscalingFactor</span>
     <span class="k">if</span> <span class="n">calculatedDownscalingFactor</span> <span class="o">&lt;=</span> <span class="mf">0.01</span><span class="p">:</span>
@@ -948,14 +983,6 @@
         <span class="p">),</span>
         <span class="s2">&quot;CalculatedDownscalingPercentage&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
             <span class="p">(</span><span class="n">calculatedDownscalingFactor</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
-        <span class="p">)</span>
-        <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
-        <span class="s2">&quot;RequiredToRatedPowerRatios&quot;</span><span class="p">:</span> <span class="n">requiredToRatedPowerRatios</span><span class="p">,</span>
-        <span class="s2">&quot;calculatedDownscalingFactors&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">calculatedDownscalingFactors</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
-        <span class="p">),</span>
-        <span class="s2">&quot;CalculatedDownscalingPercentages&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">calculatedDownscalingFactors</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
         <span class="p">)</span>
         <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
         <span class="s2">&quot;TotalChecksum&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">originalVehicleSpeeds</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">/</span> <span class="mi">10</span><span class="p">),</span>

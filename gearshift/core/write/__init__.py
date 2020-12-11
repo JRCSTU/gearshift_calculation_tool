@@ -16,8 +16,6 @@ Sub-Modules:
     :toctree: write/
 
     excel
-    schema
-    validate
 """
 import os
 import os.path as osp

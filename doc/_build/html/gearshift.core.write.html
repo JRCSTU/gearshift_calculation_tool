@@ -36,9 +36,7 @@
 
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Gearshift Model" href="model.html" />
-    <link rel="prev" title="gearshift.core.model.scaleTrace package" href="gearshift.core.model.scaleTrace.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,20 +82,11 @@
             
             
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">gearshift</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="gearshift.html">gearshift package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="gearshift.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="gearshift.cli.html">gearshift.cli package</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="gearshift.core.html">gearshift.core package</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="gearshift.html#module-gearshift">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Gearshift Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
@@ -145,12 +134,6 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="modules.html">gearshift</a> &raquo;</li>
-        
-          <li><a href="gearshift.html">gearshift package</a> &raquo;</li>
-        
-          <li><a href="gearshift.core.html">gearshift.core package</a> &raquo;</li>
-        
       <li>gearshift.core.write package</li>
     
     
@@ -181,12 +164,21 @@
 <dl class="py function">
 <dt id="gearshift.core.write.excel.write_to_excel">
 <code class="sig-name descname">write_to_excel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">solution_case</span></em>, <em class="sig-param"><span class="n">fp</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/write/excel.html#write_to_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.write.excel.write_to_excel" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Save output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solution_case</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Dictionary that contain outputs.</p></li>
+<li><p><strong>fp</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Output path and file name.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <div class="section" id="module-gearshift.core.write">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gearshift.core.write" title="Permalink to this headline">¶</a></h2>
-<p>Functions and <cite>dsp</cite> model to load data from a GEARSHIFT input file.</p>
+<p>Functions and <cite>dsp</cite> model to writre data from a GEARSHIFT input file.</p>
 <p>Sub-Modules:</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -202,7 +194,18 @@
 <dl class="py function">
 <dt id="gearshift.core.write.save_output_file">
 <code class="sig-name descname">save_output_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sol</span></em>, <em class="sig-param"><span class="n">output_folder</span></em>, <em class="sig-param"><span class="n">timestamp</span></em>, <em class="sig-param"><span class="n">output_format</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/write.html#save_output_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.write.save_output_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a excel file for each input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sol</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of dictionaries that contains the solution for the different inputs cases</p></li>
+<li><p><strong>output_folder</strong> (<em>os.path</em>) – Path to save the different outputs files</p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – The current datetime</p></li>
+<li><p><strong>output_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The extension format of the output file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </div>
@@ -212,15 +215,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="model.html" class="btn btn-neutral float-right" title="Gearshift Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="gearshift.core.model.scaleTrace.html" class="btn btn-neutral float-left" title="gearshift.core.model.scaleTrace package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

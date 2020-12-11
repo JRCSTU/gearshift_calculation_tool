@@ -14,7 +14,7 @@ import os
 import sys
 from os.path import abspath, join, dirname
 
-prj_dir = abspath(join(dirname(__file__), "../gearshift"))
+prj_dir = abspath(join(dirname(__file__), ".."))
 sys.path.insert(0, prj_dir)
 
 

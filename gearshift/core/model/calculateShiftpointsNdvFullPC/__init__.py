@@ -12,11 +12,13 @@ Docstrings should provide sufficient understanding for any individual function.
 
 Sub-Modules:
 
-.. currentmodule:: gearshift.core.model.physical
+.. currentmodule:: gearshift.core.model.calculateShiftpointsNdvFullPC
 
 .. autosummary::
     :nosignatures:
     :toctree: calculateShiftpointsNdvFullPC/
+
+    corrections
 """
 
 import schedula as sh
@@ -445,11 +447,10 @@ def determine_rated_engine_power(
     """
     Determine rated engine power and rated engine speed from the full power curve
 
-    .. note::
-    The following requirement was deleted from the regulation but as there is no
-    new requirement we will stay with the old one :
-    If the maximum power is developed over an engine speed range, n_rated shall be
-    the minimum of this range
+    .. note:: The following requirement was deleted from the regulation but as there is no
+       new requirement we will stay with the old one :
+       If the maximum power is developed over an engine speed range, n_rated shall be
+       the minimum of this range
 
     :param RatedEnginePower:
         Annex 2 (2a) P_rated.
@@ -666,8 +667,8 @@ def minimum_engine_speed_in_motion(
             This is the maximum of calculated value and input parameter value.
 
     .. note:: The calculation of minimum engine speeds for the second gear does
-        not fully confirm to the latest legislation text, but rather reflects
-        the previous revision of it until (2ka) is clarified.
+       not fully confirm to the latest legislation text, but rather reflects
+       the previous revision of it until (2ka) is clarified.
     """
     CalculatedMinDriveEngineSpeed1st = IdlingEngineSpeed
     CalculatedMinDriveEngineSpeed1stTo2nd = np.round(1.15 * IdlingEngineSpeed)
@@ -1442,7 +1443,7 @@ def determine_possible_gears(
             for each gear i from 1 to ng and
             for each second j of the cycle trace.
             .. note::  Note that this are the uncorrected values n_i,j
-                i.e. without the increments required by Annex 2 (3.3)
+               i.e. without the increments required by Annex 2 (3.3)
         - InitialRequiredEngineSpeeds (:py:class:`numpy.array`):
             The initial engine speeds required for each gear i from 1 to ng and
             for each second j of the cycle trace.
@@ -2524,10 +2525,9 @@ def interleave_clutch(
     """
     Interleave the clutch Sub-Annex 2 (1.5)
 
-    .. note::
-    The prescriptions for the clutch operation shall not be applied if the clutch
-    is operated automatically without the need of an engagement or disengagement
-    of the driver.
+    .. note:: The prescriptions for the clutch operation shall not be applied if the clutch
+       is operated automatically without the need of an engagement or disengagement
+       of the driver.
 
     :param TraceTimesCount:
         The length of trace times re-sampled in 1Hz
@@ -3007,9 +3007,6 @@ def generate_gears(
     :param GearSequenceStarts:
         Array that contains the position of the gear sequence start for the different
         gears.
-        .. note::
-        A clutch disengagement and a gear change cannot be indicated at the same time
-        and the clutch disengagement will therefore be indicated one second earlier.
     :type GearSequenceStarts: array
 
     :param GearNames:
@@ -3164,6 +3161,10 @@ def generate_gears(
         - shift_points (:py:class:`dict`):
             Dictionary that contains the all input parameters with the expected
             output format.
+
+    .. note::
+        A clutch disengagement and a gear change cannot be indicated at the same time
+        and the clutch disengagement will therefore be indicated one second earlier.
     """
     # This is a test parameter that can be included in the inputs in the future
     ReturnAdjustedEngSpeedsAndAvlPowers = True

@@ -16,8 +16,6 @@ Sub-Modules:
     :toctree: load/
 
     excel
-    schema
-    validate
 """
 
 import io

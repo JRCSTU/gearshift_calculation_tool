@@ -83,8 +83,10 @@
             
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">gearshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../model.html">Gearshift Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../api.html">API Reference</a></li>
 </ul>
 
@@ -195,19 +197,19 @@
 
 <span class="sd">    :param CorrectionsCells:</span>
 <span class="sd">        A cell array of gear correction strings BEFORE the current correction</span>
-<span class="sd">    :type CorrectionsCells: array</span>
+<span class="sd">    :type CorrectionsCells: numpy.array</span>
 
 <span class="sd">    :param InitialGears:</span>
 <span class="sd">        A cell array of gear numbers AFTER the current correction</span>
-<span class="sd">    :type InitialGears: array</span>
+<span class="sd">    :type InitialGears: numpy.array</span>
 
 <span class="sd">    :param InitialGearsPrev:</span>
 <span class="sd">        A cell array of gear numbers BEFORE the current correction</span>
-<span class="sd">    :type InitialGearsPrev: array</span>
+<span class="sd">    :type InitialGearsPrev: numpy.array</span>
 
 <span class="sd">    :param InitialGearsPrev:</span>
 <span class="sd">        A cell array of gear numbers BEFORE the current correction</span>
-<span class="sd">    :type InitialGearsPrev: array</span>
+<span class="sd">    :type InitialGearsPrev: numpy.array</span>
 
 <span class="sd">    :param correctionType:</span>
 <span class="sd">        A string indicating the type of the current correction</span>
@@ -218,21 +220,23 @@
 <span class="sd">        A number indicating the iteration of the current correction</span>
 <span class="sd">    :type correctionNbr: Integer</span>
 
-<span class="sd">    :return CorrectionsCells:</span>
-<span class="sd">        A cell array of gear correction strings AFTER the current correction</span>
-<span class="sd">        eg</span>
-<span class="sd">        ...</span>
-<span class="sd">        &#39;4 --- 4 4b1 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2&#39;</span>
-<span class="sd">        &#39;4 --- 4 4b1 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3&#39;</span>
-<span class="sd">        &#39;5 --- 5 4b1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4b2 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3&#39;</span>
-<span class="sd">        &#39;5 --- 5 --- 5 4c1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4g2 3 --- 3 --- 3 --- 3 --- 3&#39;</span>
-<span class="sd">        &#39;5 --- 5 --- 5 4c1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4g2 3 --- 3 --- 3 --- 3 --- 3&#39;</span>
-<span class="sd">        ...</span>
-<span class="sd">    :rtype CorrectionsCells: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - CorrectionsCells (:py:class:`numpy.array`):</span>
+<span class="sd">            A cell array of gear correction strings AFTER the current correction.</span>
+<span class="sd">            For example:</span>
 
-<span class="sd">    :return CorrectionsCells:</span>
-<span class="sd">        A cell array of gear numbers AFTER current correction ie before next correction</span>
-<span class="sd">    :rtype CorrectionsCells: array</span>
+<span class="sd">            &#39;4 --- 4 4b1 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2 --- 2&#39;</span>
+
+<span class="sd">            &#39;4 --- 4 4b1 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3&#39;</span>
+
+<span class="sd">            &#39;5 --- 5 4b1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4b2 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3 --- 3&#39;</span>
+
+<span class="sd">            &#39;5 --- 5 --- 5 4c1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4g2 3 --- 3 --- 3 --- 3 --- 3&#39;</span>
+
+<span class="sd">            &#39;5 --- 5 --- 5 4c1 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 --- 4 4g2 3 --- 3 --- 3 --- 3 --- 3&#39;</span>
+
+<span class="sd">        - InitialGearsPrev (:py:class:`numpy.array`):</span>
+<span class="sd">            A cell array of gear numbers AFTER current correction i.e. before next correction</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">InitialGearsCells</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">)))))</span>
@@ -300,6 +304,86 @@
     <span class="n">PHASE_ACCELERATION</span><span class="p">,</span>
     <span class="n">NoOfGearsFinal</span><span class="p">,</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sub-Annex 2 in section 4.(b) :</span>
+
+<span class="sd">    If a downshift is required during an acceleration phase</span>
+<span class="sd">    or at the beginning of the acceleration phase</span>
+<span class="sd">    the gear required during this downshift shall be noted (i_DS).</span>
+
+<span class="sd">    The starting point of a correction procedure is defined by either</span>
+<span class="sd">    the last previous second when i_DS was identified</span>
+<span class="sd">    or by the starting point of the acceleration phase,</span>
+<span class="sd">    if all time samples before have gears &gt; i_DS.</span>
+
+<span class="sd">    The highest gear of the time samples before the downshift</span>
+<span class="sd">    determines the reference gear i_ref for the downshift.</span>
+<span class="sd">    A downshift where i_DS = i_ref - 1</span>
+<span class="sd">    is referred to as a one step downshift,</span>
+<span class="sd">    a downshift where i_DS = i_ref - 2</span>
+<span class="sd">    is referred to as a two step downshift,</span>
+<span class="sd">    a downshift where i_DS = i_ref – 3</span>
+<span class="sd">    is referred to as a three step downshift.</span>
+
+<span class="sd">    Visualization of rules implemented:</span>
+
+<span class="sd">    initial gear sequence:</span>
+
+<span class="sd">    .. image:: ../doc/_static/images/initial_gears_correction_4b.*</span>
+<span class="sd">    .. image:: ../doc/_static/images/correction_4b_1.*</span>
+<span class="sd">    .. image:: ../doc/_static/images/correction_4b_2.*</span>
+<span class="sd">    .. image:: ../doc/_static/images/correction_4b_3.*</span>
+<span class="sd">    .. image:: ../doc/_static/images/correction_4b_4.*</span>
+
+<span class="sd">    final gear sequence:</span>
+
+<span class="sd">    .. image:: ../doc/_static/images/correction_4b_5.*</span>
+
+<span class="sd">    :param InitialGears:</span>
+<span class="sd">        A cell array of gear numbers AFTER the previous correction</span>
+<span class="sd">    :type InitialGears: numpy.array</span>
+
+<span class="sd">    :param Corr4bToBeDoneAfterCorr4a:</span>
+<span class="sd">        Boolean that check if the correction 4b to be done after correction 4a</span>
+<span class="sd">    :type Corr4bToBeDoneAfterCorr4a: bool</span>
+
+<span class="sd">    :param Corr4bToBeDoneAfterCorr4d:</span>
+<span class="sd">        Boolean that check if the correction 4b to be done after correction 4d</span>
+<span class="sd">    :type Corr4bToBeDoneAfterCorr4d: bool</span>
+
+<span class="sd">    :param PhaseValues:</span>
+<span class="sd">        Contains the points of changes phases</span>
+<span class="sd">    :type PhaseValues: numpy.array</span>
+
+<span class="sd">    :param PhaseStarts:</span>
+<span class="sd">        Contains the points that are start point from a phase</span>
+<span class="sd">    :type PhaseStarts: numpy.array</span>
+
+<span class="sd">    :param PhaseEnds:</span>
+<span class="sd">        Contains the points that are end point from a phase</span>
+<span class="sd">    :type PhaseEnds: numpy.array</span>
+
+<span class="sd">    :param PHASE_ACCELERATION_FROM_STANDSTILL:</span>
+<span class="sd">        Acceleration phase following a standstill phase</span>
+<span class="sd">    :type PHASE_ACCELERATION_FROM_STANDSTILL: int</span>
+
+<span class="sd">    :param PHASE_ACCELERATION:</span>
+<span class="sd">        Acceleration phase</span>
+<span class="sd">    :type PHASE_ACCELERATION: int</span>
+
+<span class="sd">    :param NoOfGearsFinal:</span>
+<span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
+<span class="sd">        if is necessary.</span>
+<span class="sd">    :type NoOfGearsFinal: int</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - InitialGears (:py:class:`numpy.array`):</span>
+<span class="sd">            A cell array of gear numbers AFTER the current correction</span>
+<span class="sd">        - Corr4bToBeDoneAfterCorr4a (:py:class:`bool`):</span>
+<span class="sd">            Boolean that check if the correction 4b to be done after correction 4a</span>
+<span class="sd">        - Corr4bToBeDoneAfterCorr4d (:py:class:`bool`):</span>
+<span class="sd">            Boolean that check if the correction 4b to be done after correction 4d</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">AnyAccelerationStarts</span> <span class="o">=</span> <span class="n">PhaseStarts</span><span class="p">[</span>
         <span class="n">np</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">PhaseValues</span> <span class="o">==</span> <span class="n">PHASE_ACCELERATION</span><span class="p">),</span>
@@ -422,6 +506,43 @@
     <span class="n">InConstantSpeed</span><span class="p">,</span>
     <span class="n">InAccelerationAnyDuration</span><span class="p">,</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sub-Annex 2 in sectoin 4.(a)</span>
+
+<span class="sd">    If a one step higher gear (n+1) is required for only 1 second</span>
+<span class="sd">    and the gears before and after are the same (n),</span>
+<span class="sd">    or one of them is one step lower (n-1),</span>
+<span class="sd">    gear (n+1) shall be corrected to gear n.</span>
+
+<span class="sd">    :param InitialGears:</span>
+<span class="sd">        A cell array of gear numbers AFTER the previous correction</span>
+<span class="sd">    :type InitialGears: numpy.array</span>
+
+<span class="sd">    :param Corr4bToBeDoneAfterCorr4a:</span>
+<span class="sd">        Boolean that check if the correction 4b to be done after correction 4a</span>
+<span class="sd">    :type Corr4bToBeDoneAfterCorr4a: bool</span>
+
+<span class="sd">    :param PossibleGears:</span>
+<span class="sd">        The possible gears calculated by each second</span>
+<span class="sd">    :type PossibleGears: numpy.array</span>
+
+<span class="sd">    :param InAcceleration:</span>
+<span class="sd">        Contains the points that are in acceleration phase as a True</span>
+<span class="sd">    :type InAcceleration: boolean numpy.array</span>
+
+<span class="sd">    :param InConstantSpeed:</span>
+<span class="sd">        Contains the points that are in constant speed phase as a True</span>
+<span class="sd">    :type InConstantSpeed: boolean numpy.array</span>
+
+<span class="sd">    :param InAccelerationAnyDuration:</span>
+<span class="sd">         some gear corrections ignore the duration of acceleration phases</span>
+<span class="sd">         so save acceleration phases with any duration here</span>
+<span class="sd">    :type InAccelerationAnyDuration: boolean numpy.array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - InitialGears (:py:class:`numpy.array`):</span>
+<span class="sd">            A cell array of gear numbers AFTER the current correction</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
 
     <span class="n">PreviousInitialGears</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">))</span>
@@ -452,23 +573,26 @@
 
         <span class="n">nextInitialGears</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
 
-        <span class="n">upshiftsOneOrTwoGearsOneSec</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">union1d</span><span class="p">,</span>
-            <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">nextInitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">upshiftsOneOrTwoGearsOneSec</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">reduce</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">union1d</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">nextInitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                    <span class="p">),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">nextInitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span>
+                    <span class="p">),</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">nextInitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                    <span class="p">),</span>
                 <span class="p">),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">nextInitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span>
-                <span class="p">),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">nextInitialGears</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
-                <span class="p">),</span>
-            <span class="p">),</span>
-        <span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="o">+</span> <span class="mi">1</span>
+        <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">shift</span> <span class="ow">in</span> <span class="n">upshiftsOneOrTwoGearsOneSec</span><span class="p">:</span>
             <span class="c1"># reduce upshift only if possible for complete duration</span>
@@ -557,20 +681,20 @@
         <span class="c1"># exclude singles immediately after singles</span>
         <span class="c1"># as later singles will be adjusted to earlier singles</span>
         <span class="n">update</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextHigher</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextHigher</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextHigher</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextHigher</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">)</span>
         <span class="n">singlesInAccelOrConstNextHigher</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">InAccelOrConst</span><span class="p">))</span>
         <span class="n">singlesInAccelOrConstNextHigher</span><span class="p">[</span><span class="n">update</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="c1"># exclude singles immediately after downshifts</span>
         <span class="n">update</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextHigher</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
-                <span class="p">),</span>
-            <span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextHigher</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
         <span class="n">singlesInAccelOrConstNextHigher</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">InAccelOrConst</span><span class="p">))</span>
         <span class="n">singlesInAccelOrConstNextHigher</span><span class="p">[</span><span class="n">update</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
@@ -619,9 +743,9 @@
 
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextLower</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">update</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextLower</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextLower</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
-                <span class="p">)</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextLower</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">singlesInAccelOrConstNextLower</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="p">)</span>
             <span class="n">singlesInAccelOrConstNextLower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">InAccelOrConst</span><span class="p">))</span>
             <span class="n">singlesInAccelOrConstNextLower</span><span class="p">[</span><span class="n">update</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
@@ -785,7 +909,8 @@
 
 <div class="viewcode-block" id="applyCorrection4c"><a class="viewcode-back" href="../../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.html#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4c">[docs]</a><span class="k">def</span> <span class="nf">applyCorrection4c</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">,</span> <span class="n">PossibleGears</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Regulation Annex 2, 4.(c) :</span>
+<span class="sd">    Sub-Annex 2 in section 4.(c)</span>
+
 <span class="sd">    If gear i is used for a time sequence of 1 to 5 seconds</span>
 <span class="sd">    and the gear prior to this sequence is one step lower</span>
 <span class="sd">    and the gear after this sequence is one or two steps lower than within this sequence</span>
@@ -794,10 +919,21 @@
 <span class="sd">    the gear for the sequence shall be corrected to</span>
 <span class="sd">    the maximum of the gears before and after the sequence.</span>
 <span class="sd">    In all cases i-1 &gt;= i_min shall be fulfilled.</span>
-<span class="sd">    NOTE:</span>
-<span class="sd">    The corrected gear will be i-1 in all cases.</span>
-<span class="sd">    3.5. Determination of possible gears to be used.</span>
-<span class="sd">    The lowest final possible gear is i_min.</span>
+
+<span class="sd">    .. note:: The corrected gear will be i-1 in all cases. 3.5. Determination of possible</span>
+<span class="sd">        gears to be used. The lowest final possible gear is i_min.</span>
+
+<span class="sd">    :param InitialGears:</span>
+<span class="sd">        A cell array of gear numbers AFTER the previous correction</span>
+<span class="sd">    :type InitialGears: numpy.array</span>
+
+<span class="sd">    :param PossibleGears:</span>
+<span class="sd">        The possible gears calculated by each second</span>
+<span class="sd">    :type PossibleGears: numpy.array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - InitialGears (:py:class:`numpy.array`):</span>
+<span class="sd">            A cell array of gear numbers AFTER the current correction</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">minPossibleGears</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">(</span><span class="n">PossibleGears</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">PossibleGears</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -857,9 +993,9 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Regulation Annex 2, 4.(d) :</span>
 <span class="sd">    No upshift to a higher gear shall be performed within a deceleration phase.</span>
-<span class="sd">    NOTE:</span>
-<span class="sd">    The newest regulation ECE/TRANS/WP.29/GRPE/2019/2 moved the text part below to paragraph Annex 2, 4.(e).</span>
-<span class="sd">    But we keep it here as it does not matter whether it will be executed at the end of 4.(d) or at the begin of 4.(e).</span>
+
+<span class="sd">    .. note:: The newest regulation ECE/TRANS/WP.29/GRPE/2019/2 moved the text part below to paragraph Annex 2, 4.(e).</span>
+<span class="sd">        But we keep it here as it does not matter whether it will be executed at the end of 4.(d) or at the begin of 4.(e).</span>
 <span class="sd">    No upshift to a higher gear at the transition</span>
 <span class="sd">    from an acceleration or constant speed phase</span>
 <span class="sd">    to a deceleration phase shall be performed</span>
@@ -871,6 +1007,52 @@
 <span class="sd">    an upshift by 1 gear shall be performed instead.</span>
 <span class="sd">    In this case, no further modifications shall be perfomed</span>
 <span class="sd">    in the following gear use checks.</span>
+
+<span class="sd">    :param InitialGears:</span>
+<span class="sd">        A cell array of gear numbers AFTER the previous correction</span>
+<span class="sd">    :type InitialGears: numpy.array</span>
+
+<span class="sd">    :param PhaseStarts:</span>
+<span class="sd">        Contains the points that are start point from a phase</span>
+<span class="sd">    :type PhaseStarts: numpy.array</span>
+
+<span class="sd">    :param PhaseEnds:</span>
+<span class="sd">        Contains the points that are end point from a phase</span>
+<span class="sd">    :type PhaseEnds: numpy.array</span>
+
+<span class="sd">    :param PhaseValues:</span>
+<span class="sd">        Contains the points of changes phases</span>
+<span class="sd">    :type PhaseValues: numpy.array</span>
+
+<span class="sd">    :param PHASE_DECELERATION:</span>
+<span class="sd">        time period of more than 2 seconds with required vehicle</span>
+<span class="sd">                speed &gt;= 1km/h and monotonically decreasing</span>
+<span class="sd">    :type PHASE_DECELERATION: int</span>
+
+<span class="sd">    :param PHASE_DECELERATION_TO_STANDSTILL:</span>
+<span class="sd">        DECELERATION phase preceding a STANDSTILL phase</span>
+<span class="sd">    :type PHASE_DECELERATION_TO_STANDSTILL: int</span>
+
+<span class="sd">    :param corr_4d_applied_before:</span>
+<span class="sd">        Boolean array that check if correction 4d have been applied before as True</span>
+<span class="sd">    :type corr_4d_applied_before: boolean numpy.array</span>
+
+<span class="sd">    :param TraceTimesCount:</span>
+<span class="sd">        The length of trace times re-sampled in 1Hz</span>
+<span class="sd">    :type TraceTimesCount: int</span>
+
+<span class="sd">    :param NoOfGearsFinal:</span>
+<span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
+<span class="sd">        if is necessary.</span>
+<span class="sd">    :type NoOfGearsFinal: int</span>
+
+<span class="sd">    :param RequiredVehicleSpeeds:</span>
+<span class="sd">        The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
+<span class="sd">    :type RequiredVehicleSpeeds: numpy.array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - InitialGears (:py:class:`numpy.array`):</span>
+<span class="sd">            A cell array of gear numbers AFTER the current correction</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">AnyDecelerationStarts</span> <span class="o">=</span> <span class="n">PhaseStarts</span><span class="p">[</span>
         <span class="n">np</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span>
@@ -993,12 +1175,11 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Regulation Annex 2, 4.(e) :</span>
 
-<span class="sd">        NOTE:</span>
-<span class="sd">    The newest regulation ECE/TRANS/WP.29/GRPE/2019/2</span>
-<span class="sd">    moved this gear correction to paragraph</span>
-<span class="sd">    3.3. Selection of possible gears with respect to engine speed.</span>
-<span class="sd">    But we keep it here to check also additional usages of gear 2,</span>
-<span class="sd">    which may result from other gear corrections done before.</span>
+<span class="sd">    .. note:: The newest regulation ECE/TRANS/WP.29/GRPE/2019/2</span>
+<span class="sd">        moved this gear correction to paragraph</span>
+<span class="sd">        3.3. Selection of possible gears with respect to engine speed.</span>
+<span class="sd">        But we keep it here to check also additional usages of gear 2,</span>
+<span class="sd">        which may result from other gear corrections done before.</span>
 
 <span class="sd">    During a deceleration phase, gears with n_gear &gt; 2 shall be used</span>
 <span class="sd">    as long as the engine speed does not drop below n_min_drive.</span>
@@ -1008,6 +1189,54 @@
 <span class="sd">    If the engine speed drops below n_idle, the clutch shall be disengaged.</span>
 <span class="sd">    If the deceleration phase is the last part of a short trip shortly before a stop phase,</span>
 <span class="sd">    the second gear shall be used as long as the engine speed does not drop below n_idle.</span>
+
+<span class="sd">    :param InitialGears:</span>
+<span class="sd">        A cell array of gear numbers AFTER the previous correction</span>
+<span class="sd">    :type InitialGears: numpy.array</span>
+
+<span class="sd">    :param PhaseStarts:</span>
+<span class="sd">        Contains the points that are start point from a phase</span>
+<span class="sd">    :type PhaseStarts: numpy.array</span>
+
+<span class="sd">    :param PhaseEnds:</span>
+<span class="sd">        Contains the points that are end point from a phase</span>
+<span class="sd">    :type PhaseEnds: numpy.array</span>
+
+<span class="sd">    :param PhaseValues:</span>
+<span class="sd">        Contains the points of changes phases</span>
+<span class="sd">    :type PhaseValues: numpy.array</span>
+
+<span class="sd">    :param ClutchDisengaged:</span>
+<span class="sd">        The clutch disengaged by each second.</span>
+<span class="sd">    :type ClutchDisengaged: boolean numpy.array</span>
+
+<span class="sd">    :param InitialRequiredEngineSpeeds:</span>
+<span class="sd">        The initial engine speeds required for each gear i from 1 to ng and</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">    :type InitialRequiredEngineSpeeds: numpy.array</span>
+
+<span class="sd">    :param IdlingEngineSpeed:</span>
+<span class="sd">        Annex 2 (2c) n_idle. The idling speed.</span>
+<span class="sd">    :type IdlingEngineSpeed: float</span>
+
+<span class="sd">    :param PHASE_DECELERATION:</span>
+<span class="sd">        time period of more than 2 seconds with required vehicle</span>
+<span class="sd">                speed &gt;= 1km/h and monotonically decreasing</span>
+<span class="sd">    :type PHASE_DECELERATION: int</span>
+
+<span class="sd">    :param PHASE_DECELERATION_TO_STANDSTILL:</span>
+<span class="sd">        DECELERATION phase preceding a STANDSTILL phase</span>
+<span class="sd">    :type PHASE_DECELERATION_TO_STANDSTILL: int</span>
+
+<span class="sd">    :param Phases:</span>
+<span class="sd">        The list of phases that are used during whole cycle</span>
+<span class="sd">    :type Phases: numpy.array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - InitialGears (:py:class:`numpy.array`):</span>
+<span class="sd">            A cell array of gear numbers AFTER the current correction</span>
+<span class="sd">        - ClutchDisengaged (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The clutch disengaged by each second AFTER the current correction</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">AnyDecelerationStarts</span> <span class="o">=</span> <span class="n">PhaseStarts</span><span class="p">[</span>
         <span class="n">np</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span>
@@ -1083,6 +1312,51 @@
     <span class="n">InDecelerationToStandstill</span><span class="p">,</span>
     <span class="n">InDeceleration</span><span class="p">,</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sub-Annex 2 in section 4.(f)</span>
+
+<span class="sd">    If during a deceleration phase the duration of a gear sequence between</span>
+<span class="sd">    two gear sequences of 3 seconds or more is only 1 second, it shall be</span>
+<span class="sd">    replaced by gear 0 and the clutch shall be disengaged.</span>
+
+<span class="sd">    :param InitialGears:</span>
+<span class="sd">        A cell array of gear numbers AFTER the previous correction</span>
+<span class="sd">    :type InitialGears: numpy.array</span>
+
+<span class="sd">    :param ClutchDisengaged:</span>
+<span class="sd">        The clutch disengaged by each second.</span>
+<span class="sd">    :type ClutchDisengaged: boolean numpy.array</span>
+
+<span class="sd">    :param SuppressGear0DuringDownshifts:</span>
+<span class="sd">        Sub-Annex 2 (4f).If a gear is used for only 1 second during a deceleration phase</span>
+<span class="sd">        it shall be replaced by gear 0 with clutch disengaged, in order to avoid too high</span>
+<span class="sd">        engine speeds. But if this is not an issue, the manufacturer may allow to use the</span>
+<span class="sd">        lower gear of the following second directly instead of gear 0 for downshifts of</span>
+<span class="sd">        up to 3 steps.</span>
+<span class="sd">    :type SuppressGear0DuringDownshifts: bool</span>
+
+<span class="sd">    :param PossibleGears:</span>
+<span class="sd">        The possible gears calculated by each second</span>
+<span class="sd">    :type PossibleGears: numpy.array</span>
+
+<span class="sd">    :param InStandStill:</span>
+<span class="sd">        Contains the points that are in standstill phase as a True</span>
+<span class="sd">    :type InStandStill: boolean numpy.array</span>
+
+<span class="sd">    :param InDecelerationToStandstill:</span>
+<span class="sd">        The array that contains the seconds from deceleration to standstill as a True</span>
+<span class="sd">    :type InDecelerationToStandstill: boolean numpy.array</span>
+
+<span class="sd">    :param InDeceleration:</span>
+<span class="sd">        Contains the points that are in deceleration phase as a True</span>
+<span class="sd">    :type InDeceleration: boolean array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - InitialGears (:py:class:`numpy.array`):</span>
+<span class="sd">            A cell array of gear numbers AFTER the current correction</span>
+<span class="sd">        - ClutchDisengaged (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The clutch disengaged by each second AFTER the current correction</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
 
     <span class="n">gear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">)</span>

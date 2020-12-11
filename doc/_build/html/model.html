@@ -37,8 +37,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Reference" href="api.html" />
-    <link rel="prev" title="gearshift.core.write package" href="gearshift.core.write.html" /> 
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,11 +85,16 @@
             
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="modules.html">gearshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Gearshift Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#model-structure">Model structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-structure">Model structure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#project-files-and-folders">Project files and folders</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
@@ -182,6 +187,29 @@ requirements defined in the Sub-Annex 2 in the Commission Regulation (EU)
 2017/1151 of 1 June 2017.</p></li>
 </ul>
 </div></blockquote>
+<div class="section" id="project-files-and-folders">
+<h3>Project files and folders<a class="headerlink" href="#project-files-and-folders" title="Permalink to this headline">¶</a></h3>
+<p>The files and folders of the project are listed below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+--</span><span class="n">gearshift</span><span class="o">/</span>                                       <span class="c1"># main folder that contains the whole gearshift project</span>
+<span class="o">|</span>   <span class="o">+--</span><span class="n">cli</span><span class="o">/</span>                                         <span class="c1"># folder that contains all cli scripts</span>
+<span class="o">|</span>   <span class="o">+--</span><span class="n">core</span><span class="o">/</span>                                        <span class="c1"># folder that contains core packages</span>
+<span class="o">|</span>       <span class="o">+--</span><span class="n">load</span><span class="o">/</span>                                    <span class="c1"># (package) python-code of the load</span>
+<span class="o">|</span>           <span class="o">+--</span><span class="n">speed_phases</span><span class="o">/</span>                        <span class="c1"># folder that contains speed phases in ftr format</span>
+<span class="o">|</span>           <span class="o">+--</span><span class="n">excel</span><span class="o">.</span><span class="n">py</span>                             <span class="c1"># (script) load from the excel file parameters</span>
+<span class="o">|</span>       <span class="o">+--</span><span class="n">model</span><span class="o">/</span>                                   <span class="c1"># (package) python-code of the model</span>
+<span class="o">|</span>           <span class="o">+--</span><span class="n">calculateShiftpointsNdvFullPC</span><span class="o">/</span>       <span class="c1"># (package) python-code of the calculate shift points, Ndv and  FullPC</span>
+<span class="o">|</span>           <span class="o">+--</span><span class="n">scaleTrace</span><span class="o">/</span>                          <span class="c1"># (package) python-code of the calculate scale trace</span>
+<span class="o">|</span>       <span class="o">+--</span><span class="n">write</span><span class="o">/</span>                                   <span class="c1"># (package) python-code of the write</span>
+<span class="o">|</span>           <span class="o">+--</span><span class="n">excel</span><span class="o">.</span><span class="n">py</span>                             <span class="c1"># (script) write to the excel file output parameters</span>
+<span class="o">|</span>   <span class="o">+--</span><span class="n">demos</span><span class="o">/</span>                                       <span class="c1"># folder that contains demo files</span>
+<span class="o">|</span>   <span class="o">+--</span><span class="n">docs</span><span class="o">/</span>                                        <span class="c1"># folder that contains documentation</span>
+<span class="o">+--</span> <span class="n">AUTHORS</span><span class="o">.</span><span class="n">rst</span>
+<span class="o">+--</span><span class="n">setup</span><span class="o">.</span><span class="n">py</span>                                         <span class="c1"># (script) The entry point for `setuptools`, installing, testing, etc</span>
+<span class="o">+--</span><span class="n">README</span><span class="o">.</span><span class="n">rst</span>
+<span class="o">+--</span><span class="n">LICENSE</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -193,10 +221,10 @@ requirements defined in the Sub-Annex 2 in the Commission Regulation (EU)
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="gearshift.core.write.html" class="btn btn-neutral float-left" title="gearshift.core.write package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

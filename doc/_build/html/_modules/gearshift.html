@@ -83,8 +83,10 @@
             
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">gearshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../model.html">Gearshift Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
 </ul>
 
@@ -311,8 +313,13 @@
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">solutions</span></div>
 
-<div class="viewcode-block" id="save_demo_files"><a class="viewcode-back" href="../gearshift.html#gearshift.save_demo_files">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;demo&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">save_demo_files</span><span class="p">(</span><span class="n">output_folder</span><span class="p">):</span>
+
+<div class="viewcode-block" id="check_demo_flag"><a class="viewcode-back" href="../gearshift.html#gearshift.check_demo_flag">[docs]</a><span class="k">def</span> <span class="nf">check_demo_flag</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">demo_flag</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">demo_flag</span></div>
+
+
+<div class="viewcode-block" id="save_demo_files"><a class="viewcode-back" href="../gearshift.html#gearshift.save_demo_files">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;demo&quot;</span><span class="p">],</span> <span class="n">input_domain</span><span class="o">=</span><span class="n">check_demo_flag</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">save_demo_files</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">demo_flag</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save CO2MPAS demo files.</span>
 
@@ -324,10 +331,11 @@
     <span class="kn">import</span> <span class="nn">os</span>
     <span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copy2</span>
     <span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_filename</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span> <span class="ow">or</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;gearshift&#39;</span><span class="p">,</span> <span class="s1">&#39;demos/*&#39;</span><span class="p">)):</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gearshift&quot;</span><span class="p">,</span> <span class="s2">&quot;demos/*&quot;</span><span class="p">)):</span>
         <span class="n">copy2</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">osp</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">src</span><span class="p">)))</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;CO2MPAS demos written into (</span><span class="si">%s</span><span class="s1">).&#39;</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span></div>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;CO2MPAS demos written into (</span><span class="si">%s</span><span class="s2">).&quot;</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="default_start_time"><a class="viewcode-back" href="../gearshift.html#gearshift.default_start_time">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;start_time&quot;</span><span class="p">])</span>

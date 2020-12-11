@@ -83,8 +83,10 @@
             
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">gearshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../model.html">Gearshift Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Reference</a></li>
 </ul>
 
@@ -161,7 +163,7 @@
 <span class="c1"># You may not use this work except in compliance with the Licence.</span>
 <span class="c1"># You may obtain a copy of the Licence at: http://ec.europa.eu/idabc/eupl</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Functions and `dsp` model to load data from a GEARSHIFT input file.</span>
+<span class="sd">Functions and `dsp` model to writre data from a GEARSHIFT input file.</span>
 
 <span class="sd">Sub-Modules:</span>
 
@@ -172,15 +174,11 @@
 <span class="sd">    :toctree: write/</span>
 
 <span class="sd">    excel</span>
-<span class="sd">    schema</span>
-<span class="sd">    validate</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">os.path</span> <span class="k">as</span> <span class="nn">osp</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">.excel</span> <span class="kn">import</span> <span class="n">write_to_excel</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">schedula</span> <span class="k">as</span> <span class="nn">sh</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -214,7 +212,6 @@
 <span class="sd">    :return:</span>
 <span class="sd">        Output file name.</span>
 <span class="sd">    :rtype: str</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fp</span> <span class="o">=</span> <span class="n">osp</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">case</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">output_format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -222,12 +219,32 @@
     <span class="k">return</span> <span class="n">fp</span>
 
 
-
 <div class="viewcode-block" id="save_output_file"><a class="viewcode-back" href="../../../gearshift.core.write.html#gearshift.core.write.save_output_file">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">save_output_file</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">output_format</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a excel file for each input</span>
+
+<span class="sd">    :param sol:</span>
+<span class="sd">        List of dictionaries that contains the solution for the different inputs cases</span>
+<span class="sd">    :type sol: list</span>
+
+<span class="sd">    :param output_folder:</span>
+<span class="sd">        Path to save the different outputs files</span>
+<span class="sd">    :type output_folder: os.path</span>
+
+<span class="sd">    :param timestamp:</span>
+<span class="sd">        The current datetime</span>
+<span class="sd">    :type timestamp: datetime.datetime</span>
+
+<span class="sd">    :param output_format:</span>
+<span class="sd">        The extension format of the output file</span>
+<span class="sd">    :type output_format: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">osp</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_folder</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">case</span> <span class="ow">in</span> <span class="n">sol</span><span class="p">:</span>
-        <span class="n">fp</span> <span class="o">=</span> <span class="n">_default_output_file_name</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">case</span><span class="p">[</span><span class="s2">&quot;Case&quot;</span><span class="p">],</span> <span class="n">output_format</span><span class="p">)</span>
+        <span class="n">fp</span> <span class="o">=</span> <span class="n">_default_output_file_name</span><span class="p">(</span>
+            <span class="n">output_folder</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">case</span><span class="p">[</span><span class="s2">&quot;Case&quot;</span><span class="p">],</span> <span class="n">output_format</span>
+        <span class="p">)</span>
         <span class="n">write_to_excel</span><span class="p">(</span><span class="n">case</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span></div>
 </pre></div>
 

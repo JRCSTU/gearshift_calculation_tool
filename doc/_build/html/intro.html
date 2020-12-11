@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API Reference &mdash; GEARSHIFT TOOL 1.0.1 documentation</title>
+  <title>Introduction &mdash; GEARSHIFT TOOL 1.0.1 documentation</title>
   
 
   
@@ -37,7 +37,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Usage" href="usage.html" /> 
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Python Gearshift Calculation Tool" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,11 +85,14 @@
             
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Gearshift Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
             
@@ -135,13 +139,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>API Reference</li>
+      <li>Introduction</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -154,24 +158,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<p>The core of the library is composed from the following modules:</p>
-<span class="target" id="module-gearshift"></span><p>Defines the file processing chain model <cite>dsp</cite>.</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="gearshift.core.html#module-gearshift.core" title="gearshift.core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">core</span></code></a></p></td>
-<td><p>Functions and <cite>dsp</cite> model to processes a GEARSHIFT input file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="gearshift.cli.html#module-gearshift.cli" title="gearshift.cli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cli</span></code></a></p></td>
-<td><p>Define gearshift command line interface.</p></td>
-</tr>
-</tbody>
-</table>
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>The aim of the Gearshift tool is obtain the Required Engine Speeds, the Available Powers, the Required Vehicle Speeds
+and the Gears for the whole WLTC based on the vehicle characteristics. The model should allow accurate calculation
+of final trace and the operating conditions of the engine.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The calculator accepts as input an excel file  that contains the vehicle’s technical data, along with parameters for
+modifying the execution WLTC cycle, and it then spits-out the gear-shifts of the vehicle and the others parameters used
+during the obtaining of these. It does not calculate any CO<sub>2</sub> emissions.</p>
+</div>
 </div>
 
 
@@ -182,8 +179,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Python Gearshift Calculation Tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

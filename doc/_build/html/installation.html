@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API Reference &mdash; GEARSHIFT TOOL 1.0.1 documentation</title>
+  <title>Installation &mdash; GEARSHIFT TOOL 1.0.1 documentation</title>
   
 
   
@@ -37,7 +37,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Usage" href="usage.html" /> 
+    <link rel="next" title="Gearshift Model" href="model.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,10 +86,15 @@
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install">Install</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Gearshift Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
             
@@ -135,13 +141,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>API Reference</li>
+      <li>Installation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -154,24 +160,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<p>The core of the library is composed from the following modules:</p>
-<span class="target" id="module-gearshift"></span><p>Defines the file processing chain model <cite>dsp</cite>.</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="gearshift.core.html#module-gearshift.core" title="gearshift.core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">core</span></code></a></p></td>
-<td><p>Functions and <cite>dsp</cite> model to processes a GEARSHIFT input file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="gearshift.cli.html#module-gearshift.cli" title="gearshift.cli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cli</span></code></a></p></td>
-<td><p>Define gearshift command line interface.</p></td>
-</tr>
-</tbody>
-</table>
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p><strong>Python-3.6+</strong> is required and <strong>Python-3.7</strong> recommended.
+It requires <strong>numpy/scipy</strong> and <strong>pandas</strong> libraries with native backends.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>On <em>Windows</em>, it is preferable to use the <a class="reference external" href="https://www.anaconda.com/products/individual">Anaconda</a> distribution.
+To avoid possible incompatibilities with other projects</p>
+</div>
+</div>
+<div class="section" id="download">
+<h2>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
+<p>Download the sources,</p>
+<ul>
+<li><p>either with <em>git</em>, by giving this command to the terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">AndresLaverdeMarin</span><span class="o">/</span><span class="n">gearshift_calculation_tool</span> <span class="o">--</span><span class="n">depth</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>From within the project directory, run one of these commands to install it:</p>
+<ul>
+<li><p>for standard python, installing with <code class="docutils literal notranslate"><span class="pre">pip</span></code> is enough (but might):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span><span class="p">[</span><span class="n">path_to_gearshift_calculation_tool_folder</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
 </div>
 
 
@@ -182,8 +204,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="model.html" class="btn btn-neutral float-right" title="Gearshift Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

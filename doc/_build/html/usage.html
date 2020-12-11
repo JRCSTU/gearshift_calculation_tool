@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API Reference &mdash; GEARSHIFT TOOL 1.0.1 documentation</title>
+  <title>Usage &mdash; GEARSHIFT TOOL 1.0.1 documentation</title>
   
 
   
@@ -37,7 +37,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Usage" href="usage.html" /> 
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="Gearshift Model" href="model.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,8 +88,11 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Gearshift Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cmd-line-usage">Cmd-line usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
             
@@ -135,13 +139,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>API Reference</li>
+      <li>Usage</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -154,24 +158,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<p>The core of the library is composed from the following modules:</p>
-<span class="target" id="module-gearshift"></span><p>Defines the file processing chain model <cite>dsp</cite>.</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="gearshift.core.html#module-gearshift.core" title="gearshift.core"><code class="xref py py-obj docutils literal notranslate"><span class="pre">core</span></code></a></p></td>
-<td><p>Functions and <cite>dsp</cite> model to processes a GEARSHIFT input file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="gearshift.cli.html#module-gearshift.cli" title="gearshift.cli"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cli</span></code></a></p></td>
-<td><p>Define gearshift command line interface.</p></td>
-</tr>
-</tbody>
-</table>
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="cmd-line-usage">
+<h2>Cmd-line usage<a class="headerlink" href="#cmd-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>The command-line usage below requires the Python environment to be installed, and provides for
+executing an experiment directly from the OS’s shell (i.e. <code class="docutils literal notranslate"><span class="pre">cmd</span></code> in windows or <code class="docutils literal notranslate"><span class="pre">bash</span></code> in POSIX),
+and in a <em>single</em> command.  To have precise control over the inputs and outputs</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ gearshift --help                                                  <span class="c1">## to get generic help for cmd-line syntax</span>
+$ gearshift demo                                                    <span class="c1">## to get demo input file</span>
+$ gearshift run <span class="s2">&quot;path_input_file&quot;</span> -O <span class="s2">&quot;path_to_save_output_file&quot;</span>     <span class="c1">## to run gearshift tool</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -182,8 +181,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="model.html" class="btn btn-neutral float-left" title="Gearshift Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

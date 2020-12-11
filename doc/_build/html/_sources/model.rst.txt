@@ -32,3 +32,11 @@ The model is structured in two dispachers:
     - calculateShiftpointsNdvFullPC:  This dispacher is responsible to apply the all
       requirements defined in the Sub-Annex 2 in the Commission Regulation (EU)
       2017/1151 of 1 June 2017.
+
+.. include:: ../README.rst
+    :start-after: .. _start-folder:
+    :end-before: .. _end-folder:
+
+.. include:: ../README.rst
+    :start-after: .. _start-sub:
+    :end-before: .. _end-sub:

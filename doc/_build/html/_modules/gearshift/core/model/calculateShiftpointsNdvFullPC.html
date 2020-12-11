@@ -83,8 +83,10 @@
             
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">gearshift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../model.html">Gearshift Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Reference</a></li>
 </ul>
 
@@ -161,18 +163,20 @@
 <span class="c1"># You may not use this work except in compliance with the Licence.</span>
 <span class="c1"># You may obtain a copy of the Licence at: http://ec.europa.eu/idabc/eupl</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">It provides GEARSHIFT model `dsp` to obtain the speed trace following Sub-Annex 1 of the Annex XXI from the</span>
+<span class="sd">It provides GEARSHIFT model `dsp` to obtain the gearshifts following Sub-Annex 2 of the Annex XXI from the</span>
 <span class="sd">COMMISSION REGULATION (EU) 2017/1151.</span>
 
 <span class="sd">Docstrings should provide sufficient understanding for any individual function.</span>
 
 <span class="sd">Sub-Modules:</span>
 
-<span class="sd">.. currentmodule:: gearshift.core.model.physical</span>
+<span class="sd">.. currentmodule:: gearshift.core.model.calculateShiftpointsNdvFullPC</span>
 
 <span class="sd">.. autosummary::</span>
 <span class="sd">    :nosignatures:</span>
 <span class="sd">    :toctree: calculateShiftpointsNdvFullPC/</span>
+
+<span class="sd">    corrections</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">schedula</span> <span class="k">as</span> <span class="nn">sh</span>
@@ -213,21 +217,19 @@
 <span class="sd">        Gear 1 may be excluded at the request of . the manufacturer if</span>
 <span class="sd">    :type ExcludeCrawlerGear: boolean</span>
 
-<span class="sd">    :return NoOfGearsFinal:</span>
-<span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
-<span class="sd">        if is necessary.</span>
-<span class="sd">    :rtype NoOfGearsFinal: integer</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - NoOfGearsFinal (:py:class:`int`):</span>
+<span class="sd">            The number of forward gears after apply the exclusion of first gear</span>
+<span class="sd">            if is necessary.</span>
 
-<span class="sd">    :return Gears:</span>
-<span class="sd">        List with of gears of the vehicle after apply the exclusion of first gear</span>
-<span class="sd">        if is necessary.</span>
-<span class="sd">    :rtype Gears: list</span>
+<span class="sd">        - Gears (:py:class:`list`):</span>
+<span class="sd">            List with of gears of the vehicle after apply the exclusion of first</span>
+<span class="sd">            gear if is necessary.</span>
 
-<span class="sd">    :return NdvRatios:</span>
-<span class="sd">        The ratio obtained by dividing the engine speed n by the vehicle speed v</span>
-<span class="sd">        for each gear i form 1 to ng after apply the exclusion of first gear if</span>
-<span class="sd">        is necessary.</span>
-<span class="sd">    :rtype NdvRatios: array</span>
+<span class="sd">        - NdvRatios (:py:class:`numpy.array`):</span>
+<span class="sd">            The ratio obtained by dividing the engine speed n by the vehicle speed</span>
+<span class="sd">            v for each gear i form 1 to ng after apply the exclusion of first gear</span>
+<span class="sd">            if is necessary.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">ExcludeCrawlerGear</span><span class="p">:</span>
         <span class="n">Gears</span> <span class="o">=</span> <span class="n">gear_nbrs</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span>
@@ -251,13 +253,11 @@
 <span class="sd">        The vehicle speed at second i.</span>
 <span class="sd">    :type speed_trace: array</span>
 
-<span class="sd">    :return TraceTimesInput:</span>
-<span class="sd">        Times for each vehicle speed required</span>
-<span class="sd">    :rtype TraceTimesInput: array</span>
-
-<span class="sd">    :return RequiredVehicleSpeedsInput:</span>
-<span class="sd">        The vehicle speed required for the whole cycle.</span>
-<span class="sd">    :rtype RequiredVehicleSpeedsInput: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - TraceTimesInput (:py:class:`numpy.array`):</span>
+<span class="sd">            Times for each vehicle speed required</span>
+<span class="sd">        - RequiredVehicleSpeedsInput (:py:class:`numpy.array`):</span>
+<span class="sd">            The vehicle speed required for the whole cycle.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">TraceTimesInput</span> <span class="o">=</span> <span class="n">speed_trace</span><span class="p">[</span><span class="s2">&quot;ApplicableTrace&quot;</span><span class="p">][</span><span class="s2">&quot;compensatedTraceTimes&quot;</span><span class="p">]</span>
     <span class="n">RequiredVehicleSpeedsInput</span> <span class="o">=</span> <span class="n">speed_trace</span><span class="p">[</span><span class="s2">&quot;ApplicableTrace&quot;</span><span class="p">][</span>
@@ -273,8 +273,6 @@
 <span class="k">def</span> <span class="nf">resample_trace</span><span class="p">(</span><span class="n">TraceTimesInput</span><span class="p">,</span> <span class="n">RequiredVehicleSpeedsInput</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Re-sample the trace in 1Hz</span>
-<span class="sd">    If the trace was provided with higher sample rate, this may lead to data</span>
-<span class="sd">    loss.</span>
 
 <span class="sd">    :param TraceTimesInput:</span>
 <span class="sd">        Times for each vehicle speed required</span>
@@ -284,17 +282,15 @@
 <span class="sd">        The vehicle speed required for the whole cycle.</span>
 <span class="sd">    :type RequiredVehicleSpeedsInput: array</span>
 
-<span class="sd">    :return TraceTimes:</span>
-<span class="sd">        Times for each vehicle speed required re-sampled in 1Hz</span>
-<span class="sd">    :rtype TraceTimes: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - TraceTimes (:py:class:`numpy.array`):</span>
+<span class="sd">            Times for each vehicle speed required re-sampled in 1Hz</span>
+<span class="sd">        - RequiredVehicleSpeeds (:py:class:`numpy.array`):</span>
+<span class="sd">            The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
+<span class="sd">        - TraceTimesCount (:py:class:`int`):</span>
+<span class="sd">            The length of trace times re-sampled in 1Hz</span>
 
-<span class="sd">    :return RequiredVehicleSpeeds:</span>
-<span class="sd">        The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
-<span class="sd">    :rtype RequiredVehicleSpeeds: array</span>
-
-<span class="sd">    :return TraceTimesCount:</span>
-<span class="sd">        The length of trace times re-sampled in 1Hz</span>
-<span class="sd">    :rtype TraceTimesCount: integer</span>
+<span class="sd">    .. note:: If the trace was provided with higher sample rate, this may lead to data loss.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 
@@ -338,67 +334,39 @@
 <span class="sd">        The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
 <span class="sd">    :type RequiredVehicleSpeeds: array</span>
 
-<span class="sd">    :return Phases:</span>
-<span class="sd">        The list of phases that are used during whole cycle</span>
-<span class="sd">    :rtype Phases: array</span>
-
-<span class="sd">    :return InDecelerationToStandstill:</span>
-<span class="sd">        The array that contains the seconds from deceleration to standstill as a True</span>
-<span class="sd">    :rtype InDecelerationToStandstill: boolean array</span>
-
-<span class="sd">    :return PhaseValues:</span>
-<span class="sd">        Contains the points of changes phases</span>
-<span class="sd">    :rtype PhaseValues: array</span>
-
-<span class="sd">    :return InStandStill:</span>
-<span class="sd">        Contains the points that are in standstill phase as a True</span>
-<span class="sd">    :rtype InStandStill: boolean array</span>
-
-<span class="sd">    :return PhaseStarts:</span>
-<span class="sd">        Contains the points that are start point from a phase</span>
-<span class="sd">    :rtype PhaseStarts: array</span>
-
-<span class="sd">    :return PhaseEnds:</span>
-<span class="sd">        Contains the points that are end point from a phase</span>
-<span class="sd">    :rtype PhaseStarts: array</span>
-
-<span class="sd">    :return PHASE_ACCELERATION_FROM_STANDSTILL:</span>
-<span class="sd">        Acceleration phase following a standstill phase</span>
-<span class="sd">    :rtype PHASE_ACCELERATION_FROM_STANDSTILL: int</span>
-
-<span class="sd">    :return PHASE_ACCELERATION:</span>
-<span class="sd">        Acceleration phase</span>
-<span class="sd">    :rtype PHASE_ACCELERATION: int</span>
-
-<span class="sd">    :return InAcceleration:</span>
-<span class="sd">        Contains the points that are in acceleration phase as a True</span>
-<span class="sd">    :rtype InAcceleration: boolean array</span>
-
-<span class="sd">    :return InConstantSpeed:</span>
-<span class="sd">        Contains the points that are in constant speed phase as a True</span>
-<span class="sd">    :rtype InConstantSpeed: boolean array</span>
-
-<span class="sd">    :return InAccelerationAnyDuration:</span>
-<span class="sd">         some gear corrections ignore the duration of acceleration phases</span>
-<span class="sd">         so save acceleration phases with any duration here</span>
-<span class="sd">    :rtype InAccelerationAnyDuration: boolean array</span>
-
-<span class="sd">    :return PHASE_DECELERATION:</span>
-<span class="sd">        time period of more than 2 seconds with required vehicle</span>
-<span class="sd"> 		speed &gt;= 1km/h and monotonically decreasing</span>
-<span class="sd">    :rtype PHASE_DECELERATION: integer</span>
-
-<span class="sd">    :return PHASE_DECELERATION_TO_STANDSTILL:</span>
-<span class="sd">        DECELERATION phase preceding a STANDSTILL phase</span>
-<span class="sd">    :rtype PHASE_DECELERATION_TO_STANDSTILL: integer</span>
-
-<span class="sd">    :return InDeceleration:</span>
-<span class="sd">        Contains the points that are in deceleration phase as a True</span>
-<span class="sd">    :rtype InDeceleration: boolean array</span>
-
-<span class="sd">    :return PHASE_STANDSTILL:</span>
-<span class="sd">        Time period with required vehicle speed &lt; 1km/h</span>
-<span class="sd">    :rtype PHASE_STANDSTILL: integer</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - Phases (:py:class:`numpy.array`):</span>
+<span class="sd">            The list of phases that are used during whole cycle</span>
+<span class="sd">        - InDecelerationToStandstill (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The array that contains the seconds from deceleration to standstill as a True</span>
+<span class="sd">        - PhaseValues (:py:class:`numpy.array`):</span>
+<span class="sd">            Contains the points of changes phases</span>
+<span class="sd">        - InStandStill (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            Contains the points that are in standstill phase as a True</span>
+<span class="sd">        -  PhaseStarts (:py:class:`numpy.array`):</span>
+<span class="sd">            Contains the points that are start point from a phase</span>
+<span class="sd">        - PhaseEnds (:py:class:`numpy.array`):</span>
+<span class="sd">            Contains the points that are end point from a phase</span>
+<span class="sd">        - PHASE_ACCELERATION_FROM_STANDSTILL (:py:class:`int`):</span>
+<span class="sd">            Acceleration phase following a standstill phase</span>
+<span class="sd">        - PHASE_ACCELERATION (:py:class:`int`):</span>
+<span class="sd">            Acceleration phase</span>
+<span class="sd">        - InAcceleration (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            Contains the points that are in acceleration phase as a True</span>
+<span class="sd">        - InConstantSpeed (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            Contains the points that are in constant speed phase as a True</span>
+<span class="sd">        - InAccelerationAnyDuration (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            Some gear corrections ignore the duration of acceleration phases so save acceleration phases</span>
+<span class="sd">            with any duration here.</span>
+<span class="sd">        - PHASE_DECELERATION (:py:class:`int`):</span>
+<span class="sd">            Time period of more than 2 seconds with required vehicle:</span>
+<span class="sd">                speed &gt;= 1km/h and monotonically decreasing</span>
+<span class="sd">        - PHASE_DECELERATION_TO_STANDSTILL (:py:class:`int`):</span>
+<span class="sd">            DECELERATION phase preceding a STANDSTILL phase</span>
+<span class="sd">        -  InDeceleration (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            Contains the points that are in deceleration phase as a True</span>
+<span class="sd">        - PHASE_STANDSTILL (:py:class:`int`):</span>
+<span class="sd">            Time period with required vehicle speed &lt; 1km/h</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">PHASE_TOO_SHORT</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">PHASE_STANDSTILL</span> <span class="o">=</span> <span class="mi">1</span>
@@ -563,7 +531,6 @@
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load full power curve</span>
-<span class="sd">    This function split the different components of full power curve in a independent array</span>
 
 <span class="sd">    :param FullPowerCurve:</span>
 <span class="sd">        Annex 2 (2h) and (3.4) n ==&gt; P_wot(n), ASM</span>
@@ -588,21 +555,17 @@
 <span class="sd">        The engine speed at which ASM approching zero ends.</span>
 <span class="sd">    :type EndEngineSpeed: array</span>
 
-<span class="sd">    :result PowerCurveEngineSpeeds:</span>
-<span class="sd">        Contains the power curve engine speeds</span>
-<span class="sd">    :rtype PowerCurveEngineSpeeds: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - PowerCurveEngineSpeeds (:py:class:`numpy.array`):</span>
+<span class="sd">            Contains the power curve engine speeds</span>
+<span class="sd">        - PowerCurvePowers (:py:class:`numpy.array`):</span>
+<span class="sd">            Contains the power curve powers</span>
+<span class="sd">        - PowerCurveASM (:py:class:`numpy.array`):</span>
+<span class="sd">            Contains the power curve additional save margin</span>
+<span class="sd">        - DefinedPowerCurveAdditionalSafetyMargins (:py:class:`bool`):</span>
+<span class="sd">            Boolean that define if the additional save margins are present</span>
 
-<span class="sd">    :result PowerCurvePowers:</span>
-<span class="sd">        Contains the power curve powers</span>
-<span class="sd">    :rtype PowerCurvePowers: array</span>
-
-<span class="sd">    :result PowerCurveASM:</span>
-<span class="sd">        Contains the power curve additional save margin</span>
-<span class="sd">    :rtype PowerCurveASM: array</span>
-
-<span class="sd">    :result DefinedPowerCurveAdditionalSafetyMargins:</span>
-<span class="sd">        Boolean that define if the additional save margins are present</span>
-<span class="sd">    :rtype DefinedPowerCurveAdditionalSafetyMargins: boolean</span>
+<span class="sd">    .. note:: This function split the different components of full power curve in a independent array</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">FullPowerCurve</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">ASM</span> <span class="o">=</span> <span class="p">[]</span>
@@ -642,11 +605,10 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine rated engine power and rated engine speed from the full power curve</span>
 
-<span class="sd">    .. note::</span>
-<span class="sd">    The following requirement was deleted from the regulation but as there is no</span>
-<span class="sd">    new requirement we will stay with the old one :</span>
-<span class="sd">    If the maximum power is developed over an engine speed range, n_rated shall be</span>
-<span class="sd">    the minimum of this range</span>
+<span class="sd">    .. note:: The following requirement was deleted from the regulation but as there is no</span>
+<span class="sd">       new requirement we will stay with the old one :</span>
+<span class="sd">       If the maximum power is developed over an engine speed range, n_rated shall be</span>
+<span class="sd">       the minimum of this range</span>
 
 <span class="sd">    :param RatedEnginePower:</span>
 <span class="sd">        Annex 2 (2a) P_rated.</span>
@@ -658,7 +620,7 @@
 <span class="sd">        For backward compatibility this parameter may still be used to override the</span>
 <span class="sd">        value calculated from FullPowerCurve. Set RatedEnginePower and RatedEngineSpeed</span>
 <span class="sd">        to 0 to use the calculated values.</span>
-<span class="sd">    :type RatedEnginePower: array</span>
+<span class="sd">    :type RatedEnginePower: numpy.array</span>
 
 <span class="sd">    :param RatedEngineSpeed:</span>
 <span class="sd">        Annex 2 (2b) n_rated. This is a legacy parameter used until regulation GRPE-75-23.</span>
@@ -672,23 +634,22 @@
 <span class="sd">        For backward compatibility this parameter may still be used to override the value</span>
 <span class="sd">        calculated from FullPowerCurve. Set RatedEnginePower and RatedEngineSpeed to 0</span>
 <span class="sd">        to use the calculated values.</span>
-<span class="sd">    :type RatedEngineSpeed: array</span>
+<span class="sd">    :type RatedEngineSpeed: numpy.array</span>
 
 <span class="sd">    :param PowerCurvePowers:</span>
 <span class="sd">        Contains the power curve powers</span>
-<span class="sd">    :type PowerCurvePowers: array</span>
+<span class="sd">    :type PowerCurvePowers: numpy.array</span>
 
 <span class="sd">    :param PowerCurveEngineSpeeds:</span>
 <span class="sd">        Contains the power curve engine speeds</span>
-<span class="sd">    :type PowerCurveEngineSpeeds: array</span>
+<span class="sd">    :type PowerCurveEngineSpeeds: numpy.array</span>
 
-<span class="sd">    :return RatedEnginePowerF:</span>
-<span class="sd">        Contains the rated engine power corrected if is necessary</span>
-<span class="sd">    :rtype RatedEnginePowerF: float</span>
 
-<span class="sd">    :return RatedEngineSpeedF:</span>
-<span class="sd">        Contains the rated engine speed corrected if is necessary</span>
-<span class="sd">    :rtype RatedEngineSpeedF: float</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - RatedEnginePowerF (:py:class:`float`):</span>
+<span class="sd">            Contains the rated engine power corrected if is necessary</span>
+<span class="sd">        - RatedEngineSpeedF (:py:class:`float`):</span>
+<span class="sd">            Contains the rated engine speed corrected if is necessary</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">RatedEnginePower</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">RatedEnginePower</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
         <span class="n">RatedEngineSpeed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">RatedEngineSpeed</span> <span class="o">&lt;=</span> <span class="mi">0</span>
@@ -707,9 +668,6 @@
 <span class="sd">    Determine the maximum engine speed where 95 percent of the rated power is</span>
 <span class="sd">    reached from the full power curve</span>
 
-<span class="sd">    .. note::</span>
-<span class="sd">    This will only be done if this value was not set as input parameter</span>
-
 <span class="sd">    :param Max95EngineSpeed:</span>
 <span class="sd">        Annex 2 (2g) n_max1 = n_95_high</span>
 <span class="sd">        The maximum engine speed where 95 per cent of rated power is reached.</span>
@@ -725,10 +683,14 @@
 <span class="sd">        Contains the power curve engine speeds</span>
 <span class="sd">    :type PowerCurveEngineSpeeds: array</span>
 
-<span class="sd">    :return Max95EngineSpeedFinal:</span>
-<span class="sd">        The maximum engine speed where 95 percent of the rated power is</span>
-<span class="sd">        reached from the full power curve</span>
-<span class="sd">    :rtype Max95EngineSpeedFinal: float</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - Max95EngineSpeedFinal (:py:class:`float`):</span>
+<span class="sd">            Annex 2 (2g) n_max1 = n_95_high adjusted.</span>
+<span class="sd">            If n_95_high cannot be determined because the engine speed is limited to</span>
+<span class="sd">            a lower value n_lim for all gears and the corresponding full load power</span>
+<span class="sd">            is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.</span>
+
+<span class="sd">    .. note:: This will only be done if this value was not set as input parameter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">Max95EngineSpeed</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">Max95EngineSpeed</span><span class="p">):</span>
         <span class="n">PowerCurvePowerMax95</span> <span class="o">=</span> <span class="mf">0.95</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">PowerCurvePowers</span><span class="p">)</span>
@@ -778,11 +740,6 @@
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Define minimum engine speeds when vehicle is in motion (2k)</span>
-
-<span class="sd">    .. note::</span>
-<span class="sd">    The calculation of minimum engine speeds for the second gear does</span>
-<span class="sd">    not fully confirm to the latest legislation text, but rather reflects</span>
-<span class="sd">    the previous revision of it until (2ka) is clarified.</span>
 
 <span class="sd">    :param IdlingEngineSpeed:</span>
 <span class="sd">        Annex 2 (2c) n_idle. The idling speed.</span>
@@ -840,33 +797,36 @@
 <span class="sd">        The array that contains the seconds from deceleration to standstill as a True</span>
 <span class="sd">    :type InDecelerationToStandstill: boolean array</span>
 
-<span class="sd">    :return MinDrivesI:</span>
-<span class="sd">        Minimum engine speeds when vehicle is in motion</span>
-<span class="sd">    :rtype MinDrivesI: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - MinDrivesI (:py:class:`numpy.array`):</span>
+<span class="sd">            Minimum engine speeds when vehicle is in motion</span>
+<span class="sd">        - CalculatedMinDriveEngineSpeedGreater2nd (:py:class:`float`):</span>
+<span class="sd">            The minimum drive engine speed grater than second</span>
+<span class="sd">        - MinDrive1stTo2nd (:py:class:`float`):</span>
+<span class="sd">            Annex 2 (2ka) n_min_drive = 1.15 x n_idle for n_gear:1-&gt;2</span>
+<span class="sd">            The minimum engine speed for transitions from first to second gear.</span>
+<span class="sd">            This is the maximum of calculated value and input parameter value.</span>
+<span class="sd">        - MinDrive1st (:py:class:`float`):</span>
+<span class="sd">            Annex 2 (2k) n_min_drive = n_idle for n_gear:1</span>
+<span class="sd">            The minimum engine speed when the vehicle is in motion.</span>
+<span class="sd">            This is the maximum of calculated value and input parameter value.</span>
+<span class="sd">        - MinDrive2ndDecel (:py:class:`float`):</span>
+<span class="sd">            Annex 2 (2kb) n_min_drive = n_idle for n_gear:2</span>
+<span class="sd">            The minimum engine speed for decelerations to standstill in second gear.</span>
+<span class="sd">            This is the maximum of calculated value and input parameter value.</span>
+<span class="sd">        - MinDrive2nd (:py:class:`float`):</span>
+<span class="sd">            Annex 2 (2kc) n_min_drive = 0.9 x n_idle for n_gear:2</span>
+<span class="sd">            The minimum engine speed for all other driving conditions in second gear.</span>
+<span class="sd">            This is the maximum of calculated value and input parameter value.</span>
+<span class="sd">        - MinDriveGreater2nd (:py:class:`float`):</span>
+<span class="sd">            Annex 2 (2k) n_min_drive = n_idle + 0.125 × ( n_rated - n_idle ) for n_gear:3..</span>
+<span class="sd">            This value shall be referred to as n_min_drive_set.</span>
+<span class="sd">            The minimum engine speed for all driving conditions in gears greater than 2.</span>
+<span class="sd">            This is the maximum of calculated value and input parameter value.</span>
 
-<span class="sd">    :return CalculatedMinDriveEngineSpeedGreater2nd:</span>
-<span class="sd">        The minimum drive engine speed grater than second</span>
-<span class="sd">    :rtype CalculatedMinDriveEngineSpeedGreater2nd: float</span>
-
-<span class="sd">    :return MinDrive1stTo2nd:</span>
-<span class="sd">        The minimum drive first to second</span>
-<span class="sd">    :rtype MinDrive1stTo2nd: float</span>
-
-<span class="sd">    :return MinDrive1st:</span>
-<span class="sd">        The minimum drive first</span>
-<span class="sd">    :rtype MinDrive1st: float</span>
-
-<span class="sd">    :return MinDrive2ndDecel:</span>
-<span class="sd">        The minimum drive second during deceleration phase</span>
-<span class="sd">    :rtype MinDrive2ndDecel: float</span>
-
-<span class="sd">    :return MinDrive2nd:</span>
-<span class="sd">        The minimum drive second</span>
-<span class="sd">    :rtype MinDrive2nd: float</span>
-
-<span class="sd">    :return MinDriveGreater2nd:</span>
-<span class="sd">        The minimum drive greater than second</span>
-<span class="sd">    :rtype MinDriveGreater2nd: float</span>
+<span class="sd">    .. note:: The calculation of minimum engine speeds for the second gear does</span>
+<span class="sd">       not fully confirm to the latest legislation text, but rather reflects</span>
+<span class="sd">       the previous revision of it until (2ka) is clarified.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">CalculatedMinDriveEngineSpeed1st</span> <span class="o">=</span> <span class="n">IdlingEngineSpeed</span>
     <span class="n">CalculatedMinDriveEngineSpeed1stTo2nd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mf">1.15</span> <span class="o">*</span> <span class="n">IdlingEngineSpeed</span><span class="p">)</span>
@@ -926,9 +886,9 @@
 <span class="sd">        Times for each vehicle speed required re-sampled in 1Hz</span>
 <span class="sd">    :type TraceTimes: array</span>
 
-<span class="sd">    :return Accelerations:</span>
-<span class="sd">         The acceleration required for the whole cycle re-sampled in 1Hz</span>
-<span class="sd">    :rtype accelerations: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - Accelerations (:py:class:`numpy.array`):</span>
+<span class="sd">            The acceleration required for the whole cycle re-sampled in 1Hz</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">Accelerations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">RequiredVehicleSpeeds</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">3.6</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">TraceTimes</span><span class="p">)),</span> <span class="mi">0</span><span class="p">),</span>
@@ -938,7 +898,7 @@
     <span class="k">return</span> <span class="n">Accelerations</span></div>
 
 
-<div class="viewcode-block" id="check_minimum_engine_speed"><a class="viewcode-back" href="../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.html#gearshift.core.model.calculateShiftpointsNdvFullPC.check_minimum_engine_speed">[docs]</a><span class="k">def</span> <span class="nf">check_minimum_engine_speed</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">_check_minimum_engine_speed</span><span class="p">(</span>
     <span class="n">MinDrivesI</span><span class="p">,</span>
     <span class="n">CalculatedMinDriveEngineSpeedGreater2nd</span><span class="p">,</span>
     <span class="n">MinDriveEngineSpeedGreater2ndAccel</span><span class="p">,</span>
@@ -1021,10 +981,10 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">check</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">check</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">check</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="define_minimum_engine_speed_in_motion"><a class="viewcode-back" href="../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.html#gearshift.core.model.calculateShiftpointsNdvFullPC.define_minimum_engine_speed_in_motion">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MinDrives&quot;</span><span class="p">],</span> <span class="n">input_domain</span><span class="o">=</span><span class="n">check_minimum_engine_speed</span><span class="p">)</span>
+<div class="viewcode-block" id="define_minimum_engine_speed_in_motion"><a class="viewcode-back" href="../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.html#gearshift.core.model.calculateShiftpointsNdvFullPC.define_minimum_engine_speed_in_motion">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MinDrives&quot;</span><span class="p">],</span> <span class="n">input_domain</span><span class="o">=</span><span class="n">_check_minimum_engine_speed</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">define_minimum_engine_speed_in_motion</span><span class="p">(</span>
     <span class="n">MinDrivesI</span><span class="p">,</span>
     <span class="n">CalculatedMinDriveEngineSpeedGreater2nd</span><span class="p">,</span>
@@ -1093,7 +1053,7 @@
 
 <span class="sd">    :param RequiredVehicleSpeeds:</span>
 <span class="sd">        The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
-<span class="sd">    :type RequiredVehicleSpeeds: array</span>
+<span class="sd">    :type RequiredVehicleSpeeds: numpy.array</span>
 
 <span class="sd">    :param TimeEndOfStartPhase:</span>
 <span class="sd">        Annex 2 (2j) t_start_phase</span>
@@ -1105,11 +1065,11 @@
 <span class="sd">        The input parameter here is used in combination with</span>
 <span class="sd">        MinDriveEngineSpeedGreater2ndAccelStartPhase and</span>
 <span class="sd">        MinDriveEngineSpeedGreater2ndDecelStartPhase.</span>
-<span class="sd">    :type TimeEndOfStartPhase: array</span>
+<span class="sd">    :type TimeEndOfStartPhase: numpy.array</span>
 
 <span class="sd">    :param TraceTimes:</span>
 <span class="sd">        Times for each vehicle speed required re-sampled in 1Hz</span>
-<span class="sd">    :type TraceTimes: array</span>
+<span class="sd">    :type TraceTimes: numpy.array</span>
 
 <span class="sd">    :param NoOfGearsFinal:</span>
 <span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
@@ -1118,12 +1078,12 @@
 
 <span class="sd">    :param Accelerations:</span>
 <span class="sd">         The acceleration required for the whole cycle re-sampled in 1Hz</span>
-<span class="sd">    :type Accelerations: array</span>
+<span class="sd">    :type Accelerations: numpy.array</span>
 
-<span class="sd">    :return MinDrives:</span>
-<span class="sd">        Samples which have acceleration values &gt;= -0.1389 m/s² ( = 0.5 (km/h)/s )</span>
-<span class="sd">        shall belong to the acceleration/constant speed phases.</span>
-<span class="sd">    :rtype MinDrives: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - MinDrives (:py:class:`numpy.array`):</span>
+<span class="sd">            Samples which have acceleration values &gt;= -0.1389 m/s² ( = 0.5 (km/h)/s )</span>
+<span class="sd">            shall belong to the acceleration/constant speed phases.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">NoOfGears</span> <span class="o">=</span> <span class="n">NoOfGearsFinal</span>
@@ -1209,7 +1169,7 @@
 
 <span class="sd">    :param PowerCurveEngineSpeeds:</span>
 <span class="sd">        Contains the power curve engine speeds</span>
-<span class="sd">    :type PowerCurveEngineSpeeds: array</span>
+<span class="sd">    :type PowerCurveEngineSpeeds: numpy.array</span>
 
 <span class="sd">    :param f0:</span>
 <span class="sd">        The constant road load coefficient,</span>
@@ -1230,7 +1190,7 @@
 <span class="sd">        The ratio obtained by dividing the engine speed n by the vehicle speed v</span>
 <span class="sd">        for each gear i form 1 to ng after apply the exclusion of first gear if</span>
 <span class="sd">        is necessary.</span>
-<span class="sd">    :type NdvRatios: array</span>
+<span class="sd">    :type NdvRatios: numpy.array</span>
 
 <span class="sd">    :param NoOfGearsFinal:</span>
 <span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
@@ -1239,15 +1199,13 @@
 
 <span class="sd">    :param PowerCurvePowers:</span>
 <span class="sd">        Contains the power curve powers</span>
-<span class="sd">    :type PowerCurvePowers: array</span>
+<span class="sd">    :type PowerCurvePowers: numpy.array</span>
 
-<span class="sd">    :return GearAtMaxVehicleSpeed:</span>
-<span class="sd">        The gear that have the maximum vehicle speed</span>
-<span class="sd">    :rtype GearAtMaxVehicleSpeed: float</span>
-
-<span class="sd">    :return MaxVehicleSpeed:</span>
-<span class="sd">        The maximum vehicle speed</span>
-<span class="sd">    :rtype MaxVehicleSpeed: float</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - MinDrives (:py:class:`float`):</span>
+<span class="sd">            The gear that have the maximum vehicle speed</span>
+<span class="sd">        - MaxVehicleSpeed (:py:class:`float`):</span>
+<span class="sd">            The maximum vehicle speed</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 
@@ -1307,7 +1265,7 @@
     <span class="k">return</span> <span class="n">GearAtMaxVehicleSpeed</span><span class="p">,</span> <span class="n">MaxVehicleSpeed</span></div>
 
 
-<div class="viewcode-block" id="check_gear_max_vehicle_speed"><a class="viewcode-back" href="../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.html#gearshift.core.model.calculateShiftpointsNdvFullPC.check_gear_max_vehicle_speed">[docs]</a><span class="k">def</span> <span class="nf">check_gear_max_vehicle_speed</span><span class="p">(</span>
+<span class="k">def</span> <span class="nf">_check_gear_max_vehicle_speed</span><span class="p">(</span>
     <span class="n">EngineSpeedLimitVMax</span><span class="p">,</span>
     <span class="n">Max95EngineSpeedFinal</span><span class="p">,</span>
     <span class="n">PowerCurveEngineSpeeds</span><span class="p">,</span>
@@ -1326,7 +1284,7 @@
         <span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">True</span></div>
+        <span class="k">return</span> <span class="kc">True</span>
 
 
 <div class="viewcode-block" id="determine_maximum_engine_speed"><a class="viewcode-back" href="../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.html#gearshift.core.model.calculateShiftpointsNdvFullPC.determine_maximum_engine_speed">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span>
@@ -1338,7 +1296,7 @@
         <span class="s2">&quot;EngineSpeedAtGearAtMaxRequiredSpeed&quot;</span><span class="p">,</span>
         <span class="s2">&quot;EngineSpeedAtGearAtMaxVehicleSpeed&quot;</span><span class="p">,</span>
     <span class="p">],</span>
-    <span class="n">input_domain</span><span class="o">=</span><span class="n">check_gear_max_vehicle_speed</span><span class="p">,</span>
+    <span class="n">input_domain</span><span class="o">=</span><span class="n">_check_gear_max_vehicle_speed</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">def</span> <span class="nf">determine_maximum_engine_speed</span><span class="p">(</span>
     <span class="n">EngineSpeedLimitVMax</span><span class="p">,</span>
@@ -1356,6 +1314,7 @@
 <span class="sd">    Determine maximum engine speed (2g)</span>
 
 <span class="sd">    n_max1 = n_95_high</span>
+
 <span class="sd">    If n_95_high cannot be determined</span>
 <span class="sd">    because the engine speed is limited to a lower value n_lim for all gears</span>
 <span class="sd">    and the corresponding full load power is higher than 95 per cent of rated power,</span>
@@ -1368,17 +1327,19 @@
 <span class="sd">    :type EngineSpeedLimitVMax: float</span>
 
 <span class="sd">    :param Max95EngineSpeedFinal:</span>
-<span class="sd">        The maximum engine speed where 95 percent of the rated power is</span>
-<span class="sd">        reached from the full power curve</span>
+<span class="sd">         Annex 2 (2g) n_max1 = n_95_high adjusted</span>
+<span class="sd">         If n_95_high cannot be determined because the engine speed is limited to</span>
+<span class="sd">         a lower value n_lim for all gears and the corresponding full load power</span>
+<span class="sd">         is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.</span>
 <span class="sd">    :type Max95EngineSpeedFinal: float</span>
 
 <span class="sd">    :param PowerCurveEngineSpeeds:</span>
 <span class="sd">        Contains the power curve engine speeds</span>
-<span class="sd">    :type PowerCurveEngineSpeeds: array</span>
+<span class="sd">    :type PowerCurveEngineSpeeds: numpy.array</span>
 
 <span class="sd">    :param PowerCurvePowers:</span>
 <span class="sd">        Contains the power curve powers</span>
-<span class="sd">    :type PowerCurvePowers: array</span>
+<span class="sd">    :type PowerCurvePowers: numpy.array</span>
 
 <span class="sd">    :param RatedEnginePowerF:</span>
 <span class="sd">        Contains the rated engine power corrected if is necessary</span>
@@ -1388,15 +1349,15 @@
 <span class="sd">        The ratio obtained by dividing the engine speed n by the vehicle speed v</span>
 <span class="sd">        for each gear i form 1 to ng after apply the exclusion of first gear if</span>
 <span class="sd">        is necessary.</span>
-<span class="sd">    :type NdvRatios: array</span>
+<span class="sd">    :type NdvRatios: numpy.array</span>
 
-<span class="sd">    :return GearAtMaxVehicleSpeed:</span>
+<span class="sd">    :param GearAtMaxVehicleSpeed:</span>
 <span class="sd">        The gear that have the maximum vehicle speed</span>
-<span class="sd">    :rtype GearAtMaxVehicleSpeed: float</span>
+<span class="sd">    :type GearAtMaxVehicleSpeed: float</span>
 
 <span class="sd">    :param RequiredVehicleSpeeds:</span>
 <span class="sd">        The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
-<span class="sd">    :type RequiredVehicleSpeeds: array</span>
+<span class="sd">    :type RequiredVehicleSpeeds: numpy.array</span>
 
 <span class="sd">    :param MaxVehicleSpeed:</span>
 <span class="sd">        The maximum vehicle speed</span>
@@ -1405,27 +1366,22 @@
 <span class="sd">    :param NoOfGearsFinal:</span>
 <span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
 <span class="sd">        if is necessary.</span>
-<span class="sd">    :type NoOfGearsFinal: integer</span>
+<span class="sd">    :type NoOfGearsFinal: int</span>
 
-<span class="sd">    :return MaxEngineSpeed:</span>
-<span class="sd">        The maximum engine speed</span>
-<span class="sd">    :rtype MaxEngineSpeed: float</span>
-
-<span class="sd">    :return GearAtMaxVehicleSpeedFinal:</span>
-<span class="sd">        The gear that have the maximum vehicle speed after check required engine speeds</span>
-<span class="sd">    :rtype GearAtMaxVehicleSpeedFinal: integer</span>
-
-<span class="sd">    :return MaxVehicleSpeed:</span>
-<span class="sd">        The maximum vehicle speed after check required engine speeds</span>
-<span class="sd">    :rtype MaxVehicleSpeed: float</span>
-
-<span class="sd">    :return EngineSpeedAtGearAtMaxRequiredSpeed:</span>
-<span class="sd">        The engine speed at gear maximum required speed</span>
-<span class="sd">    :rtype EngineSpeedAtGearAtMaxRequiredSpeed: float</span>
-
-<span class="sd">    :return EngineSpeedAtGearAtMaxVehicleSpeed:</span>
-<span class="sd">        The engine speed at gear at maximum vehicle speed</span>
-<span class="sd">    :rtype EngineSpeedAtGearAtMaxVehicleSpeed: float</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - MaxEngineSpeed (:py:class:`float`):</span>
+<span class="sd">            The maximum engine speed</span>
+<span class="sd">        - GearAtMaxVehicleSpeedFinal (:py:class:`int`):</span>
+<span class="sd">            Annex 2 (2i) ng_vmax</span>
+<span class="sd">            The gear in which the maximum vehicle speed is reached.</span>
+<span class="sd">        - MaxVehicleSpeedFinal (:py:class:`float`):</span>
+<span class="sd">            Annex 2 (2g, 2i) v_max,vehicle</span>
+<span class="sd">            The maximum vehicle speed reachable</span>
+<span class="sd">            using the gear in which the maximum vehicle speed can be reached.</span>
+<span class="sd">        - EngineSpeedAtGearAtMaxRequiredSpeed (:py:class:`float`):</span>
+<span class="sd">            The engine speed at gear maximum required speed</span>
+<span class="sd">        - EngineSpeedAtGearAtMaxVehicleSpeed (:py:class:`float`):</span>
+<span class="sd">            The engine speed at gear at maximum vehicle speed</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">NoOfGears</span> <span class="o">=</span> <span class="n">NoOfGearsFinal</span>
 
@@ -1515,9 +1471,11 @@
 <span class="sd">        The test mass of the vehicle.</span>
 <span class="sd">    :type VehicleTestMass: float</span>
 
-<span class="sd">    :return requiredPowersF:</span>
-<span class="sd">        The requiered powers for each time.</span>
-<span class="sd">    :rtype requiredPowersF: array</span>
+<span class="sd">    :returns:</span>
+<span class="sd">        - requiredPowersF (:py:class:`float`):</span>
+<span class="sd">            Annex 2 (3.1) P_required,j</span>
+<span class="sd">            The power required to overcome driving resistance and to accelerate</span>
+<span class="sd">            for each second j of the cycle trace.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">requiredPowers</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">f0</span> <span class="o">*</span> <span class="n">RequiredVehicleSpeeds</span>
@@ -1574,13 +1532,94 @@
 <span class="sd">        is necessary.</span>
 <span class="sd">    :type NdvRatios: array</span>
 
+<span class="sd">    :param TraceTimesCount:</span>
+<span class="sd">        The length of trace times re-sampled in 1Hz</span>
+<span class="sd">    :type TraceTimesCount: integer</span>
 
+<span class="sd">    :param NoOfGearsFinal:</span>
+<span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
+<span class="sd">        if is necessary.</span>
+<span class="sd">    :type NoOfGearsFinal: integer</span>
 
-<span class="sd">    :return RequiredEngineSpeeds:</span>
-<span class="sd">        The engine speeds required</span>
-<span class="sd">        for each gear i from 1 to ng and</span>
-<span class="sd">        for each second j of the cycle trace.</span>
-<span class="sd">    :rtype RequiredEngineSpeeds: array</span>
+<span class="sd">    :param PhaseValues:</span>
+<span class="sd">        Contains the points of changes phases</span>
+<span class="sd">    :type PhaseValues: array</span>
+
+<span class="sd">    :param InStandStill:</span>
+<span class="sd">        Contains the points that are in standstill phase as a True</span>
+<span class="sd">    :type InStandStill: boolean array</span>
+
+<span class="sd">    :param IdlingEngineSpeed:</span>
+<span class="sd">        Annex 2 (2c) n_idle. The idling speed.</span>
+<span class="sd">    :type IdlingEngineSpeed: float</span>
+
+<span class="sd">    :param PhaseStarts:</span>
+<span class="sd">        Contains the points that are start point from a phase</span>
+<span class="sd">    :type PhaseStarts: array</span>
+
+<span class="sd">    :param PHASE_ACCELERATION_FROM_STANDSTILL:</span>
+<span class="sd">        Acceleration phase following a standstill phase</span>
+<span class="sd">    :type PHASE_ACCELERATION_FROM_STANDSTILL: integer</span>
+
+<span class="sd">    :param Accelerations:</span>
+<span class="sd">         The acceleration required for the whole cycle re-sampled in 1Hz</span>
+<span class="sd">    :type Accelerations: array</span>
+
+<span class="sd">    :param MinDrives:</span>
+<span class="sd">        Samples which have acceleration values &gt;= -0.1389 m/s² ( = 0.5 (km/h)/s )</span>
+<span class="sd">        shall belong to the acceleration/constant speed phases.</span>
+<span class="sd">    :type MinDrives: array</span>
+
+<span class="sd">    :param GearAtMaxVehicleSpeedFinal:</span>
+<span class="sd">        Annex 2 (2i) ng_vmax</span>
+<span class="sd">        The gear in which the maximum vehicle speed is reached.</span>
+<span class="sd">    :type GearAtMaxVehicleSpeedFinal: integer</span>
+
+<span class="sd">    :param Max95EngineSpeedFinal:</span>
+<span class="sd">         Annex 2 (2g) n_max1 = n_95_high adjusted</span>
+<span class="sd">         If n_95_high cannot be determined because the engine speed is limited to</span>
+<span class="sd">         a lower value n_lim for all gears and the corresponding full load power</span>
+<span class="sd">         is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.</span>
+<span class="sd">    :type Max95EngineSpeedFinal: float</span>
+
+<span class="sd">    :param EngineSpeedAtGearAtMaxRequiredSpeed:</span>
+<span class="sd">        The engine speed at gear maximum required speed</span>
+<span class="sd">    :type EngineSpeedAtGearAtMaxRequiredSpeed: float</span>
+
+<span class="sd">    :param PowerCurveEngineSpeeds:</span>
+<span class="sd">        Contains the power curve engine speeds</span>
+<span class="sd">    :type PowerCurveEngineSpeeds: array</span>
+
+<span class="sd">    :param InDecelerationToStandstill:</span>
+<span class="sd">        The array that contains the seconds from deceleration to standstill as a True</span>
+<span class="sd">    :type InDecelerationToStandstill: boolean array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - RequiredEngineSpeeds (:py:class:`numpy.array`):</span>
+<span class="sd">            Annex 2 (3.2) n_i,j</span>
+<span class="sd">            The engine speeds required</span>
+<span class="sd">            for each gear i from 1 to ng and</span>
+<span class="sd">            for each second j of the cycle trace.</span>
+<span class="sd">            .. note::  Note that this are the uncorrected values n_i,j</span>
+<span class="sd">               i.e. without the increments required by Annex 2 (3.3)</span>
+<span class="sd">        - InitialRequiredEngineSpeeds (:py:class:`numpy.array`):</span>
+<span class="sd">            The initial engine speeds required for each gear i from 1 to ng and</span>
+<span class="sd">            for each second j of the cycle trace.</span>
+<span class="sd">        - PossibleGearsByEngineSpeed (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The possible gear that can be used for each second.</span>
+<span class="sd">        - AccelerationFromStandstillStarts (:py:class:`numpy.array`):</span>
+<span class="sd">            The phase start seconds when the phase is going to acceleration</span>
+<span class="sd">            from stand still.</span>
+<span class="sd">        - ClutchDisengagedByGear (:py:class:`numpy.array`):</span>
+<span class="sd">            The clutch disengaged by each gear and each second.</span>
+<span class="sd">        - ClutchUndefinedByGear (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The clutch undefined by each gear and each second.</span>
+<span class="sd">        - ClutchDisengaged (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The clutch disengaged by each second.</span>
+<span class="sd">        - ClutchUndefined (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The clutch undefined by each second.</span>
+<span class="sd">        - AdvancedClutchDisengage (:py:class:`list`):</span>
+<span class="sd">            The seconds in which the advanced clutch disengaget</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
 
@@ -1857,6 +1896,71 @@
     <span class="n">NoOfGearsFinal</span><span class="p">,</span>
     <span class="n">InitialRequiredEngineSpeeds</span><span class="p">,</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate available powers (3.4)</span>
+
+<span class="sd">    Additional safety margins defined together with the power curve take precedence</span>
+<span class="sd">    over the legacy additional safety margins exponentially decaying from start to</span>
+<span class="sd">    end engine speed</span>
+
+<span class="sd">    :param DefinedPowerCurveAdditionalSafetyMargins:</span>
+<span class="sd">        Boolean that define if the additional save margins are present</span>
+<span class="sd">    :type DefinedPowerCurveAdditionalSafetyMargins: boolean</span>
+
+<span class="sd">    :param RequiredEngineSpeeds:</span>
+<span class="sd">        Annex 2 (3.2) n_i,j</span>
+<span class="sd">        The engine speeds required</span>
+<span class="sd">        for each gear i from 1 to ng and</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">        Note that this are the uncorrected values n_i,j</span>
+<span class="sd">        ie without the increments required by Annex 2 (3.3)</span>
+<span class="sd">    :type RequiredEngineSpeeds: array</span>
+
+<span class="sd">    :param IdlingEngineSpeed:</span>
+<span class="sd">        Annex 2 (2c) n_idle. The idling speed.</span>
+<span class="sd">    :type IdlingEngineSpeed: float</span>
+
+<span class="sd">    :param PowerCurveEngineSpeeds:</span>
+<span class="sd">        Contains the power curve engine speeds</span>
+<span class="sd">    :type PowerCurveEngineSpeeds: array</span>
+
+<span class="sd">    :param PowerCurveASM:</span>
+<span class="sd">        Contains the power curve additional save margin</span>
+<span class="sd">    :type PowerCurveASM: array</span>
+
+<span class="sd">    :param PowerCurvePowers:</span>
+<span class="sd">        Contains the power curve powers</span>
+<span class="sd">    :type PowerCurvePowers: array</span>
+
+<span class="sd">    :param NoOfGearsFinal:</span>
+<span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
+<span class="sd">        if is necessary.</span>
+<span class="sd">    :type NoOfGearsFinal: integer</span>
+
+<span class="sd">    :param InitialRequiredEngineSpeeds:</span>
+<span class="sd">        The initial engine speeds required for each gear i from 1 to ng and</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">    :type InitialRequiredEngineSpeeds: array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - SafetyMargin (:py:class:`float`):</span>
+<span class="sd">            Annex 2 (3.4) SM. The safety margin is accounting for the difference between the</span>
+<span class="sd">            stationary full load condition power curve and the power available</span>
+<span class="sd">            during transition conditions.</span>
+<span class="sd">            SM is set to 10 per cent.</span>
+<span class="sd">        - AvailablePowers (:py:class:`numpy.array`):</span>
+<span class="sd">            Annex 2 (3.4) P_available_i,j</span>
+<span class="sd">            The power available for each gear i from 1 to ng and for each second j</span>
+<span class="sd">            of the cycle trace. Note that this power values are determined from</span>
+<span class="sd">            uncorrected values n_i,j i.e. without the engine speed increments</span>
+<span class="sd">            required by Annex 2 (3.3)</span>
+<span class="sd">        - InitialAvailablePowers (:py:class:`numpy.array`):</span>
+<span class="sd">            Annex 2 (3.4) P_available_i,j (initials)</span>
+<span class="sd">            The power available for each gear i from 1 to ng and for each second j</span>
+<span class="sd">            of the cycle trace.</span>
+<span class="sd">            Note that this power values are determined from uncorrected values n_i,j</span>
+<span class="sd">            i.e. without the engine speed increments required by Annex 2 (3.3)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 
@@ -1910,9 +2014,9 @@
     <span class="k">return</span> <span class="n">AvailablePowers</span><span class="p">,</span> <span class="n">InitialAvailablePowers</span></div>
 
 
-<div class="viewcode-block" id="sub2ind"><a class="viewcode-back" href="../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.html#gearshift.core.model.calculateShiftpointsNdvFullPC.sub2ind">[docs]</a><span class="k">def</span> <span class="nf">sub2ind</span><span class="p">(</span><span class="n">array_shape</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_sub2ind</span><span class="p">(</span><span class="n">array_shape</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
     <span class="n">ind</span> <span class="o">=</span> <span class="n">rows</span> <span class="o">*</span> <span class="n">array_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cols</span>
-    <span class="k">return</span> <span class="n">ind</span></div>
+    <span class="k">return</span> <span class="n">ind</span>
 
 
 <div class="viewcode-block" id="determine_possible_gears_based_available_powers"><a class="viewcode-back" href="../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.html#gearshift.core.model.calculateShiftpointsNdvFullPC.determine_possible_gears_based_available_powers">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PossibleGearsByAvailablePowersWithTotalSafetyMargin&quot;</span><span class="p">])</span>
@@ -1923,6 +2027,39 @@
     <span class="n">NoOfGearsFinal</span><span class="p">,</span>
     <span class="n">PossibleGearsByEngineSpeed</span><span class="p">,</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine possible gears based on available powers (3.5)</span>
+
+<span class="sd">    :param AvailablePowers:</span>
+<span class="sd">        Annex 2 (3.4) P_available_i,j</span>
+<span class="sd">        The power available for each gear i from 1 to ng and for each second j</span>
+<span class="sd">        of the cycle trace.</span>
+<span class="sd">        Note that this power values are determined from uncorrected values n_i,j</span>
+<span class="sd">        i.e. without the engine speed increments required by Annex 2 (3.3)</span>
+<span class="sd">    :type AvailablePowers: array</span>
+
+<span class="sd">    :param requiredPowersF:</span>
+<span class="sd">        Annex 2 (3.1) P_required,j</span>
+<span class="sd">        The power required to overcome driving resistance and to accelerate</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">    :type requiredPowersF: array</span>
+
+<span class="sd">    :param TraceTimesCount:</span>
+<span class="sd">        The length of trace times re-sampled in 1Hz</span>
+<span class="sd">    :type TraceTimesCount: integer</span>
+
+<span class="sd">    :param NoOfGearsFinal:</span>
+<span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
+<span class="sd">        if is necessary.</span>
+<span class="sd">    :type NoOfGearsFinal: integer</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - PossibleGearsByEngineSpeed (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The possible gear that can be used for each second.</span>
+<span class="sd">        - PossibleGearsByAvailablePowersWithTotalSafetyMargin (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The possible gears by available powers with total safety margin</span>
+<span class="sd">            (following section 3.5 of Sub-Annex 2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">PossibleGearsByAvailablePowersWithTotalSafetyMargin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
         <span class="p">(</span><span class="n">TraceTimesCount</span><span class="p">,</span> <span class="n">NoOfGearsFinal</span><span class="p">)</span>
     <span class="p">)</span>
@@ -1943,7 +2080,7 @@
 
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">AvailablePowers</span><span class="p">)</span>
 
-    <span class="n">linearInd</span> <span class="o">=</span> <span class="n">sub2ind</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">AvailablePowers</span><span class="p">),</span> <span class="n">I</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+    <span class="n">linearInd</span> <span class="o">=</span> <span class="n">_sub2ind</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">AvailablePowers</span><span class="p">),</span> <span class="n">I</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
 
     <span class="n">PossibleGearsByAvailablePowersWithTotalSafetyMargin</span><span class="p">[</span>
         <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span>
@@ -1967,7 +2104,61 @@
     <span class="n">InitialRequiredEngineSpeeds</span><span class="p">,</span>
     <span class="n">MinDrive1stTo2nd</span><span class="p">,</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine initial gears</span>
 
+<span class="sd">    :param InStandStill:</span>
+<span class="sd">        Contains the points that are in standstill phase as a True</span>
+<span class="sd">    :type InStandStill: boolean array</span>
+
+<span class="sd">    :param NoOfGearsFinal:</span>
+<span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
+<span class="sd">        if is necessary.</span>
+<span class="sd">    :type NoOfGearsFinal: integer</span>
+
+<span class="sd">    :param PossibleGearsByEngineSpeed:</span>
+<span class="sd">        The possible gear that can be used for each second.</span>
+<span class="sd">    :type PossibleGearsByEngineSpeed: boolean array</span>
+
+<span class="sd">    :param PossibleGearsByAvailablePowersWithTotalSafetyMargin:</span>
+<span class="sd">        The possible gears by available powers with total safety margin</span>
+<span class="sd">        (following section 3.5 of Sub-Annex 2)</span>
+<span class="sd">    :type PossibleGearsByAvailablePowersWithTotalSafetyMargin: boolean array</span>
+
+<span class="sd">    :param AccelerationFromStandstillStarts:</span>
+<span class="sd">        The phase start seconds when the phase is going to acceleration</span>
+<span class="sd">        from stand still.</span>
+<span class="sd">    :type AccelerationFromStandstillStarts: array</span>
+
+<span class="sd">    :param PhaseEnds:</span>
+<span class="sd">        Contains the points that are end point from a phase</span>
+<span class="sd">    :type PhaseEnds: array</span>
+
+<span class="sd">    :param PhaseValues:</span>
+<span class="sd">        Contains the points of changes phases</span>
+<span class="sd">    :type PhaseValues: array</span>
+
+<span class="sd">    :param PHASE_ACCELERATION_FROM_STANDSTILL:</span>
+<span class="sd">        Acceleration phase following a standstill phase</span>
+<span class="sd">    :type PHASE_ACCELERATION_FROM_STANDSTILL: integer</span>
+
+<span class="sd">    :param InitialRequiredEngineSpeeds:</span>
+<span class="sd">        The initial engine speeds required for each gear i from 1 to ng and</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">    :type InitialRequiredEngineSpeeds: array</span>
+
+<span class="sd">    :param MinDrive1stTo2nd:</span>
+<span class="sd">        Annex 2 (2ka) n_min_drive = 1.15 x n_idle for n_gear:1-&gt;2</span>
+<span class="sd">        The minimum engine speed for transitions from first to second gear.</span>
+<span class="sd">        This is the maximum of calculated value and input parameter value.</span>
+<span class="sd">    :type MinDrive1stTo2nd: float</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - InitialGears (:py:class:`numpy.array`):</span>
+<span class="sd">            The initial gears calculated by each second</span>
+<span class="sd">        - PossibleGears (:py:class:`numpy.array`):</span>
+<span class="sd">            The possible gears calculated by each second</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">InStandStillReps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">InStandStill</span><span class="p">,</span> <span class="p">(</span><span class="n">NoOfGearsFinal</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
     <span class="n">PossibleGears</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">PossibleGearsByEngineSpeed</span><span class="p">)</span>
     <span class="n">PossibleGears</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InStandStillReps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
@@ -2071,6 +2262,129 @@
     <span class="n">InDecelerationToStandstill</span><span class="p">,</span>
     <span class="n">InDeceleration</span><span class="p">,</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply corrections defined in section 4 of the sub-Annex 2</span>
+
+<span class="sd">    :param InitialGears:</span>
+<span class="sd">        The initial gears calculated by each second</span>
+<span class="sd">    :type InitialGears: array</span>
+
+<span class="sd">    :param PhaseValues:</span>
+<span class="sd">        Contains the points of changes phases</span>
+<span class="sd">    :type PhaseValues: array</span>
+
+<span class="sd">    :param PhaseStarts:</span>
+<span class="sd">        Contains the points that are start point from a phase</span>
+<span class="sd">    :type PhaseStarts: array</span>
+
+<span class="sd">    :param PhaseEnds:</span>
+<span class="sd">        Contains the points that are end point from a phase</span>
+<span class="sd">    :type PhaseEnds: array</span>
+
+<span class="sd">    :param PHASE_ACCELERATION_FROM_STANDSTILL:</span>
+<span class="sd">        Acceleration phase following a standstill phase</span>
+<span class="sd">    :type PHASE_ACCELERATION_FROM_STANDSTILL: integer</span>
+
+<span class="sd">    :param PHASE_ACCELERATION:</span>
+<span class="sd">        Acceleration phase</span>
+<span class="sd">    :type PHASE_ACCELERATION: integer</span>
+
+<span class="sd">    :param NoOfGearsFinal:</span>
+<span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
+<span class="sd">        if is necessary.</span>
+<span class="sd">    :type NoOfGearsFinal: integer</span>
+
+<span class="sd">    :param PossibleGears:</span>
+<span class="sd">        The possible gears calculated by each second</span>
+<span class="sd">    :type PossibleGears: array</span>
+
+<span class="sd">    :param InAcceleration:</span>
+<span class="sd">        Contains the points that are in acceleration phase as a True</span>
+<span class="sd">    :type InAcceleration: boolean array</span>
+
+<span class="sd">    :param InConstantSpeed:</span>
+<span class="sd">        Contains the points that are in constant speed phase as a True</span>
+<span class="sd">    :type InConstantSpeed: boolean array</span>
+
+<span class="sd">    :param InAccelerationAnyDuration:</span>
+<span class="sd">         some gear corrections ignore the duration of acceleration phases</span>
+<span class="sd">         so save acceleration phases with any duration here</span>
+<span class="sd">    :type InAccelerationAnyDuration: boolean array</span>
+
+<span class="sd">    :param ClutchDisengagedByGear:</span>
+<span class="sd">        The clutch disengaged by each gear and each second.</span>
+<span class="sd">    :type ClutchDisengagedByGear: boolean array</span>
+
+<span class="sd">    :param ClutchUndefinedByGear:</span>
+<span class="sd">        The clutch undefined by each gear and each second.</span>
+<span class="sd">    :type ClutchUndefinedByGear: boolean array</span>
+
+<span class="sd">    :param PHASE_DECELERATION:</span>
+<span class="sd">        time period of more than 2 seconds with required vehicle</span>
+<span class="sd">                speed &gt;= 1km/h and monotonically decreasing</span>
+<span class="sd">    :type PHASE_DECELERATION: integer</span>
+
+<span class="sd">    :param PHASE_DECELERATION_TO_STANDSTILL:</span>
+<span class="sd">        DECELERATION phase preceding a STANDSTILL phase</span>
+<span class="sd">    :type PHASE_DECELERATION_TO_STANDSTILL: integer</span>
+
+<span class="sd">    :param TraceTimesCount:</span>
+<span class="sd">        The length of trace times re-sampled in 1Hz</span>
+<span class="sd">    :type TraceTimesCount: integer</span>
+
+<span class="sd">    :param RequiredVehicleSpeeds:</span>
+<span class="sd">        The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
+<span class="sd">    :type RequiredVehicleSpeeds: array</span>
+
+<span class="sd">    :param SuppressGear0DuringDownshifts:</span>
+<span class="sd">        Sub-Annex 2 (4f).If a gear is used for only 1 second during a deceleration phase</span>
+<span class="sd">        it shall be replaced by gear 0 with clutch disengaged, in order to avoid too high</span>
+<span class="sd">        engine speeds. But if this is not an issue, the manufacturer may allow to use the</span>
+<span class="sd">        lower gear of the following second directly instead of gear 0 for downshifts of</span>
+<span class="sd">        up to 3 steps.</span>
+<span class="sd">    :type SuppressGear0DuringDownshifts: boolean</span>
+
+<span class="sd">    :param ClutchDisengaged:</span>
+<span class="sd">        The clutch disengaged by each second.</span>
+<span class="sd">    :type ClutchDisengaged: boolean array</span>
+
+<span class="sd">    :param InitialRequiredEngineSpeeds:</span>
+<span class="sd">        The initial engine speeds required for each gear i from 1 to ng and</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">    :type InitialRequiredEngineSpeeds: array</span>
+
+<span class="sd">    :param IdlingEngineSpeed:</span>
+<span class="sd">        Annex 2 (2c) n_idle. The idling speed.</span>
+<span class="sd">    :type IdlingEngineSpeed: float</span>
+
+<span class="sd">    :param Phases:</span>
+<span class="sd">        The list of phases that are used during whole cycle</span>
+<span class="sd">    :type Phases: array</span>
+
+<span class="sd">    :param InStandStill:</span>
+<span class="sd">        Contains the points that are in standstill phase as a True</span>
+<span class="sd">    :type InStandStill: boolean array</span>
+
+<span class="sd">    :param InDecelerationToStandstill:</span>
+<span class="sd">        The array that contains the seconds from deceleration to standstill as a True</span>
+<span class="sd">    :type InDecelerationToStandstill: boolean array</span>
+
+<span class="sd">    :param InDeceleration:</span>
+<span class="sd">        Contains the points that are in deceleration phase as a True</span>
+<span class="sd">    :type InDeceleration: boolean array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - InitialGearsFinal (:py:class:`numpy.array`):</span>
+<span class="sd">            The initial gears after apply corrections calculated by each second.</span>
+<span class="sd">        - CorrectionsCells (:py:class:`numpy.array`):</span>
+<span class="sd">            Array of gear correction strings for debugging. This contains a historic</span>
+<span class="sd">            transformation of each gear during all execution and the transformation</span>
+<span class="sd">            applied.</span>
+<span class="sd">        - ClutchDisengagedByGearFinal (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The clutch disengaged by each gear and each second after apply corrections.</span>
+<span class="sd">        - ClutchUndefinedByGearFinal (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            The clutch undefined by each gear and each second after apply corrections.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
 
     <span class="n">CorrectionsCells</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">))]</span>
@@ -2277,6 +2591,33 @@
 
 <span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;AverageGear&quot;</span><span class="p">,</span> <span class="s2">&quot;PhaseSum&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">calculate_average_gear</span><span class="p">(</span><span class="n">Phases</span><span class="p">,</span> <span class="n">PHASE_STANDSTILL</span><span class="p">,</span> <span class="n">InitialGearsFinal</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate Average Gear</span>
+
+<span class="sd">    :param Phases:</span>
+<span class="sd">        The list of phases that are used during whole cycle</span>
+<span class="sd">    :type Phases: array</span>
+
+<span class="sd">    :param PHASE_STANDSTILL:</span>
+<span class="sd">        Time period with required vehicle speed &lt; 1km/h</span>
+<span class="sd">    :type PHASE_STANDSTILL: integer</span>
+
+<span class="sd">    :param InitialGearsFinal:</span>
+<span class="sd">        The initial gears after apply corrections calculated by each second.</span>
+<span class="sd">    :type InitialGearsFinal: array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - InitialGearsFinal (:py:class:`float`):</span>
+<span class="sd">            Annex 2 (5) average gear</span>
+<span class="sd">            In order to enable the assessment of the correctness of the calculation,</span>
+<span class="sd">            the average gear for v &gt;= 1 km/h, rounded to four places of decimal,</span>
+<span class="sd">            shall be calculated and recorded.</span>
+<span class="sd">        - PhaseSum (:py:class:`boolean numpy.array`):</span>
+<span class="sd">            Annex 2 (5) average gear</span>
+<span class="sd">            In order to enable the assessment of the correctness of the calculation,</span>
+<span class="sd">            the average gear for v &gt;= 1 km/h, rounded to four places of decimal,</span>
+<span class="sd">            shall be calculated and recorded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">PhaseSum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">Phases</span><span class="p">))</span>
     <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
         <span class="n">PhaseSum</span><span class="p">,</span>
@@ -2294,6 +2635,25 @@
 
 <div class="viewcode-block" id="calculate_average_gear"><a class="viewcode-back" href="../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.html#gearshift.core.model.calculateShiftpointsNdvFullPC.calculate_average_gear">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ChecksumVxGear&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">calculate_average_gear</span><span class="p">(</span><span class="n">PhaseSum</span><span class="p">,</span> <span class="n">InitialGearsFinal</span><span class="p">,</span> <span class="n">RequiredVehicleSpeeds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate average gear</span>
+
+<span class="sd">    :param PhaseSum:</span>
+<span class="sd">        The all phases that are different of standstill phase</span>
+<span class="sd">    :type PhaseSum: boolean array</span>
+
+<span class="sd">    :param InitialGearsFinal:</span>
+<span class="sd">        The initial gears after apply corrections calculated by each second.</span>
+<span class="sd">    :type InitialGearsFinal: array</span>
+
+<span class="sd">    :param RequiredVehicleSpeeds:</span>
+<span class="sd">        The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
+<span class="sd">    :type RequiredVehicleSpeeds: array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - ChecksumVxGear (:py:class:`float`):</span>
+<span class="sd">            Checksum of v * gear for v &gt;= 1 km/h rounded to four places of decimal</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ChecksumVxGear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
         <span class="n">InitialGearsFinal</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">PhaseSum</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span>
         <span class="o">*</span> <span class="n">RequiredVehicleSpeeds</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">PhaseSum</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span>
@@ -2320,7 +2680,65 @@
     <span class="n">InDeceleration</span><span class="p">,</span>
     <span class="n">AdvancedClutchDisengage</span><span class="p">,</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Interleave the clutch Sub-Annex 2 (1.5)</span>
 
+<span class="sd">    .. note:: The prescriptions for the clutch operation shall not be applied if the clutch</span>
+<span class="sd">       is operated automatically without the need of an engagement or disengagement</span>
+<span class="sd">       of the driver.</span>
+
+<span class="sd">    :param TraceTimesCount:</span>
+<span class="sd">        The length of trace times re-sampled in 1Hz</span>
+<span class="sd">    :type TraceTimesCount: integer</span>
+
+<span class="sd">    :param InitialGearsFinal:</span>
+<span class="sd">        The initial gears after apply corrections calculated by each second.</span>
+<span class="sd">    :type InitialGearsFinal: array</span>
+
+<span class="sd">    :param ClutchDisengagedByGearFinal:</span>
+<span class="sd">        The clutch disengaged by each gear and each second after apply corrections.</span>
+<span class="sd">    :type ClutchDisengagedByGearFinal: boolean array</span>
+
+<span class="sd">    :param ClutchDisengaged:</span>
+<span class="sd">        The clutch disengaged by each second.</span>
+<span class="sd">    :type ClutchDisengaged: boolean array</span>
+
+<span class="sd">    :param ClutchUndefinedByGearFinal:</span>
+<span class="sd">        The clutch undefined by each gear and each second after apply corrections.</span>
+<span class="sd">    :type ClutchUndefinedByGearFinal: boolean array</span>
+
+<span class="sd">    :param ClutchUndefined:</span>
+<span class="sd">        The clutch undefined by each second.</span>
+<span class="sd">    :type ClutchUndefined: boolean array</span>
+
+<span class="sd">    :param AutomaticClutchOperation:</span>
+<span class="sd">        Sub-Annex 2 (1.5)</span>
+<span class="sd">        The prescriptions for the clutch operation shall not be applied if the clutch</span>
+<span class="sd">        is operated automatically without the need of an engagement or disengagement</span>
+<span class="sd">        of the driver.</span>
+<span class="sd">    :type AutomaticClutchOperation: boolean</span>
+
+<span class="sd">    :param InDeceleration:</span>
+<span class="sd">        Contains the points that are in deceleration phase as a True</span>
+<span class="sd">    :type InDeceleration: boolean array</span>
+
+<span class="sd">    :param AdvancedClutchDisengage:</span>
+<span class="sd">        The seconds in which the advanced clutch disengage</span>
+<span class="sd">    :type AdvancedClutchDisengage: list</span>
+
+<span class="sd">    :return InitialGearsFinalAfterClutch:</span>
+<span class="sd">        The initial gears after apply corrections calculated by each second and the</span>
+<span class="sd">        interleave clutch.</span>
+<span class="sd">    :rtype InitialGearsFinalAfterClutch: array</span>
+
+<span class="sd">    :return ClutchDisengagedFinal:</span>
+<span class="sd">        The clutch disengaged by each second after apply the interleave clutch</span>
+<span class="sd">    :rtype ClutchDisengagedFinal: boolean array</span>
+
+<span class="sd">    :return ClutchUndefinedFinal:</span>
+<span class="sd">        The clutch undefined by each second after apply the interleave clutch</span>
+<span class="sd">    :rtype ClutchUndefinedFinal: boolean array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># This is a test parameter that can be included in the inputs in the future</span>
     <span class="n">DoNotMergeClutchIntoGearsOutput</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -2351,6 +2769,34 @@
 <span class="k">def</span> <span class="nf">remove_duplicate_gears</span><span class="p">(</span>
     <span class="n">InitialGearsFinalAfterClutch</span><span class="p">,</span> <span class="n">ClutchUndefinedFinal</span><span class="p">,</span> <span class="n">ClutchDisengagedFinal</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove duplicate gears</span>
+
+<span class="sd">    :param InitialGearsFinalAfterClutch:</span>
+<span class="sd">        The initial gears after apply corrections calculated by each second and the</span>
+<span class="sd">        interleave clutch.</span>
+<span class="sd">    :type InitialGearsFinalAfterClutch: array</span>
+
+<span class="sd">    :param ClutchUndefinedFinal:</span>
+<span class="sd">        The clutch undefined by each second after apply the interleave clutch</span>
+<span class="sd">    :type ClutchUndefinedFinal: boolean array</span>
+
+<span class="sd">    :param ClutchDisengagedFinal:</span>
+<span class="sd">        The clutch disengaged by each second after apply the interleave clutch</span>
+<span class="sd">    :type ClutchDisengagedFinal: boolean array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - ClutchHST (:py:class:`float`):</span>
+<span class="sd">            Array of clutch state names as used by the Heinz Steven Tool (HST).</span>
+<span class="sd">        - GearSequenceStarts (:py:class:`numpy.array`):</span>
+<span class="sd">            Array that contains the position of the gear sequence start for the different</span>
+<span class="sd">            gears.</span>
+<span class="sd">        - GearSequenceStarts (:py:class:`numpy.array`):</span>
+<span class="sd">            The name of gear to used by each gear sequence starts.</span>
+
+<span class="sd">    .. note:: A clutch disengagement and a gear change cannot be indicated at the same time</span>
+<span class="sd">        and the clutch disengagement will therefore be indicated one second earlier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
     <span class="kn">import</span> <span class="nn">regex</span> <span class="k">as</span> <span class="nn">re</span>
 
@@ -2397,7 +2843,6 @@
     <span class="n">SafetyMargin</span><span class="p">,</span>
     <span class="n">PowerCurveASM</span><span class="p">,</span>
     <span class="n">IdlingEngineSpeed</span><span class="p">,</span>
-    <span class="n">AdditionalSafetyMargin0</span><span class="p">,</span>
     <span class="n">RequiredEngineSpeeds</span><span class="p">,</span>
     <span class="n">RequiredVehicleSpeeds</span><span class="p">,</span>
     <span class="n">f0</span><span class="p">,</span>
@@ -2412,6 +2857,116 @@
     <span class="n">AvailablePowers</span><span class="p">,</span>
     <span class="n">NdvRatios</span><span class="p">,</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reduce vehicle speed if not enough power is available</span>
+
+<span class="sd">    :param DefinedPowerCurveAdditionalSafetyMargins:</span>
+<span class="sd">        Boolean that define if the additional save margins are present</span>
+<span class="sd">    :type DefinedPowerCurveAdditionalSafetyMargins: boolean</span>
+
+<span class="sd">    :param PowerCurveEngineSpeeds:</span>
+<span class="sd">        Contains the power curve engine speeds</span>
+<span class="sd">    :type PowerCurveEngineSpeeds: array</span>
+
+<span class="sd">    :param PowerCurvePowers:</span>
+<span class="sd">        Contains the power curve powers</span>
+<span class="sd">    :type PowerCurvePowers: array</span>
+
+<span class="sd">    :param SafetyMargin:</span>
+<span class="sd">        Annex 2 (3.4) SM</span>
+<span class="sd">        The safety margin is accounting for the difference between the</span>
+<span class="sd">        stationary full load condition power curve and the power available</span>
+<span class="sd">        during transition conditions.</span>
+<span class="sd">        SM is set to 10 per cent.</span>
+<span class="sd">    :type SafetyMargin: float</span>
+
+<span class="sd">    :param PowerCurveASM:</span>
+<span class="sd">        Contains the power curve additional save margin</span>
+<span class="sd">    :type PowerCurveASM: array</span>
+
+<span class="sd">    :param IdlingEngineSpeed:</span>
+<span class="sd">        Annex 2 (2c) n_idle. The idling speed.</span>
+<span class="sd">    :type IdlingEngineSpeed: float</span>
+
+<span class="sd">    :param RequiredEngineSpeeds:</span>
+<span class="sd">        Annex 2 (3.2) n_i,j</span>
+<span class="sd">        The engine speeds required</span>
+<span class="sd">        for each gear i from 1 to ng and</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">        Note that this are the uncorrected values n_i,j</span>
+<span class="sd">        ie without the increments required by Annex 2 (3.3)</span>
+<span class="sd">    :type RequiredEngineSpeeds: array</span>
+
+<span class="sd">    :param RequiredVehicleSpeeds:</span>
+<span class="sd">        The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
+<span class="sd">    :type RequiredVehicleSpeeds: array</span>
+
+<span class="sd">    :param f0:</span>
+<span class="sd">        The constant road load coefficient,</span>
+<span class="sd">        i.e. independent of velocity, caused by internal frictional resistances.</span>
+<span class="sd">    :type f0: float</span>
+
+<span class="sd">    :param f1:</span>
+<span class="sd">        The linear road load coefficient,</span>
+<span class="sd">        i.e. proportional to velocity, caused by tyres rolling resistances.</span>
+<span class="sd">    :type f1: float</span>
+
+<span class="sd">    :param f2:</span>
+<span class="sd">        The quadratic road load coefficient,</span>
+<span class="sd">        i.e. quadratical to velocity, caused by aerodynamic resistances.</span>
+<span class="sd">    :type f2: float</span>
+
+<span class="sd">    :param VehicleTestMass:</span>
+<span class="sd">        The test mass of the vehicle.</span>
+<span class="sd">    :type VehicleTestMass: float</span>
+
+<span class="sd">    :param requiredPowersF:</span>
+<span class="sd">        Annex 2 (3.1) P_required,j</span>
+<span class="sd">        The power required to overcome driving resistance and to accelerate</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">    :type requiredPowersF: array</span>
+
+<span class="sd">    :param ClutchDisengagedFinal:</span>
+<span class="sd">        The clutch disengaged by each second after apply the interleave clutch</span>
+<span class="sd">    :type ClutchDisengagedFinal: boolean array</span>
+
+<span class="sd">    :param ClutchUndefinedFinal:</span>
+<span class="sd">        The clutch undefined by each second after apply the interleave clutch</span>
+<span class="sd">    :type ClutchUndefinedFinal: boolean array</span>
+
+<span class="sd">    :param InitialGearsFinalAfterClutch:</span>
+<span class="sd">        The initial gears after apply corrections calculated by each second and the</span>
+<span class="sd">        interleave clutch.</span>
+<span class="sd">    :type InitialGearsFinalAfterClutch: array</span>
+
+<span class="sd">    :param NoOfGearsFinal:</span>
+<span class="sd">        The number of forward gears after apply the exclusion of first gear</span>
+<span class="sd">        if is necessary.</span>
+<span class="sd">    :type NoOfGearsFinal: integer</span>
+
+<span class="sd">    :param AvailablePowers:</span>
+<span class="sd">        Annex 2 (3.4) P_available_i,j</span>
+<span class="sd">        The power available for each gear i from 1 to ng and for each second j</span>
+<span class="sd">        of the cycle trace.</span>
+<span class="sd">        Note that this power values are determined from uncorrected values n_i,j</span>
+<span class="sd">        i.e. without the engine speed increments required by Annex 2 (3.3)</span>
+<span class="sd">    :type AvailablePowers: array</span>
+
+<span class="sd">    :param NdvRatios:</span>
+<span class="sd">        The ratio obtained by dividing the engine speed n by the vehicle speed v</span>
+<span class="sd">        for each gear i form 1 to ng after apply the exclusion of first gear if</span>
+<span class="sd">        is necessary.</span>
+<span class="sd">    :type NdvRatios: array</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - AvailablePowersFinal (:py:class:`numpy.array`):</span>
+<span class="sd">            Annex 2 (3.4) P_available_i,j</span>
+<span class="sd">            The power available for each gear i from 1 to ng and for each second j</span>
+<span class="sd">            of the cycle trace, after check vehicle speed.</span>
+<span class="sd">            Note that this power values are determined from uncorrected values n_i,j</span>
+<span class="sd">            i.e. without the engine speed increments required by Annex 2 (3.3)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 
@@ -2568,7 +3123,7 @@
     <span class="k">return</span> <span class="n">AvailablePowersFinal</span></div>
 
 
-<div class="viewcode-block" id="generate_gears"><a class="viewcode-back" href="../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.html#gearshift.core.model.calculateShiftpointsNdvFullPC.generate_gears">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;shift_poits&quot;</span><span class="p">])</span>
+<div class="viewcode-block" id="generate_gears"><a class="viewcode-back" href="../../../../gearshift.core.model.calculateShiftpointsNdvFullPC.html#gearshift.core.model.calculateShiftpointsNdvFullPC.generate_gears">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;shift_points&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">generate_gears</span><span class="p">(</span>
     <span class="n">TraceTimes</span><span class="p">,</span>
     <span class="n">GearSequenceStarts</span><span class="p">,</span>
@@ -2600,6 +3155,175 @@
     <span class="n">CorrectionsCells</span><span class="p">,</span>
     <span class="n">ChecksumVxGear</span><span class="p">,</span>
 <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Assign outputs in the final dictionary</span>
+
+<span class="sd">    :param TraceTimes:</span>
+<span class="sd">        Times for each vehicle speed required re-sampled in 1Hz</span>
+<span class="sd">    :type TraceTimes: array</span>
+
+<span class="sd">    :param GearSequenceStarts:</span>
+<span class="sd">        Array that contains the position of the gear sequence start for the different</span>
+<span class="sd">        gears.</span>
+<span class="sd">    :type GearSequenceStarts: array</span>
+
+<span class="sd">    :param GearNames:</span>
+<span class="sd">        The name of gear to used by each gear sequence starts.</span>
+<span class="sd">    :type GearNames: array</span>
+
+<span class="sd">    :param AverageGear:</span>
+<span class="sd">        Annex 2 (5) average gear</span>
+<span class="sd">        In order to enable the assessment of the correctness of the calculation,</span>
+<span class="sd">        the average gear for v &gt;= 1 km/h, rounded to four places of decimal,</span>
+<span class="sd">        shall be calculated and recorded.</span>
+<span class="sd">    :type AverageGear: float</span>
+
+<span class="sd">    :param Max95EngineSpeedFinal:</span>
+<span class="sd">         Annex 2 (2g) n_max1 = n_95_high adjusted</span>
+<span class="sd">         If n_95_high cannot be determined because the engine speed is limited to</span>
+<span class="sd">         a lower value n_lim for all gears and the corresponding full load power</span>
+<span class="sd">         is higher than 95 per cent of rated power, n_95_high shall be set to n_lim.</span>
+<span class="sd">    :type Max95EngineSpeedFinal: float</span>
+
+<span class="sd">    :param RequiredVehicleSpeeds:</span>
+<span class="sd">        The vehicle speed required for the whole cycle re-sampled in 1Hz</span>
+<span class="sd">    :type RequiredVehicleSpeeds: array</span>
+
+<span class="sd">    :param requiredPowersF:</span>
+<span class="sd">        Annex 2 (3.1) P_required,j</span>
+<span class="sd">        The power required to overcome driving resistance and to accelerate</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">    :type requiredPowersF: array</span>
+
+<span class="sd">    :param RequiredEngineSpeeds:</span>
+<span class="sd">        Annex 2 (3.2) n_i,j</span>
+<span class="sd">        The engine speeds required</span>
+<span class="sd">        for each gear i from 1 to ng and</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">        Note that this are the uncorrected values n_i,j</span>
+<span class="sd">        ie without the increments required by Annex 2 (3.3)</span>
+<span class="sd">    :type RequiredEngineSpeeds: array</span>
+
+<span class="sd">    :param PossibleGearsByEngineSpeed:</span>
+<span class="sd">        The possible gear that can be used for each second.</span>
+<span class="sd">    :type PossibleGearsByEngineSpeed: boolean array</span>
+
+<span class="sd">    :param AvailablePowersFinal:</span>
+<span class="sd">        Annex 2 (3.4) P_available_i,j</span>
+<span class="sd">        The power available for each gear i from 1 to ng and for each second j</span>
+<span class="sd">        of the cycle trace, after check vehicle speed.</span>
+<span class="sd">        Note that this power values are determined from uncorrected values n_i,j</span>
+<span class="sd">        i.e. without the engine speed increments required by Annex 2 (3.3)</span>
+<span class="sd">    :type AvailablePowersFinal: array</span>
+
+<span class="sd">    :param InitialRequiredEngineSpeeds:</span>
+<span class="sd">        The initial engine speeds required for each gear i from 1 to ng and</span>
+<span class="sd">        for each second j of the cycle trace.</span>
+<span class="sd">    :type InitialRequiredEngineSpeeds: array</span>
+
+<span class="sd">    :param InitialAvailablePowers:</span>
+<span class="sd">        Annex 2 (3.4) P_available_i,j (initials)</span>
+<span class="sd">        The power available for each gear i from 1 to ng and for each second j</span>
+<span class="sd">        of the cycle trace.</span>
+<span class="sd">        Note that this power values are determined from uncorrected values n_i,j</span>
+<span class="sd">        i.e. without the engine speed increments required by Annex 2 (3.3)</span>
+<span class="sd">    :type InitialAvailablePowers: array</span>
+
+<span class="sd">    :param FullPowerCurve:</span>
+<span class="sd">        Annex 2 (2h) and (3.4) n ==&gt; P_wot(n), ASM</span>
+<span class="sd">        The full load power curve over the engine speed range.</span>
+<span class="sd">    :type FullPowerCurve: array</span>
+
+<span class="sd">    :param EngineSpeedAtGearAtMaxRequiredSpeed:</span>
+<span class="sd">        The engine speed at gear maximum required speed</span>
+<span class="sd">    :type EngineSpeedAtGearAtMaxRequiredSpeed: float</span>
+
+<span class="sd">    :param EngineSpeedAtGearAtMaxVehicleSpeed:</span>
+<span class="sd">        The engine speed at gear at maximum vehicle speed</span>
+<span class="sd">    :type EngineSpeedAtGearAtMaxVehicleSpeed: float</span>
+
+<span class="sd">    :param MaxEngineSpeed:</span>
+<span class="sd">        The maximum engine speed</span>
+<span class="sd">    :type MaxEngineSpeed: float</span>
+
+<span class="sd">    :param MaxVehicleSpeedFinal:</span>
+<span class="sd">        Annex 2 (2g, 2i) v_max,vehicle</span>
+<span class="sd">        The maximum vehicle speed reachable</span>
+<span class="sd">        using the gear in which the maximum vehicle speed can be reached.</span>
+<span class="sd">    :type MaxVehicleSpeedFinal: float</span>
+
+<span class="sd">    :param GearAtMaxVehicleSpeedFinal:</span>
+<span class="sd">        Annex 2 (2i) ng_vmax</span>
+<span class="sd">        The gear in which the maximum vehicle speed is reached.</span>
+<span class="sd">    :type GearAtMaxVehicleSpeedFinal: integer</span>
+
+<span class="sd">    :param MinDrive1st:</span>
+<span class="sd">        Annex 2 (2k) n_min_drive = n_idle for n_gear:1</span>
+<span class="sd">        The minimum engine speed when the vehicle is in motion.</span>
+<span class="sd">        This is the maximum of calculated value and input parameter value.</span>
+<span class="sd">    :type MinDrive1st: float</span>
+
+<span class="sd">    :param MinDrive1stTo2nd:</span>
+<span class="sd">        Annex 2 (2ka) n_min_drive = 1.15 x n_idle for n_gear:1-&gt;2</span>
+<span class="sd">        The minimum engine speed for transitions from first to second gear.</span>
+<span class="sd">        This is the maximum of calculated value and input parameter value.</span>
+<span class="sd">    :type MinDrive1stTo2nd: float</span>
+
+<span class="sd">    :param MinDrive2ndDecel:</span>
+<span class="sd">        Annex 2 (2kb) n_min_drive = n_idle for n_gear:2</span>
+<span class="sd">        The minimum engine speed for decelerations to standstill in second gear.</span>
+<span class="sd">        This is the maximum of calculated value and input parameter value.</span>
+<span class="sd">    :type MinDrive2ndDecel: float</span>
+
+<span class="sd">    :param MinDrive2nd:</span>
+<span class="sd">        Annex 2 (2kc) n_min_drive = 0.9 x n_idle for n_gear:2</span>
+<span class="sd">        The minimum engine speed for all other driving conditions in second gear.</span>
+<span class="sd">        This is the maximum of calculated value and input parameter value.</span>
+<span class="sd">    :type MinDrive2nd: float</span>
+
+<span class="sd">    :param MinDriveGreater2nd:</span>
+<span class="sd">        Annex 2 (2k) n_min_drive = n_idle + 0.125 × ( n_rated - n_idle ) for n_gear:3..</span>
+<span class="sd">        This value shall be referred to as n_min_drive_set.</span>
+<span class="sd">        The minimum engine speed for all driving conditions in gears greater than 2.</span>
+<span class="sd">        This is the maximum of calculated value and input parameter value.</span>
+<span class="sd">    :type MinDriveGreater2nd: float</span>
+
+<span class="sd">    :param InitialGearsFinalAfterClutch:</span>
+<span class="sd">        The initial gears after apply corrections calculated by each second and the</span>
+<span class="sd">        interleave clutch.</span>
+<span class="sd">    :type InitialGearsFinalAfterClutch: array</span>
+
+<span class="sd">    :param ClutchDisengagedFinal:</span>
+<span class="sd">        The clutch disengaged by each second after apply the interleave clutch</span>
+<span class="sd">    :type ClutchDisengagedFinal: boolean array</span>
+
+<span class="sd">    :param ClutchUndefinedFinal:</span>
+<span class="sd">        The clutch undefined by each second after apply the interleave clutch</span>
+<span class="sd">    :type ClutchUndefinedFinal: boolean array</span>
+
+<span class="sd">    :param ClutchHST:</span>
+<span class="sd">        Array of clutch state names as used by the Heinz Steven Tool (HST).</span>
+<span class="sd">    :type ClutchHST: array</span>
+
+<span class="sd">    :param CorrectionsCells:</span>
+<span class="sd">        Array of gear correction strings for debugging. This contains a historic</span>
+<span class="sd">        transformation of each gear during all execution and the transformation</span>
+<span class="sd">        applied.</span>
+<span class="sd">    :type CorrectionsCells: array</span>
+
+<span class="sd">    :param ChecksumVxGear:</span>
+<span class="sd">        Checksum of v * gear for v &gt;= 1 km/h rounded to four places of decimal.</span>
+<span class="sd">    :type ChecksumVxGear: float</span>
+
+<span class="sd">    :returns:</span>
+<span class="sd">        - shift_points (:py:class:`dict`):</span>
+<span class="sd">            Dictionary that contains the all input parameters with the expected</span>
+<span class="sd">            output format.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        A clutch disengagement and a gear change cannot be indicated at the same time</span>
+<span class="sd">        and the clutch disengagement will therefore be indicated one second earlier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># This is a test parameter that can be included in the inputs in the future</span>
     <span class="n">ReturnAdjustedEngSpeedsAndAvlPowers</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -2612,7 +3336,7 @@
         <span class="n">RequiredEngineSpeedsOutput</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">InitialRequiredEngineSpeeds</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
         <span class="n">AvailablePowersOutput</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">InitialAvailablePowers</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 
-    <span class="n">shift_poits</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">shift_points</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;CalculatedGearsOutput&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
             <span class="p">(</span><span class="n">TraceTimes</span><span class="p">[</span><span class="n">GearSequenceStarts</span><span class="p">],</span> <span class="n">GearNames</span><span class="p">)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
@@ -2643,7 +3367,7 @@
         <span class="s2">&quot;ChecksumVxGearOutput&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ChecksumVxGear</span> <span class="o">*</span> <span class="mi">10000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="k">return</span> <span class="n">shift_poits</span></div>
+    <span class="k">return</span> <span class="n">shift_points</span></div>
 </pre></div>
 
            </div>

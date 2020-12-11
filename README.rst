@@ -1,3 +1,5 @@
+.. _start-info:
+
 ################################################################
 Python Gearshift Calculation Tool
 ################################################################
@@ -13,15 +15,16 @@ A python-3.6+ package to generate the *gear-shifts* of Light-duty vehicles
 
 
 .. Attention::
-    This *wltp* python project is still in *alpha* stage, in the sense that
+    This *gearshift* python project is still in *alpha* stage, in the sense that
     its results are not "correct" by the standard, and no WLTP dyno-tests should rely
     currently on them.
 
-.. _end-opening:
+.. _end-info:
+
 .. contents:: Table of Contents
   :backlinks: top
-.. _begin-intro:
 
+.. _start-intro:
 Introduction
 ============
 
@@ -31,36 +34,43 @@ of final trace and the operating conditions of the engine.
 
 Overview
 --------
-The calculator accepts as input the excel file  that contains the vehicle's technical data, along with parameters for
+The calculator accepts as input an excel file  that contains the vehicle's technical data, along with parameters for
 modifying the execution WLTC cycle, and it then spits-out the gear-shifts of the vehicle and the others parameters used
 during the obtaining of these. It does not calculate any |CO2| emissions.
 
-Prerequisites:
-^^^^^^^^^^^^^^
+.. _end-intro:
+
+.. _start-installation:
+Installation
+============
+Prerequisites
+-------------
 **Python-3.6+** is required and **Python-3.7** recommended.
 It requires **numpy/scipy** and **pandas** libraries with native backends.
 
 .. Tip::
-    On *Windows*, it is preferable to use the `Anaconda <https://www.anaconda.com/products/individual>` distribution.
+    On *Windows*, it is preferable to use the `Anaconda <https://www.anaconda.com/products/individual>`__ distribution.
     To avoid possible incompatibilities with other projects
 
-Download:
-^^^^^^^^^
+Download
+--------
 Download the sources,
 
 - either with *git*, by giving this command to the terminal::
 
       git clone https://github.com/AndresLaverdeMarin/gearshift_calculation_tool --depth=1
 
-Install:
-^^^^^^^^
+Install
+-------
 From within the project directory, run one of these commands to install it:
 
 - for standard python, installing with ``pip`` is enough (but might)::
 
       pip install -e .[path_to_gearshift_calculation_tool_folder]
 
+.. _end-installation:
 
+.. _start-folder:
 Project files and folders
 -------------------------
 The files and folders of the project are listed below::
@@ -82,6 +92,9 @@ The files and folders of the project are listed below::
     +--setup.py                                         # (script) The entry point for `setuptools`, installing, testing, etc
     +--README.rst
     +--LICENSE.txt
+.. _end-folder:
+
+.. _start-usage:
 
 Usage
 =====
@@ -97,9 +110,9 @@ and in a *single* command.  To have precise control over the inputs and outputs
     $ gearshift --help                                                  ## to get generic help for cmd-line syntax
     $ gearshift demo                                                    ## to get demo input file
     $ gearshift run "path_input_file" -O "path_to_save_output_file"     ## to run gearshift tool
+.. _end-usage:
 
-
-
+.. _start-sub:
 .. |python-ver| image::  https://img.shields.io/badge/PyPi%20python-3.3%20%7C%203.4%20%7C%203.5%20%7C%203.6%20%7C%203.7-informational
     :alt: Supported Python versions of latest release in PyPi
 
@@ -117,3 +130,4 @@ and in a *single* command.  To have precise control over the inputs and outputs
     :alt: EUPL 1.1+
 
 .. |CO2| replace:: CO\ :sub:`2`
+.. _end-sub:
