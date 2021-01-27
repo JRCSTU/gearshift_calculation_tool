@@ -62,7 +62,7 @@ def _dict2dataframes(solution_case):
         ApplicableTrace = pd.DataFrame(dict_AT)
         dict_df["Applicable Trace"] = ApplicableTrace
 
-    dict_df["Output"] = pd.DataFrame(principal_sheet_output)
+    dict_df["Summary"] = pd.DataFrame(principal_sheet_output)
 
     return dict_df
 
