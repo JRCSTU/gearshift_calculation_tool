@@ -31,7 +31,7 @@ log = logging.getLogger(__name__)
 
 dsp = sh.BlueDispatcher(
     name="GEARSHIFT calculateShiftpointsNdvFullPC model",
-    description="This function calibrates the speed trance, following the Sub-Annex 2",
+    description="This function calibrates the speed trace, following the Sub-Annex 2",
 )
 
 

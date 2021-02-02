@@ -7,14 +7,17 @@
 """
 Defines the file processing chain model `dsp`.
 
+Sub-Modules:
+
 .. currentmodule:: gearshift
 
 .. autosummary::
     :nosignatures:
-    :toctree: _build/gearshift/
+    :toctree: gearshift/
 
-    ~core
-    ~cli
+    core
+    cli
+    gearshift
 """
 import tqdm
 import logging
@@ -160,11 +163,11 @@ def run_core(
     return solutions
 
 
-def check_demo_flag(output_folder, demo_flag):
+def _check_demo_flag(output_folder, demo_flag):
     return demo_flag
 
 
-@sh.add_function(dsp, outputs=["demo"], input_domain=check_demo_flag)
+@sh.add_function(dsp, outputs=["demo"], input_domain=_check_demo_flag)
 def save_demo_files(output_folder, demo_flag):
     """
     Save CO2MPAS demo files.
@@ -209,7 +212,7 @@ def log_done(start_time):
 
     :return:
         Execution time [s].
-    :rtype:
+    :rtype: datetime.datetime
     """
     import datetime
 

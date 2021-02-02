@@ -161,14 +161,17 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Defines the file processing chain model `dsp`.</span>
 
+<span class="sd">Sub-Modules:</span>
+
 <span class="sd">.. currentmodule:: gearshift</span>
 
 <span class="sd">.. autosummary::</span>
 <span class="sd">    :nosignatures:</span>
-<span class="sd">    :toctree: _build/gearshift/</span>
+<span class="sd">    :toctree: gearshift/</span>
 
-<span class="sd">    ~core</span>
-<span class="sd">    ~cli</span>
+<span class="sd">    core</span>
+<span class="sd">    cli</span>
+<span class="sd">    gearshift</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">tqdm</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -314,11 +317,11 @@
     <span class="k">return</span> <span class="n">solutions</span></div>
 
 
-<div class="viewcode-block" id="check_demo_flag"><a class="viewcode-back" href="../gearshift.html#gearshift.check_demo_flag">[docs]</a><span class="k">def</span> <span class="nf">check_demo_flag</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">demo_flag</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">demo_flag</span></div>
+<span class="k">def</span> <span class="nf">_check_demo_flag</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">demo_flag</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">demo_flag</span>
 
 
-<div class="viewcode-block" id="save_demo_files"><a class="viewcode-back" href="../gearshift.html#gearshift.save_demo_files">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;demo&quot;</span><span class="p">],</span> <span class="n">input_domain</span><span class="o">=</span><span class="n">check_demo_flag</span><span class="p">)</span>
+<div class="viewcode-block" id="save_demo_files"><a class="viewcode-back" href="../gearshift.html#gearshift.save_demo_files">[docs]</a><span class="nd">@sh</span><span class="o">.</span><span class="n">add_function</span><span class="p">(</span><span class="n">dsp</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;demo&quot;</span><span class="p">],</span> <span class="n">input_domain</span><span class="o">=</span><span class="n">_check_demo_flag</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">save_demo_files</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">demo_flag</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save CO2MPAS demo files.</span>
@@ -363,7 +366,7 @@
 
 <span class="sd">    :return:</span>
 <span class="sd">        Execution time [s].</span>
-<span class="sd">    :rtype:</span>
+<span class="sd">    :rtype: datetime.datetime</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">datetime</span>
 
