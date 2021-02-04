@@ -87,11 +87,15 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#input-file">Input File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#quick-start">Quick-Start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cmd-line-usage">Cmd-line usage</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Gearshift Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
@@ -168,6 +172,33 @@ of final trace and the operating conditions of the engine.</p>
 <p>The calculator accepts as input an excel file  that contains the vehicle’s technical data, along with parameters for
 modifying the execution WLTC cycle, and it then spits-out the gear-shifts of the vehicle and the others parameters used
 during the obtaining of these. It does not calculate any CO<sub>2</sub> emissions.</p>
+</div>
+<div class="section" id="input-file">
+<h2>Input File<a class="headerlink" href="#input-file" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/about_sheet.PNG" src="_images/about_sheet.PNG" />
+<p>The input file of the GEARSHIFT tool is an excel file, structured in different sheets.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Case sheet:</strong> The case sheet contains a list of cases that the tool will run.</p></li>
+<li><p><strong>Vehicle sheet:</strong> The vehicle sheet contains a list of vehicles along with their characteristics.</p></li>
+<li><p><strong>Engine sheet:</strong> The engine sheet contains the vehicle’s full load curves.</p></li>
+<li><p><strong>Gearbox Ratios sheet:</strong> The gearbox ratios sheet contains the gearbox transmission ratios.</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="quick-start">
+<h1>Quick-Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="cmd-line-usage">
+<h2>Cmd-line usage<a class="headerlink" href="#cmd-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>The command-line usage below requires the Python environment to be installed, and provides for
+executing an experiment directly from the OS’s shell (i.e. <code class="docutils literal notranslate"><span class="pre">cmd</span></code> in windows or <code class="docutils literal notranslate"><span class="pre">bash</span></code> in POSIX),
+and in a <em>single</em> command.  To have precise control over the inputs and outputs</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ gearshift --help                                                  <span class="c1">## to get generic help for cmd-line syntax</span>
+$ gearshift demo                                                    <span class="c1">## to get demo input file</span>
+$ gearshift run <span class="s2">&quot;path_input_file&quot;</span> -O <span class="s2">&quot;path_to_save_output_file&quot;</span>     <span class="c1">## to run gearshift tool</span>
+</pre></div>
+</div>
 </div>
 </div>
 

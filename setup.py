@@ -89,6 +89,7 @@ if __name__ == '__main__':
             'pyarrow',
             'XlsxWriter',
             'ruamel.yaml',
+            'openpyxl'
             'xlrd'
         ],
         entry_points={

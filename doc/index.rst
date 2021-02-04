@@ -19,7 +19,6 @@
     intro
     installation
     model
-    usage
     api
 
 Indices and tables

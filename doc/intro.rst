@@ -5,3 +5,5 @@
 .. include:: ../README.rst
     :start-after: .. _start-sub:
     :end-before: .. _end-sub:
+
+.. include:: usage.rst

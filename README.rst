@@ -96,7 +96,7 @@ The files and folders of the project are listed below::
 
 .. _start-usage:
 
-Usage
+Quick-Start
 =====
 
 Cmd-line usage
