@@ -936,22 +936,24 @@ def define_minimum_engine_speed_in_motion(
     np.put(InDecelerationMinDrive, np.where(Accelerations >= -0.1389), 0)
 
     MinDrives = np.copy(MinDrivesI)
-    np.put(
-        MinDrives[:, 2:NoOfGears],
-        np.where(InAccelerationMinDrive == 1),
-        np.max(
-            MinDrives[np.where(InAccelerationMinDrive == 1), 2:NoOfGears],
-            initial=MinDriveEngineSpeedGreater2ndAccel,
-        ),
-    )
-    np.put(
-        MinDrives[:, 2:NoOfGears],
-        np.where(InDecelerationMinDrive == 1),
-        np.max(
-            MinDrives[np.where(InDecelerationMinDrive == 1), 2:NoOfGears],
-            initial=MinDriveEngineSpeedGreater2ndDecel,
-        ),
-    )
+
+    for g in range(2, NoOfGearsFinal):
+        np.put(
+            MinDrives[:, g],
+            np.where(InAccelerationMinDrive == 1),
+            np.maximum(
+                MinDrives[np.where(InAccelerationMinDrive == 1), g],
+                [MinDriveEngineSpeedGreater2ndAccel]
+            ),
+        )
+        np.put(
+            MinDrives[:, g],
+            np.where(InDecelerationMinDrive == 1),
+            np.maximum(
+                MinDrives[np.where(InDecelerationMinDrive == 1), g],
+                [MinDriveEngineSpeedGreater2ndDecel]
+            ),
+        )
 
     InAccelerationMinDriveStartPhase = np.zeros(len(InAccelerationMinDrive))
     np.put(
@@ -962,15 +964,16 @@ def define_minimum_engine_speed_in_motion(
         ),
         1,
     )
-    np.put(
-        MinDrives[:, 2:NoOfGears],
-        np.where(InAccelerationMinDriveStartPhase == 1),
-        np.max(
-            MinDrives[np.where(InAccelerationMinDriveStartPhase == 1), 2:NoOfGears],
-            initial=MinDriveEngineSpeedGreater2ndAccelStartPhase,
-        ),
-    )
 
+    for g in range(2, NoOfGearsFinal):
+        np.put(
+            MinDrives[:, g],
+            np.where(InAccelerationMinDriveStartPhase == 1),
+            np.maximum(
+                MinDrives[np.where(InAccelerationMinDriveStartPhase == 1), g],
+                [MinDriveEngineSpeedGreater2ndAccelStartPhase]
+            ),
+        )
     InDecelerationMinDriveStartPhase = np.zeros(len(InAccelerationMinDrive))
     np.put(
         InDecelerationMinDriveStartPhase,
@@ -980,14 +983,15 @@ def define_minimum_engine_speed_in_motion(
         ),
         1,
     )
-    np.put(
-        MinDrives[:, 2:NoOfGears],
-        np.where(InDecelerationMinDriveStartPhase == 1),
-        np.max(
-            MinDrives[np.where(InDecelerationMinDriveStartPhase == 1), 2:NoOfGears],
-            initial=MinDriveEngineSpeedGreater2ndDecelStartPhase,
-        ),
-    )
+    for g in range(2, NoOfGearsFinal):
+        np.put(
+            MinDrives[:, g],
+            np.where(InDecelerationMinDriveStartPhase == 1),
+            np.maximum(
+                MinDrives[np.where(InDecelerationMinDriveStartPhase == 1), g],
+                [MinDriveEngineSpeedGreater2ndDecelStartPhase],
+            ),
+        )
     MinDrives = np.rint(MinDrives)
 
     return MinDrives
@@ -1324,8 +1328,8 @@ def calculate_required_powers(
         + f1 * np.power(RequiredVehicleSpeeds, 2)
         + f2 * np.power(RequiredVehicleSpeeds, 3)
         + 1.03 * Accelerations * RequiredVehicleSpeeds * VehicleTestMass
-    )
-    requiredPowersF = np.around(requiredPowers / 3600, 4)
+    ) / 3600
+    requiredPowersF = requiredPowers
     return requiredPowersF
 
 
@@ -2294,10 +2298,12 @@ def apply_corrections(
         )
 
         enabled = _next_n_gears_are_higher(6, InitialGears)
+        prevCorr4bToBeDoneAfterCorr4a = np.copy(Corr4bToBeDoneAfterCorr4a)
+        Corr4bToBeDoneAfterCorr4a = np.zeros(len(prevCorr4bToBeDoneAfterCorr4a))
         np.put(
             Corr4bToBeDoneAfterCorr4a,
             np.intersect1d(
-                np.where(Corr4bToBeDoneAfterCorr4a == 1), np.where(enabled == 1)
+                np.where(prevCorr4bToBeDoneAfterCorr4a == 1), np.where(enabled == 1)
             ),
             1,
         )
@@ -2351,10 +2357,12 @@ def apply_corrections(
         # but shall be done after gear correction 4d (according Heinz Steven).
         # This delayed correction must be suppressed at positions
         # where there is no downshift by more than one gear anymore.
+        prevCorr4bToBeDoneAfterCorr4d = np.copy(Corr4bToBeDoneAfterCorr4d)
+        Corr4bToBeDoneAfterCorr4d = np.zeros(len(prevCorr4bToBeDoneAfterCorr4d))
         np.put(
             Corr4bToBeDoneAfterCorr4d,
             np.intersect1d(
-                np.where(Corr4bToBeDoneAfterCorr4d == 1),
+                np.where(prevCorr4bToBeDoneAfterCorr4d == 1),
                 np.where(np.diff(np.append(InitialGears, np.nan)) < -1),
             ),
             1,

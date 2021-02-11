@@ -808,7 +808,7 @@ def applyCorrection4c(InitialGears, PossibleGears):
             ):
                 i = i + 1
             if i <= 4:
-                r = np.arange(b + 1, d + i - 1).astype(int)
+                r = np.arange(b + 1, d + i).astype(int)
                 InitialGears[r] = InitialGears[b] + 1
                 maxgears = np.asarray(
                     [max(InitialGears[ri], minPossibleGears[ri]) for ri in r]
@@ -953,7 +953,7 @@ def applyCorrection4d(
                 # single step upshift
                 # disable upshifts to gears higher than used before decelaration phase
                 mingears = np.asarray(
-                    [min(InitialGears[p], InitialGears[p - 1]) for p in phase]
+                    [min(InitialGears[p], InitialGears[phase[0]-1]) for p in phase]
                 )
                 InitialGears[phase] = mingears
                 corr_4d_applied_before[phase] = 1
@@ -1587,7 +1587,7 @@ def applyCorrection4f(
             np.intersect1d,
             (
                 np.where(InDecelerationToStandstillPrev == 0),
-                np.where(gearPrev == 0),
+                np.where(gearPrev != 1),
                 np.where(InDecelerationToStandstill == 1),
                 np.where(gear == 1),
                 np.where(ClutchDisengaged == 0),

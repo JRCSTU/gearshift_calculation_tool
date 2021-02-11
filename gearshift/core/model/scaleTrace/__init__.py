@@ -113,12 +113,10 @@ def calculate_accelerations(originalVehicleSpeeds, originalTraceTimes):
         - accelerations (:py:class:`numpy.array`):
             Accelerations from the whole WLTC cycles.
     """
-    accelerations = np.around(
-        np.append(
+    accelerations = np.append(
             np.diff(originalVehicleSpeeds) / (3.6 * np.diff(originalTraceTimes)), 0
-        ),
-        4,
-    )
+        )
+
     return accelerations
 
 
@@ -270,7 +268,6 @@ def _calculate_downscaling_factor(
         downscalingFactor = DownscalingPercentage
         return downscalingFactor, requiredToRatedPowerRatio
 
-
 def _algorithm_wltp(
     ScalingStartTimes,
     ScalingCorrectionTimes,
@@ -329,7 +326,7 @@ def _algorithm_wltp(
     for i in range(scalingStartIndex, correctionStartIndex):
         downscaledVehicleSpeeds[i + 1] = (
             downscaledVehicleSpeeds[i]
-            + accelerations[i] * (1 - downscalingFactor) * 3.6
+            + accelerations[i] * (1 - downscalingFactor) * 3.60
         )
 
     if scalingEndIndex < len(originalTraceTimes):
@@ -351,6 +348,8 @@ def _algorithm_wltp(
             downscaledVehicleSpeeds[i - 1]
             + accelerations[i - 1] * correctionFactor * 3.6
         )
+
+    #downscaledVehicleSpeeds = np.round(downscaledVehicleSpeeds, 4)
 
     downscaledVehicleSpeeds = np.round(downscaledVehicleSpeeds * 10) / 10
 
@@ -467,6 +466,9 @@ def downscale_trace(
             The maximum required to rated power ratio
     """
 
+    if DownscalingPercentage*100 <= 1:
+        ApplyDownscaling = False
+
     downscalingFactor, requiredToRatedPowerRatio = _calculate_downscaling_factor(
         r0,
         a1,
@@ -518,6 +520,9 @@ def downscale_trace(
         1 if downscaledVehicleSpeeds[i] != originalVehicleSpeeds[i] else 0
         for i in range(len(downscaledVehicleSpeeds))
     ]
+
+    if calculatedDownscalingFactors <= 0.01:
+        calculatedDownscalingFactors = 0
 
     return (
         downscaled,

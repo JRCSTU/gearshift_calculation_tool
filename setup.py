@@ -84,12 +84,12 @@ if __name__ == '__main__':
             'click_log',
             'tqdm',
             'regex',
-            'numpy==1.19.3',
+            'numpy!=1.19.3',
             'scipy',
             'pyarrow',
             'XlsxWriter',
             'ruamel.yaml',
-            'openpyxl'
+            'openpyxl',
             'xlrd'
         ],
         entry_points={

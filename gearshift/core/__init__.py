@@ -188,24 +188,21 @@ def run_model(base, model):
 
     sol, input, case = [], {}, base["case"]
 
-    with tqdm(total=len(list(case.iterrows()))) as pbar:
-        for index, row in case.iterrows():
-            pbar.set_description("Executing gearshift model (case %i)" % index)
+    pbar = tqdm(total=len(list(case.iterrows())), desc='Executing gearshift model', position=0)
+    for index, row in case.iterrows():
+        pbar.update(1)
+        input = _obtain_inputs(row, base)
 
-            input = _obtain_inputs(row, base)
+        sol_case = model(dict(input))
+        dict_case = {
+            "Case": row.to_dict()["case"],
+            "NoOfGears": sol_case["shift_points"]["NoOfGearsFinal"],
+        }
+        for k, v in sh.stack_nested_keys(sol_case.get("shift_points", {}), depth=2):
+            if len(k) >= 2:
+                dict_case[str(k[1])] = v
 
-            sol_case = model(dict(input))
-            dict_case = {
-                "Case": row.to_dict()["case"],
-                "NoOfGears": sol_case["shift_points"]["NoOfGearsFinal"],
-            }
-            for k, v in sh.stack_nested_keys(sol_case.get("shift_points", {}), depth=2):
-                if len(k) >= 2:
-                    dict_case[str(k[1])] = v
-
-            sol.append(dict_case)
-
-            pbar.update(1)
+        sol.append(dict_case)
 
     return sol
 
