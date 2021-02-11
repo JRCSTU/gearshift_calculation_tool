@@ -3203,7 +3203,7 @@ def generate_gears(
         "MaxEngineSpeedOutput": MaxEngineSpeed,
         "MaxVehicleSpeedCycleOutput": np.max(RequiredVehicleSpeeds),
         "MaxVehicleSpeedReachableOutput": MaxVehicleSpeedFinal,
-        "GearMaxVehicleSpeedReachableOutput": GearAtMaxVehicleSpeedFinal,
+        "GearMaxVehicleSpeedReachableOutput": GearAtMaxVehicleSpeedFinal + 1,
         "MinDriveEngineSpeed1stOutput": MinDrive1st,
         "MinDriveEngineSpeed1stTo2ndOutput": MinDrive1stTo2nd,
         "MinDriveEngineSpeed2ndDecelOutput": MinDrive2ndDecel,
