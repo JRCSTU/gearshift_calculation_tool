@@ -808,8 +808,6 @@ def generate_speed_trace(
     if calculatedDownscalingFactor <= 0.01:
         calculatedDownscalingFactor = 0
 
-    if calculatedDownscalingFactors <= 0.01:
-        calculatedDownscalingFactors = 0
 
     PhaseChecksums = np.zeros(len(PhaseLengths))
 
