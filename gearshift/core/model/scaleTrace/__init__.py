@@ -54,9 +54,7 @@ def resample_trace(Trace):
     from scipy.interpolate import interp1d
 
     originalTraceTimes = np.arange(int(Trace[:, 0][-1] + 1)).astype(int)
-    originalVehicleSpeeds = np.around(
-        interp1d(Trace[:, 0].astype(int), Trace[:, 1])(originalTraceTimes), 4
-    )
+    originalVehicleSpeeds = interp1d(Trace[:, 0].astype(int), Trace[:, 1])(originalTraceTimes)
     originalTraceTimesCount = len(originalTraceTimes)
     return originalTraceTimes, originalVehicleSpeeds, originalTraceTimesCount
 
@@ -164,7 +162,7 @@ def calculate_required_powers(
         + f2 * np.power(originalVehicleSpeeds, 3)
         + 1.03 * accelerations * originalVehicleSpeeds * VehicleTestMass
     )
-    requiredPowers = np.around(requiredPowers / 3600, 4)
+    requiredPowers = requiredPowers / 3600
     return requiredPowers
 
 
@@ -191,7 +189,7 @@ def _calculate_required_to_rated_power_ratio(
     requiredPowersInd = [
         requiredPowers[i] for i in range(len(requiredPowers)) if indexing[i] == 1
     ]
-    requiredToRatedPowerRatio = np.around(max(requiredPowersInd) / RatedEnginePower, 4)
+    requiredToRatedPowerRatio = max(requiredPowersInd) / RatedEnginePower
     return requiredToRatedPowerRatio
 
 
@@ -267,6 +265,11 @@ def _calculate_downscaling_factor(
         )
         downscalingFactor = DownscalingPercentage
         return downscalingFactor, requiredToRatedPowerRatio
+
+def _round_half_up(n, decimals=0):
+    import math
+    multiplier = 10 ** decimals
+    return math.floor(n*multiplier + 0.5) / multiplier
 
 def _algorithm_wltp(
     ScalingStartTimes,
@@ -349,9 +352,9 @@ def _algorithm_wltp(
             + accelerations[i - 1] * correctionFactor * 3.6
         )
 
-    #downscaledVehicleSpeeds = np.round(downscaledVehicleSpeeds, 4)
+    rounded_vel = [_round_half_up(vel * 10) / 10 for vel in downscaledVehicleSpeeds]
 
-    downscaledVehicleSpeeds = np.round(downscaledVehicleSpeeds * 10) / 10
+    downscaledVehicleSpeeds = np.asarray(rounded_vel)
 
     return downscaledVehicleSpeeds
 
@@ -824,14 +827,12 @@ def generate_speed_trace(
     speed_trace = {
         "RequiredToRatedPowerRatio": requiredToRatedPowerRatio,
         "calculatedDownscalingFactor": np.round(
-            (calculatedDownscalingFactor * 1000) / 1000
-        ),
-        "CalculatedDownscalingPercentage": np.round(
-            (calculatedDownscalingFactor * 1000) / 1000
-        )
-        * 100,
-        "TotalChecksum": np.round(np.sum(originalVehicleSpeeds) * 10 / 10),
-        "MaxVehicleSpeed": np.max(compensatedVehicleSpeeds),
+            (calculatedDownscalingFactor * 1000)) / 1000
+        ,
+        "CalculatedDownscalingPercentage": (np.round(
+            (calculatedDownscalingFactor * 1000)) / 1000) * 100,
+        "TotalChecksum": np.round(np.sum(originalVehicleSpeeds) * 10) / 10,
+        "MaxVehicleSpeed": format(np.max(compensatedVehicleSpeeds), '.1f'),
         "TotalDistance": np.round(np.sum(compensatedVehicleSpeeds / 3.6) * 10) / 10,
         "DistanceCompensatedPhaseLengths": np.add(
             PhaseLengths, additionalSamples
