@@ -826,14 +826,12 @@ def generate_speed_trace(
 
     speed_trace = {
         "RequiredToRatedPowerRatio": requiredToRatedPowerRatio,
-        "calculatedDownscalingFactor": np.round(
-            (calculatedDownscalingFactor * 1000)) / 1000
+        "calculatedDownscalingFactor": np.round(calculatedDownscalingFactor, 3)
         ,
-        "CalculatedDownscalingPercentage": (np.round(
-            (calculatedDownscalingFactor * 1000)) / 1000) * 100,
-        "TotalChecksum": np.round(np.sum(originalVehicleSpeeds) * 10) / 10,
+        "CalculatedDownscalingPercentage": (np.round(calculatedDownscalingFactor, 3)) * 100,
+        "TotalChecksum": np.round(np.sum(originalVehicleSpeeds), 1),
         "MaxVehicleSpeed": format(np.max(compensatedVehicleSpeeds), '.1f'),
-        "TotalDistance": np.round(np.sum(compensatedVehicleSpeeds / 3.6) * 10) / 10,
+        "TotalDistance": np.round(np.sum(compensatedVehicleSpeeds / 3.6), 1),
         "DistanceCompensatedPhaseLengths": np.add(
             PhaseLengths, additionalSamples
         ).astype(int),

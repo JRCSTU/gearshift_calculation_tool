@@ -3190,7 +3190,7 @@ def generate_gears(
         "CalculatedGearsOutput": np.vstack(
             (TraceTimes[GearSequenceStarts], GearNames)
         ).T,
-        "AverageGearOutput": np.round(AverageGear * 10000) / 10000,
+        "AverageGearOutput": np.round(AverageGear, 4),
         "PowerCurveOutput": FullPowerCurve,
         "AdjustedMax95EngineSpeed": Max95EngineSpeedFinal,
         "TraceTimesOutput": TraceTimes,
@@ -3214,7 +3214,7 @@ def generate_gears(
         "ClutchUndefinedOutput": ClutchUndefinedFinal.astype(int),
         "ClutchHSTOutput": ClutchHST,
         "GearCorrectionsOutput": CorrectionsCells,
-        "ChecksumVxGearOutput": np.round(ChecksumVxGear * 10000) / 10000,
+        "ChecksumVxGearOutput": np.round(ChecksumVxGear, 4),
     }
 
     return shift_points
