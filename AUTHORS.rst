@@ -1,7 +1,7 @@
 Authors
 =======
 
-DICE:
+Developer:
     - Andrés Marín <Andres.LAVERDE-MARIN@ext.ec.europa.eu>
 Documentation:
     - Andrés Marín <Andres.LAVERDE-MARIN@ext.ec.europa.eu>
@@ -13,5 +13,8 @@ Model:
 Supervision:
     - Georgios Fontaras <georgios.fontaras@ec.europa.eu>
     - Spyridon Konstantinidis <Spyridon.konstantinidis@ext.ec.europa.eu>
+    - Athina Mitsiara <Athina.MITSIARA@ext.ec.europa.eu>
 Tester:
-    -
+    - Nikiforos Georgios <Nikiforos-Georgios.ZACHAROF@ext.ec.europa.eu>
+    - Dimitris Komnos <Dimitrios.KOMNOS@ext.ec.europa.eu>
+    - Kostis Anagnostopoulos <kostis.anagnostopoulos@ext.ec.europa.eu>

@@ -78,9 +78,9 @@ if __name__ == '__main__':
         python_requires='>=3.5',
         install_requires=[
             'PyYAML',
+            'click',
             'pandas',
             'schedula>=1.1.1',
-            'click',
             'click_log',
             'tqdm',
             'regex',

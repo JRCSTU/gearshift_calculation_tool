@@ -4,8 +4,8 @@
 Python Gearshift Calculation Tool
 ################################################################
 :versions:      |gh-version| |rel-date| |python-ver|
-:documentation: https://github.com/AndresLaverdeMarin/gearshift_calculation_tool |br|
-:sources:       https://github.com/AndresLaverdeMarin/gearshift_calculation_tool |br|
+:documentation: https://gearshift-calculation-tool.readthedocs.io/en/latest/ |doc|
+:sources:       https://github.com/JRCSTU/gearshift_calculation_tool |codestyle|
 :keywords:      automotive, car, cars, driving, engine, emissions, fuel-consumption,
                 gears, gearshifts, rpm, simulation, simulator, standard, vehicle, vehicles, WLT
 :copyright:     2013-2020 European Commission (`JRC-IET <https://ec.europa.eu/jrc/en/institutes/iet>`_)
@@ -125,9 +125,16 @@ and in a *single* command.  To have precise control over the inputs and outputs
 .. |br| image:: https://img.shields.io/badge/docs-working%20on%20that-red
     :alt: GitHub page documentation
 
+.. |doc| image:: https://img.shields.io/badge/docs-passing-success
+    :alt: GitHub page documentation
+
 .. |proj-lic| image:: https://img.shields.io/pypi/l/wltp.svg
     :target:  https://joinup.ec.europa.eu/software/page/eupl
     :alt: EUPL 1.1+
+
+.. |codestyle| image:: https://img.shields.io/badge/code%20style-black-black.svg
+    :target: https://github.com/ambv/black
+    :alt: Code Style
 
 .. |CO2| replace:: CO\ :sub:`2`
 .. _end-sub:
