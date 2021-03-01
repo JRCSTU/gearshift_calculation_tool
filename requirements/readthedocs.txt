@@ -1,0 +1,3 @@
+## Somehow these do not apply from setup.py :-(
+click
+sphinx-click
