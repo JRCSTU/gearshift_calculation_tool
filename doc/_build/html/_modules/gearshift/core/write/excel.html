@@ -275,6 +275,11 @@
             <span class="n">worksheet</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">max_len</span><span class="p">)</span>
             <span class="n">worksheet</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">header_format</span><span class="p">)</span>
 
+        <span class="n">new_sheet_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Summary&#39;</span><span class="p">,</span> <span class="s1">&#39;Time Series&#39;</span><span class="p">,</span> <span class="s1">&#39;Required Engine Speeds Output&#39;</span><span class="p">,</span> <span class="s1">&#39;Available Powers Output&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;Applicable Trace&#39;</span><span class="p">,</span> <span class="s1">&#39;Original Trace&#39;</span><span class="p">]</span>
+
+        <span class="n">workbook</span><span class="o">.</span><span class="n">worksheets_objs</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">new_sheet_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
     <span class="n">writer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 </pre></div>
 

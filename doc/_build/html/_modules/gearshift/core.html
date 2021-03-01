@@ -344,24 +344,21 @@
 
     <span class="n">sol</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">case</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">{},</span> <span class="n">base</span><span class="p">[</span><span class="s2">&quot;case&quot;</span><span class="p">]</span>
 
-    <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">case</span><span class="o">.</span><span class="n">iterrows</span><span class="p">())))</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">case</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s2">&quot;Executing gearshift model (case </span><span class="si">%i</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">index</span><span class="p">)</span>
+    <span class="n">pbar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">case</span><span class="o">.</span><span class="n">iterrows</span><span class="p">())),</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Executing gearshift model&#39;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">case</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="n">_obtain_inputs</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
 
-            <span class="nb">input</span> <span class="o">=</span> <span class="n">_obtain_inputs</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
+        <span class="n">sol_case</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">input</span><span class="p">))</span>
+        <span class="n">dict_case</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Case&quot;</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s2">&quot;case&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;NoOfGears&quot;</span><span class="p">:</span> <span class="n">sol_case</span><span class="p">[</span><span class="s2">&quot;shift_points&quot;</span><span class="p">][</span><span class="s2">&quot;NoOfGearsFinal&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sh</span><span class="o">.</span><span class="n">stack_nested_keys</span><span class="p">(</span><span class="n">sol_case</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;shift_points&quot;</span><span class="p">,</span> <span class="p">{}),</span> <span class="n">depth</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">dict_case</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">v</span>
 
-            <span class="n">sol_case</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">input</span><span class="p">))</span>
-            <span class="n">dict_case</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;Case&quot;</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s2">&quot;case&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;NoOfGears&quot;</span><span class="p">:</span> <span class="n">sol_case</span><span class="p">[</span><span class="s2">&quot;shift_points&quot;</span><span class="p">][</span><span class="s2">&quot;NoOfGearsFinal&quot;</span><span class="p">],</span>
-            <span class="p">}</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sh</span><span class="o">.</span><span class="n">stack_nested_keys</span><span class="p">(</span><span class="n">sol_case</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;shift_points&quot;</span><span class="p">,</span> <span class="p">{}),</span> <span class="n">depth</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="n">dict_case</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">v</span>
-
-            <span class="n">sol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_case</span><span class="p">)</span>
-
-            <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sol</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dict_case</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">sol</span></div>
 

@@ -1094,22 +1094,24 @@
     <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">InDecelerationMinDrive</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Accelerations</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mf">0.1389</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="n">MinDrives</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">MinDrivesI</span><span class="p">)</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
-        <span class="n">MinDrives</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:</span><span class="n">NoOfGears</span><span class="p">],</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InAccelerationMinDrive</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
-            <span class="n">MinDrives</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InAccelerationMinDrive</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">:</span><span class="n">NoOfGears</span><span class="p">],</span>
-            <span class="n">initial</span><span class="o">=</span><span class="n">MinDriveEngineSpeedGreater2ndAccel</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
-        <span class="n">MinDrives</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:</span><span class="n">NoOfGears</span><span class="p">],</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InDecelerationMinDrive</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
-            <span class="n">MinDrives</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InDecelerationMinDrive</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">:</span><span class="n">NoOfGears</span><span class="p">],</span>
-            <span class="n">initial</span><span class="o">=</span><span class="n">MinDriveEngineSpeedGreater2ndDecel</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">NoOfGearsFinal</span><span class="p">):</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="n">MinDrives</span><span class="p">[:,</span> <span class="n">g</span><span class="p">],</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InAccelerationMinDrive</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span>
+                <span class="n">MinDrives</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InAccelerationMinDrive</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="n">g</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">MinDriveEngineSpeedGreater2ndAccel</span><span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="n">MinDrives</span><span class="p">[:,</span> <span class="n">g</span><span class="p">],</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InDecelerationMinDrive</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span>
+                <span class="n">MinDrives</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InDecelerationMinDrive</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="n">g</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">MinDriveEngineSpeedGreater2ndDecel</span><span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
 
     <span class="n">InAccelerationMinDriveStartPhase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">InAccelerationMinDrive</span><span class="p">))</span>
     <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
@@ -1120,15 +1122,16 @@
         <span class="p">),</span>
         <span class="mi">1</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
-        <span class="n">MinDrives</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:</span><span class="n">NoOfGears</span><span class="p">],</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InAccelerationMinDriveStartPhase</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
-            <span class="n">MinDrives</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InAccelerationMinDriveStartPhase</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">:</span><span class="n">NoOfGears</span><span class="p">],</span>
-            <span class="n">initial</span><span class="o">=</span><span class="n">MinDriveEngineSpeedGreater2ndAccelStartPhase</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
 
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">NoOfGearsFinal</span><span class="p">):</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="n">MinDrives</span><span class="p">[:,</span> <span class="n">g</span><span class="p">],</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InAccelerationMinDriveStartPhase</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span>
+                <span class="n">MinDrives</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InAccelerationMinDriveStartPhase</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="n">g</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">MinDriveEngineSpeedGreater2ndAccelStartPhase</span><span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
     <span class="n">InDecelerationMinDriveStartPhase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">InAccelerationMinDrive</span><span class="p">))</span>
     <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
         <span class="n">InDecelerationMinDriveStartPhase</span><span class="p">,</span>
@@ -1138,14 +1141,15 @@
         <span class="p">),</span>
         <span class="mi">1</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
-        <span class="n">MinDrives</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:</span><span class="n">NoOfGears</span><span class="p">],</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InDecelerationMinDriveStartPhase</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
-            <span class="n">MinDrives</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InDecelerationMinDriveStartPhase</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">:</span><span class="n">NoOfGears</span><span class="p">],</span>
-            <span class="n">initial</span><span class="o">=</span><span class="n">MinDriveEngineSpeedGreater2ndDecelStartPhase</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">NoOfGearsFinal</span><span class="p">):</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+            <span class="n">MinDrives</span><span class="p">[:,</span> <span class="n">g</span><span class="p">],</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InDecelerationMinDriveStartPhase</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span>
+                <span class="n">MinDrives</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">InDecelerationMinDriveStartPhase</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="n">g</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">MinDriveEngineSpeedGreater2ndDecelStartPhase</span><span class="p">],</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
     <span class="n">MinDrives</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">MinDrives</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">MinDrives</span></div>
@@ -1482,8 +1486,8 @@
         <span class="o">+</span> <span class="n">f1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">RequiredVehicleSpeeds</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="o">+</span> <span class="n">f2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">RequiredVehicleSpeeds</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="o">+</span> <span class="mf">1.03</span> <span class="o">*</span> <span class="n">Accelerations</span> <span class="o">*</span> <span class="n">RequiredVehicleSpeeds</span> <span class="o">*</span> <span class="n">VehicleTestMass</span>
-    <span class="p">)</span>
-    <span class="n">requiredPowersF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">requiredPowers</span> <span class="o">/</span> <span class="mi">3600</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="p">)</span> <span class="o">/</span> <span class="mi">3600</span>
+    <span class="n">requiredPowersF</span> <span class="o">=</span> <span class="n">requiredPowers</span>
     <span class="k">return</span> <span class="n">requiredPowersF</span></div>
 
 
@@ -2452,10 +2456,12 @@
         <span class="p">)</span>
 
         <span class="n">enabled</span> <span class="o">=</span> <span class="n">_next_n_gears_are_higher</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">InitialGears</span><span class="p">)</span>
+        <span class="n">prevCorr4bToBeDoneAfterCorr4a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">Corr4bToBeDoneAfterCorr4a</span><span class="p">)</span>
+        <span class="n">Corr4bToBeDoneAfterCorr4a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prevCorr4bToBeDoneAfterCorr4a</span><span class="p">))</span>
         <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
             <span class="n">Corr4bToBeDoneAfterCorr4a</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Corr4bToBeDoneAfterCorr4a</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">enabled</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">prevCorr4bToBeDoneAfterCorr4a</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">enabled</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
             <span class="p">),</span>
             <span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>
@@ -2509,10 +2515,12 @@
         <span class="c1"># but shall be done after gear correction 4d (according Heinz Steven).</span>
         <span class="c1"># This delayed correction must be suppressed at positions</span>
         <span class="c1"># where there is no downshift by more than one gear anymore.</span>
+        <span class="n">prevCorr4bToBeDoneAfterCorr4d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">Corr4bToBeDoneAfterCorr4d</span><span class="p">)</span>
+        <span class="n">Corr4bToBeDoneAfterCorr4d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prevCorr4bToBeDoneAfterCorr4d</span><span class="p">))</span>
         <span class="n">np</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
             <span class="n">Corr4bToBeDoneAfterCorr4d</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Corr4bToBeDoneAfterCorr4d</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">prevCorr4bToBeDoneAfterCorr4d</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">InitialGears</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
             <span class="p">),</span>
             <span class="mi">1</span><span class="p">,</span>
@@ -3340,12 +3348,12 @@
         <span class="s2">&quot;CalculatedGearsOutput&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
             <span class="p">(</span><span class="n">TraceTimes</span><span class="p">[</span><span class="n">GearSequenceStarts</span><span class="p">],</span> <span class="n">GearNames</span><span class="p">)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-        <span class="s2">&quot;AverageGearOutput&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">AverageGear</span> <span class="o">*</span> <span class="mi">10000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span><span class="p">,</span>
+        <span class="s2">&quot;AverageGearOutput&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">AverageGear</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
         <span class="s2">&quot;PowerCurveOutput&quot;</span><span class="p">:</span> <span class="n">FullPowerCurve</span><span class="p">,</span>
         <span class="s2">&quot;AdjustedMax95EngineSpeed&quot;</span><span class="p">:</span> <span class="n">Max95EngineSpeedFinal</span><span class="p">,</span>
         <span class="s2">&quot;TraceTimesOutput&quot;</span><span class="p">:</span> <span class="n">TraceTimes</span><span class="p">,</span>
         <span class="s2">&quot;RequiredVehicleSpeedsOutput&quot;</span><span class="p">:</span> <span class="n">RequiredVehicleSpeeds</span><span class="p">,</span>
-        <span class="s2">&quot;RequiredPowersOutput&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">requiredPowersF</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+        <span class="s2">&quot;RequiredPowersOutput&quot;</span><span class="p">:</span> <span class="n">requiredPowersF</span><span class="p">,</span>
         <span class="s2">&quot;RequiredEngineSpeedsOutput&quot;</span><span class="p">:</span> <span class="n">RequiredEngineSpeedsOutput</span><span class="p">,</span>
         <span class="s2">&quot;AvailablePowersOutput&quot;</span><span class="p">:</span> <span class="n">AvailablePowersOutput</span><span class="p">,</span>
         <span class="s2">&quot;MaxEngineSpeedCycleOutput&quot;</span><span class="p">:</span> <span class="n">EngineSpeedAtGearAtMaxRequiredSpeed</span><span class="p">,</span>
@@ -3353,18 +3361,18 @@
         <span class="s2">&quot;MaxEngineSpeedOutput&quot;</span><span class="p">:</span> <span class="n">MaxEngineSpeed</span><span class="p">,</span>
         <span class="s2">&quot;MaxVehicleSpeedCycleOutput&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">RequiredVehicleSpeeds</span><span class="p">),</span>
         <span class="s2">&quot;MaxVehicleSpeedReachableOutput&quot;</span><span class="p">:</span> <span class="n">MaxVehicleSpeedFinal</span><span class="p">,</span>
-        <span class="s2">&quot;GearMaxVehicleSpeedReachableOutput&quot;</span><span class="p">:</span> <span class="n">GearAtMaxVehicleSpeedFinal</span><span class="p">,</span>
-        <span class="s2">&quot;MinDriveEngineSpeed1stOutput&quot;</span><span class="p">:</span> <span class="n">MinDrive1st</span><span class="p">,</span>
-        <span class="s2">&quot;MinDriveEngineSpeed1stTo2ndOutput&quot;</span><span class="p">:</span> <span class="n">MinDrive1stTo2nd</span><span class="p">,</span>
-        <span class="s2">&quot;MinDriveEngineSpeed2ndDecelOutput&quot;</span><span class="p">:</span> <span class="n">MinDrive2ndDecel</span><span class="p">,</span>
-        <span class="s2">&quot;MinDriveEngineSpeed2ndOutput&quot;</span><span class="p">:</span> <span class="n">MinDrive2nd</span><span class="p">,</span>
-        <span class="s2">&quot;MinDriveEngineSpeedGreater2ndOutput&quot;</span><span class="p">:</span> <span class="n">MinDriveGreater2nd</span><span class="p">,</span>
+        <span class="s2">&quot;GearMaxVehicleSpeedReachableOutput&quot;</span><span class="p">:</span> <span class="n">GearAtMaxVehicleSpeedFinal</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;MinDriveEngineSpeed1stOutput&quot;</span><span class="p">:</span> <span class="nb">format</span><span class="p">(</span><span class="n">MinDrive1st</span><span class="p">,</span> <span class="s1">&#39;.1f&#39;</span><span class="p">),</span>
+        <span class="s2">&quot;MinDriveEngineSpeed1stTo2ndOutput&quot;</span><span class="p">:</span> <span class="nb">format</span><span class="p">(</span><span class="n">MinDrive1stTo2nd</span><span class="p">,</span> <span class="s1">&#39;.1f&#39;</span><span class="p">),</span>
+        <span class="s2">&quot;MinDriveEngineSpeed2ndDecelOutput&quot;</span><span class="p">:</span> <span class="nb">format</span><span class="p">(</span><span class="n">MinDrive2ndDecel</span><span class="p">,</span> <span class="s1">&#39;.1f&#39;</span><span class="p">),</span>
+        <span class="s2">&quot;MinDriveEngineSpeed2ndOutput&quot;</span><span class="p">:</span> <span class="nb">format</span><span class="p">(</span><span class="n">MinDrive2nd</span><span class="p">,</span> <span class="s1">&#39;.1f&#39;</span><span class="p">),</span>
+        <span class="s2">&quot;MinDriveEngineSpeedGreater2ndOutput&quot;</span><span class="p">:</span> <span class="nb">format</span><span class="p">(</span><span class="n">MinDriveGreater2nd</span><span class="p">,</span> <span class="s1">&#39;.1f&#39;</span><span class="p">),</span>
         <span class="s2">&quot;GearsOutput&quot;</span><span class="p">:</span> <span class="n">InitialGearsFinalAfterClutch</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
         <span class="s2">&quot;ClutchDisengagedOutput&quot;</span><span class="p">:</span> <span class="n">ClutchDisengagedFinal</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
         <span class="s2">&quot;ClutchUndefinedOutput&quot;</span><span class="p">:</span> <span class="n">ClutchUndefinedFinal</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
         <span class="s2">&quot;ClutchHSTOutput&quot;</span><span class="p">:</span> <span class="n">ClutchHST</span><span class="p">,</span>
         <span class="s2">&quot;GearCorrectionsOutput&quot;</span><span class="p">:</span> <span class="n">CorrectionsCells</span><span class="p">,</span>
-        <span class="s2">&quot;ChecksumVxGearOutput&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ChecksumVxGear</span> <span class="o">*</span> <span class="mi">10000</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span><span class="p">,</span>
+        <span class="s2">&quot;ChecksumVxGearOutput&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ChecksumVxGear</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">shift_points</span></div>
