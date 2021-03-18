@@ -54,7 +54,9 @@ def resample_trace(Trace):
     from scipy.interpolate import interp1d
 
     originalTraceTimes = np.arange(int(Trace[:, 0][-1] + 1)).astype(int)
-    originalVehicleSpeeds = interp1d(Trace[:, 0].astype(int), Trace[:, 1])(originalTraceTimes)
+    originalVehicleSpeeds = interp1d(Trace[:, 0].astype(int), Trace[:, 1])(
+        originalTraceTimes
+    )
     originalTraceTimesCount = len(originalTraceTimes)
     return originalTraceTimes, originalVehicleSpeeds, originalTraceTimesCount
 
@@ -112,8 +114,8 @@ def calculate_accelerations(originalVehicleSpeeds, originalTraceTimes):
             Accelerations from the whole WLTC cycles.
     """
     accelerations = np.append(
-            np.diff(originalVehicleSpeeds) / (3.6 * np.diff(originalTraceTimes)), 0
-        )
+        np.diff(originalVehicleSpeeds) / (3.6 * np.diff(originalTraceTimes)), 0
+    )
 
     return accelerations
 
@@ -266,10 +268,13 @@ def _calculate_downscaling_factor(
         downscalingFactor = DownscalingPercentage
         return downscalingFactor, requiredToRatedPowerRatio
 
+
 def _round_half_up(n, decimals=0):
     import math
+
     multiplier = 10 ** decimals
-    return math.floor(n*multiplier + 0.5) / multiplier
+    return math.floor(n * multiplier + 0.5) / multiplier
+
 
 def _algorithm_wltp(
     ScalingStartTimes,
@@ -469,7 +474,7 @@ def downscale_trace(
             The maximum required to rated power ratio
     """
 
-    if DownscalingPercentage*100 <= 1:
+    if DownscalingPercentage * 100 <= 1:
         ApplyDownscaling = False
 
     downscalingFactor, requiredToRatedPowerRatio = _calculate_downscaling_factor(
@@ -811,7 +816,6 @@ def generate_speed_trace(
     if calculatedDownscalingFactor <= 0.01:
         calculatedDownscalingFactor = 0
 
-
     PhaseChecksums = np.zeros(len(PhaseLengths))
 
     for phase in range(0, len(PhaseLengths)):
@@ -826,11 +830,11 @@ def generate_speed_trace(
 
     speed_trace = {
         "RequiredToRatedPowerRatio": requiredToRatedPowerRatio,
-        "calculatedDownscalingFactor": np.round(calculatedDownscalingFactor, 3)
-        ,
-        "CalculatedDownscalingPercentage": (np.round(calculatedDownscalingFactor, 3)) * 100,
+        "calculatedDownscalingFactor": np.round(calculatedDownscalingFactor, 3),
+        "CalculatedDownscalingPercentage": (np.round(calculatedDownscalingFactor, 3))
+        * 100,
         "TotalChecksum": np.round(np.sum(originalVehicleSpeeds), 1),
-        "MaxVehicleSpeed": format(np.max(compensatedVehicleSpeeds), '.1f'),
+        "MaxVehicleSpeed": format(np.max(compensatedVehicleSpeeds), ".1f"),
         "TotalDistance": np.round(np.sum(compensatedVehicleSpeeds / 3.6), 1),
         "DistanceCompensatedPhaseLengths": np.add(
             PhaseLengths, additionalSamples

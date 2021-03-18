@@ -23,7 +23,6 @@ import schedula as sh
 from .scaleTrace import dsp as _scaleTrace
 from .calculateShiftpointsNdvFullPC import dsp as _calculateShiftpointsNdvFullPC
 
-
 dsp = sh.BlueDispatcher(
     name="GEARSHIFT model",
     description="Calculates the speed trace with scaleTrace and predict the gearshift "
@@ -50,3 +49,11 @@ dsp.add_function(
     outputs=["shift_points"],
     description="This function calibrates the speed trance, following the Sub-Annex 1",
 )
+
+"""
+def format_shift_points(x)
+    return x
+
+
+dsp.add_data("shift_points", filter=[format_shift_points])
+"""
