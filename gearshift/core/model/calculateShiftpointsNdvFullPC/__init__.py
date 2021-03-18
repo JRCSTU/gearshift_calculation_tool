@@ -943,7 +943,7 @@ def define_minimum_engine_speed_in_motion(
             np.where(InAccelerationMinDrive == 1),
             np.maximum(
                 MinDrives[np.where(InAccelerationMinDrive == 1), g],
-                [MinDriveEngineSpeedGreater2ndAccel]
+                [MinDriveEngineSpeedGreater2ndAccel],
             ),
         )
         np.put(
@@ -951,7 +951,7 @@ def define_minimum_engine_speed_in_motion(
             np.where(InDecelerationMinDrive == 1),
             np.maximum(
                 MinDrives[np.where(InDecelerationMinDrive == 1), g],
-                [MinDriveEngineSpeedGreater2ndDecel]
+                [MinDriveEngineSpeedGreater2ndDecel],
             ),
         )
 
@@ -971,7 +971,7 @@ def define_minimum_engine_speed_in_motion(
             np.where(InAccelerationMinDriveStartPhase == 1),
             np.maximum(
                 MinDrives[np.where(InAccelerationMinDriveStartPhase == 1), g],
-                [MinDriveEngineSpeedGreater2ndAccelStartPhase]
+                [MinDriveEngineSpeedGreater2ndAccelStartPhase],
             ),
         )
     InDecelerationMinDriveStartPhase = np.zeros(len(InAccelerationMinDrive))
@@ -3204,11 +3204,11 @@ def generate_gears(
         "MaxVehicleSpeedCycleOutput": np.max(RequiredVehicleSpeeds),
         "MaxVehicleSpeedReachableOutput": MaxVehicleSpeedFinal,
         "GearMaxVehicleSpeedReachableOutput": GearAtMaxVehicleSpeedFinal + 1,
-        "MinDriveEngineSpeed1stOutput": format(MinDrive1st, '.1f'),
-        "MinDriveEngineSpeed1stTo2ndOutput": format(MinDrive1stTo2nd, '.1f'),
-        "MinDriveEngineSpeed2ndDecelOutput": format(MinDrive2ndDecel, '.1f'),
-        "MinDriveEngineSpeed2ndOutput": format(MinDrive2nd, '.1f'),
-        "MinDriveEngineSpeedGreater2ndOutput": format(MinDriveGreater2nd, '.1f'),
+        "MinDriveEngineSpeed1stOutput": format(MinDrive1st, ".1f"),
+        "MinDriveEngineSpeed1stTo2ndOutput": format(MinDrive1stTo2nd, ".1f"),
+        "MinDriveEngineSpeed2ndDecelOutput": format(MinDrive2ndDecel, ".1f"),
+        "MinDriveEngineSpeed2ndOutput": format(MinDrive2nd, ".1f"),
+        "MinDriveEngineSpeedGreater2ndOutput": format(MinDriveGreater2nd, ".1f"),
         "GearsOutput": InitialGearsFinalAfterClutch.astype(int),
         "ClutchDisengagedOutput": ClutchDisengagedFinal.astype(int),
         "ClutchUndefinedOutput": ClutchUndefinedFinal.astype(int),

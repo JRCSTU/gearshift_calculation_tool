@@ -188,7 +188,9 @@ def run_model(base, model):
 
     sol, input, case = [], {}, base["case"]
 
-    pbar = tqdm(total=len(list(case.iterrows())), desc='Executing gearshift model', position=0)
+    pbar = tqdm(
+        total=len(list(case.iterrows())), desc="Executing gearshift model", position=0
+    )
     for index, row in case.iterrows():
         pbar.update(1)
         input = _obtain_inputs(row, base)

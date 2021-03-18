@@ -10,45 +10,73 @@ import os
 import collections
 import os.path as osp
 
-name = 'gearshift'
+name = "gearshift"
 mydir = osp.dirname(__file__)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import functools
     from setuptools import setup, find_packages
 
-    proj_ver = '1.0.0'
+    proj_name = "gearshift"
+
+    def read_project_version():
+        fglobals = {}
+        with io.open(os.path.join(mydir, proj_name, "_version.py")) as fd:
+            exec(fd.read(), fglobals)  # To read __version__
+        return fglobals["__version__"]
+
+    proj_ver = read_project_version()
 
     extras = {
-        'cli': ['click', 'click-log'],
-        'sync': ['syncing>=1.0.4', 'pandas>=0.21.0', 'ruamel.yaml>=0.16.5'],
-        'plot': ['flask', 'regex', 'graphviz', 'Pygments', 'lxml',
-                 'beautifulsoup4', 'jinja2', 'docutils', 'plotly'],
-        'io': ['pandas>=0.21.0', 'dill', 'regex', 'pandalone[xlrd]<0.3',
-               'xlrd', 'asteval', 'ruamel.yaml>=0.16.5']
+        "cli": ["click", "click-log"],
+        "sync": ["syncing>=1.0.4", "pandas>=0.21.0", "ruamel.yaml>=0.16.5"],
+        "plot": [
+            "flask",
+            "regex",
+            "graphviz",
+            "Pygments",
+            "lxml",
+            "beautifulsoup4",
+            "jinja2",
+            "docutils",
+            "plotly",
+        ],
+        "io": [
+            "pandas>=0.21.0",
+            "dill",
+            "regex",
+            "pandalone[xlrd]<0.3",
+            "xlrd",
+            "asteval",
+            "ruamel.yaml>=0.16.5",
+        ],
     }
     # noinspection PyTypeChecker
-    extras['all'] = list(functools.reduce(set.union, extras.values(), set()))
-    extras['dev'] = extras['all'] + [
-        'wheel', 'sphinx', 'gitchangelog', 'mako', 'sphinx_rtd_theme',
-        'setuptools>=36.0.1', 'sphinxcontrib-restbuilder', 'nose', 'coveralls',
-        'ddt', 'sphinx-click'
+    extras["all"] = list(functools.reduce(set.union, extras.values(), set()))
+    extras["dev"] = extras["all"] + [
+        "wheel",
+        "sphinx",
+        "gitchangelog",
+        "mako",
+        "sphinx_rtd_theme",
+        "setuptools>=36.0.1",
+        "sphinxcontrib-restbuilder",
+        "nose",
+        "coveralls",
+        "ddt",
+        "sphinx-click",
     ]
 
     setup(
         name=name,
         version=proj_ver,
-        packages=find_packages(exclude=[
-            'test', 'test.*',
-            'doc', 'doc.*',
-            'appveyor'
-        ]),
-        license='EUPL 1.1+',
-        author='GEARSHIFT-Team',
-        author_email='Andres.LAVERDE-MARIN@ext.ec.europa.eu',
-        description='Gearshift tool implement the Sub-Annex 1 and Sub-Annex 2 of the'
-                    'COMMISSION REGULATION (EU) 2017/1151 of 1 June 2017 - Annex XXI',
+        packages=find_packages(exclude=["test", "test.*", "doc", "doc.*", "appveyor"]),
+        license="EUPL 1.1+",
+        author="GEARSHIFT-Team",
+        author_email="Andres.LAVERDE-MARIN@ext.ec.europa.eu",
+        description="Gearshift tool implement the Sub-Annex 1 and Sub-Annex 2 of the"
+        "COMMISSION REGULATION (EU) 2017/1151 of 1 June 2017 - Annex XXI",
         keywords="""GEARSHIFT WLTP vehicle automotive EU JRC IET
         policy monitoring simulator
         """.split(),
@@ -59,53 +87,49 @@ if __name__ == '__main__':
             "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: Implementation :: CPython",
             "Development Status :: 4 - Beta",
-            'Natural Language :: English',
+            "Natural Language :: English",
             "Intended Audience :: Developers",
             "Intended Audience :: Science/Research",
             "Intended Audience :: Manufacturing",
-            'Environment :: Console',
-            'License :: OSI Approved :: European Union Public Licence 1.1 '
-            '(EUPL 1.1)',
-            'Natural Language :: English',
+            "Environment :: Console",
+            "License :: OSI Approved :: European Union Public Licence 1.1 "
+            "(EUPL 1.1)",
+            "Natural Language :: English",
             "Operating System :: MacOS :: MacOS X",
             "Operating System :: Microsoft :: Windows",
             "Operating System :: POSIX",
             "Operating System :: Unix",
             "Operating System :: OS Independent",
-            'Topic :: Scientific/Engineering',
+            "Topic :: Scientific/Engineering",
             "Topic :: Scientific/Engineering :: Information Analysis",
         ],
-        python_requires='>=3.5',
+        python_requires=">=3.5",
         install_requires=[
-            'PyYAML',
-            'click',
-            'pandas',
-            'schedula>=1.1.1',
-            'click_log',
-            'tqdm',
-            'regex',
-            'numpy!=1.19.3',
-            'scipy',
-            'pyarrow',
-            'XlsxWriter',
-            'ruamel.yaml',
-            'openpyxl',
-            'xlrd'
+            "PyYAML",
+            "click",
+            "pandas",
+            "schedula>=1.1.1",
+            "click_log",
+            "tqdm",
+            "regex",
+            "numpy!=1.19.3",
+            "scipy",
+            "pyarrow",
+            "XlsxWriter",
+            "ruamel.yaml",
+            "openpyxl",
+            "xlrd",
         ],
         entry_points={
-            'console_scripts': [
-                '%(p)s = %(p)s.cli:cli' % {'p': name},
+            "console_scripts": [
+                "%(p)s = %(p)s.cli:cli" % {"p": name},
             ],
         },
         extras_require=extras,
-        tests_require=['nose>=1.0', 'ddt'],
-        test_suite='nose.collector',
-        package_data={
-            'gearshift': [
-                'demos/*.xlsx'
-            ]
-        },
+        tests_require=["nose>=1.0", "ddt"],
+        test_suite="nose.collector",
+        package_data={"gearshift": ["demos/*.xlsx"]},
         zip_safe=True,
-        options={'bdist_wheel': {'universal': True}},
-        platforms=['any'],
+        options={"bdist_wheel": {"universal": True}},
+        platforms=["any"],
     )

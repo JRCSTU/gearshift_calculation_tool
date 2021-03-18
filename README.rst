@@ -116,10 +116,12 @@ and in a *single* command.  To have precise control over the inputs and outputs
 .. |python-ver| image::  https://img.shields.io/badge/PyPi%20python-3.3%20%7C%203.4%20%7C%203.5%20%7C%203.6%20%7C%203.7-informational
     :alt: Supported Python versions of latest release in PyPi
 
-.. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.0.0-orange
+.. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.0.0.dev0-orange
+    :target: https://github.com/JRCSTU/gearshift/releases
     :alt: Latest version in GitHub
 
-.. |rel-date| image:: https://img.shields.io/badge/rel--date-03--12--2020-orange
+.. |rel-date| image:: https://img.shields.io/badge/rel--date-18--03--2021-orange
+    :target: https://github.com/JRCSTU/gearshift/releases
     :alt: release date
 
 .. |br| image:: https://img.shields.io/badge/docs-working%20on%20that-red

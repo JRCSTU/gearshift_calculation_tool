@@ -953,7 +953,7 @@ def applyCorrection4d(
                 # single step upshift
                 # disable upshifts to gears higher than used before decelaration phase
                 mingears = np.asarray(
-                    [min(InitialGears[p], InitialGears[phase[0]-1]) for p in phase]
+                    [min(InitialGears[p], InitialGears[phase[0] - 1]) for p in phase]
                 )
                 InitialGears[phase] = mingears
                 corr_4d_applied_before[phase] = 1
