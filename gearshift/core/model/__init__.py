@@ -50,10 +50,4 @@ dsp.add_function(
     description="This function calibrates the speed trance, following the Sub-Annex 1",
 )
 
-"""
-def format_shift_points(x)
-    return x
 
-
-dsp.add_data("shift_points", filter=[format_shift_points])
-"""
