@@ -170,7 +170,8 @@ def load_excel_file(input_file_name):
     final_input = _mergeDict(input_data, target_data)
 
     case = {
-        cycle: sh.selector(keys_case, d, allow_miss=True) for cycle, d in final_input.items()
+        cycle: sh.selector(keys_case, d, allow_miss=True)
+        for cycle, d in final_input.items()
     }
     case = dict(filter(lambda x: bool(x[1]) != False, case.items()))
 
@@ -184,7 +185,8 @@ def load_excel_file(input_file_name):
         "f2",
     )
     vehicle = {
-        cycle: sh.selector(keys_vehicle, d, allow_miss=True) for cycle, d in final_input.items()
+        cycle: sh.selector(keys_vehicle, d, allow_miss=True)
+        for cycle, d in final_input.items()
     }
     vehicle = dict(filter(lambda x: bool(x[1]) != False, vehicle.items()))
 
@@ -193,24 +195,25 @@ def load_excel_file(input_file_name):
         "full_load_powers",
     }
     engine = {
-        cycle: sh.selector(keys_engine, d, allow_miss=True) for cycle, d in final_input.items()
+        cycle: sh.selector(keys_engine, d, allow_miss=True)
+        for cycle, d in final_input.items()
     }
     engine = dict(filter(lambda x: bool(x[1]) != False, engine.items()))
 
-    keys_speed_phase_data = {
-        "times",
-        "obd_velocities"
-    }
+    keys_speed_phase_data = {"times", "obd_velocities"}
     speed_phase_data = {
-        cycle: sh.selector(keys_speed_phase_data, d, allow_miss=True) for cycle, d in final_input.items()
+        cycle: sh.selector(keys_speed_phase_data, d, allow_miss=True)
+        for cycle, d in final_input.items()
     }
-    speed_phase_data = dict(filter(lambda x: bool(x[1]) != False, speed_phase_data.items()))
+    speed_phase_data = dict(
+        filter(lambda x: bool(x[1]) != False, speed_phase_data.items())
+    )
 
     raw_data = {
         "case": case,
         "vehicle": vehicle,
         "engine": engine,
-        "speed_phase_data": speed_phase_data
+        "speed_phase_data": speed_phase_data,
     }
 
     return raw_data
