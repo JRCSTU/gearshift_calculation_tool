@@ -115,8 +115,14 @@ def write_to_excel(solution_case, fp):
             worksheet.set_column(idx, idx, max_len)
             worksheet.write(0, idx, col, header_format)
 
-        new_sheet_names = ['Summary', 'Time Series', 'Required Engine Speeds Output', 'Available Powers Output',
-                           'Applicable Trace', 'Original Trace']
+        new_sheet_names = [
+            "Summary",
+            "Time Series",
+            "Required Engine Speeds Output",
+            "Available Powers Output",
+            "Applicable Trace",
+            "Original Trace",
+        ]
 
         workbook.worksheets_objs.sort(key=lambda x: new_sheet_names.index(x.name))
 
