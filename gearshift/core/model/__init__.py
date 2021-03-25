@@ -49,5 +49,3 @@ dsp.add_function(
     outputs=["shift_points"],
     description="This function calibrates the speed trance, following the Sub-Annex 1",
 )
-
-
