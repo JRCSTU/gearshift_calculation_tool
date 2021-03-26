@@ -151,7 +151,7 @@ def _load_excel_file(input_file_name):
         filter(lambda x: bool(x[1]) != False, speed_phase_data.items())
     )
 
-    gbr_keys = {"gear_box_ratios"}
+    gbr_keys = {"final_drive_ratios", "gear_box_ratios", "tyre_code"}
     gear_box_ratios = {
         cycle: sh.selector(gbr_keys, d, allow_miss=True)
         for cycle, d in final_input.items()
@@ -225,7 +225,7 @@ def _transform_engine_data(engine, type_cols):
 
     engine_df = pd.concat(frames, ignore_index=True)
 
-    engine_df = engine_df[["vehicle", "n", "p",	"ASM"]]
+    engine_df = engine_df[["vehicle", "n", "p", "ASM"]]
 
     engine_df = engine_df.astype(type_cols)
 
@@ -273,22 +273,24 @@ def _transform_speed_phase_data(speed_phase_data, case, type_cols):
 
 def _transform_gear_box_ratios(gear_box_ratios, type_cols):
 
-    gear_box_ratios_keys = {"gear_box_ratios": "ndv"}
+    from co2mpas.core.model.physical import dsp
+
+    inputs = ["final_drive_ratio", "gear_box_ratios", "tyre_code"]
+    outputs = ["r_dynamic"]
+    dsp = dsp.register().shrink_dsp(inputs=inputs, outputs=outputs)
+    func = sh.SubDispatchFunction(
+        dsp, "get_gear_box_ratios", inputs=inputs, outputs=outputs
+    )
 
     frames = []
 
     for k, v in gear_box_ratios.items():
         gear_box_ratios_dict = {
-            (gear_box_ratios_keys[ki] if ki in gear_box_ratios_keys else ki): vi
-            for ki, vi in v.items()
-        }
-
-        gear_box_ratios_dict = {
-            **{
-                "gear": list(range(1, len(gear_box_ratios_dict["ndv"]) + 1)),
-                "vehicle": [k] * len(gear_box_ratios_dict["ndv"]),
-            },
-            **gear_box_ratios_dict,
+            "ndv": func(
+                final_drive_ratio=gear_box_ratios[k]["final_drive_ratios"],
+                gear_box_ratios=gear_box_ratios[k]["gear_box_ratios"],
+                tyre_code=gear_box_ratios[k]["tyre_code"],
+            ),
         }
 
         df = pd.DataFrame.from_dict(gear_box_ratios_dict)
@@ -297,14 +299,14 @@ def _transform_gear_box_ratios(gear_box_ratios, type_cols):
 
     gear_box_ratios_df = pd.concat(frames, ignore_index=True)
 
-    gear_box_ratios_df = gear_box_ratios_df[["vehicle",	"gear",	"ndv"]]
+    gear_box_ratios_df = gear_box_ratios_df[["vehicle", "gear", "ndv"]]
 
     gear_box_ratios_df = gear_box_ratios_df.astype(type_cols)
 
     return gear_box_ratios_df
 
 
-def _transform_case(case, speed_phase_data, vehicle, type_cols):
+def _transform_case(case, speed_phase_data, vehicle, engine, type_cols):
 
     case_keys = {
         "hs_n_min1": "n_min1",
@@ -359,7 +361,12 @@ def _transform_case(case, speed_phase_data, vehicle, type_cols):
             "n_min12": 0,
             "n_min2d": 0,
             "n_min2": 0,
-            "n_min3": 0,
+            "n_min3": vehicle[k]["idle_engine_speed_median"]
+            + 0.125
+            * (
+                max(engine[k]["full_load_speeds"])
+                - vehicle[k]["idle_engine_speed_median"]
+            ),
             "n_min3a": 0,
             "n_min3d": 0,
             "n_min3as": 0,
@@ -449,7 +456,7 @@ def load_dice_file(input_file_name):
             "ASM": "float64",
         },
         "gearbox_ratios": {"vehicle": "str", "gear": "int32", "ndv": "float64"},
-        "speed_phase": {"class": "str", "t": "float64", "v": "float"}
+        "speed_phase": {"class": "str", "t": "float64", "v": "float"},
     }
 
     case, vehicle, engine, speed_phase_data, gear_box_ratios = _load_excel_file(
@@ -458,9 +465,15 @@ def load_dice_file(input_file_name):
 
     vehicle_df = _transform_vehicle_data(vehicle, gear_box_ratios, type_cols["vehicle"])
     engine_df = _transform_engine_data(engine, type_cols["engine"])
-    speed_phase_data_df, case = _transform_speed_phase_data(speed_phase_data, case, type_cols["speed_phase"])
-    gear_box_ratios_df = _transform_gear_box_ratios(gear_box_ratios, type_cols["gearbox_ratios"])
-    case_df = _transform_case(case, speed_phase_data, vehicle, type_cols["case"])
+    speed_phase_data_df, case = _transform_speed_phase_data(
+        speed_phase_data, case, type_cols["speed_phase"]
+    )
+    gear_box_ratios_df = _transform_gear_box_ratios(
+        gear_box_ratios, type_cols["gearbox_ratios"]
+    )
+    case_df = _transform_case(
+        case, speed_phase_data, vehicle, engine, type_cols["case"]
+    )
 
     raw_data = {
         "vehicle": vehicle_df,
