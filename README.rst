@@ -120,7 +120,7 @@ and in a *single* command.  To have precise control over the inputs and outputs
     :target: https://github.com/JRCSTU/gearshift/releases
     :alt: Latest version in GitHub
 
-.. |rel-date| image:: https://img.shields.io/badge/rel--date-18--03--2021-orange
+.. |rel-date| image:: https://img.shields.io/badge/rel--date-29--03--2021-orange
     :target: https://github.com/JRCSTU/gearshift/releases
     :alt: release date
 
