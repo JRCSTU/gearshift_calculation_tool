@@ -151,7 +151,7 @@ def _load_excel_file(input_file_name):
         filter(lambda x: bool(x[1]) != False, speed_phase_data.items())
     )
 
-    gbr_keys = {"final_drive_ratios", "gear_box_ratios", "tyre_code"}
+    gbr_keys = {"final_drive_ratios", "gear_box_ratios", "tyre_code", "gear_box_type"}
     gear_box_ratios = {
         cycle: sh.selector(gbr_keys, d, allow_miss=True)
         for cycle, d in final_input.items()
@@ -271,26 +271,40 @@ def _transform_speed_phase_data(speed_phase_data, case, type_cols):
     return speed_phase_data_df, case
 
 
-def _transform_gear_box_ratios(gear_box_ratios, type_cols):
+def _transform_gear_box_ratios(gear_box_inputs, type_cols):
 
     from co2mpas.core.model.physical import dsp
 
-    inputs = ["final_drive_ratio", "gear_box_ratios", "tyre_code"]
-    outputs = ["r_dynamic"]
+    inputs = [
+        "final_drive_ratio",
+        "gear_box_ratios",
+        "tyre_code",
+        "gear_box_type",
+        "n_gears",
+    ]
+    outputs = ["speed_velocity_ratios"]
     dsp = dsp.register().shrink_dsp(inputs=inputs, outputs=outputs)
-    func = sh.SubDispatchFunction(
-        dsp, "get_gear_box_ratios", inputs=inputs, outputs=outputs
-    )
+    func = sh.SubDispatchFunction(dsp, inputs=inputs, outputs=outputs)
 
     frames = []
 
-    for k, v in gear_box_ratios.items():
+    for k, v in gear_box_inputs.items():
+        ndv_dict = func(
+            final_drive_ratio=gear_box_inputs[k]["final_drive_ratios"][0],
+            gear_box_ratios=dict(enumerate(gear_box_inputs[k]["gear_box_ratios"], 1)),
+            tyre_code=gear_box_inputs[k]["tyre_code"],
+            gear_box_type="manual",
+            n_gears=len(gear_box_inputs[k]["gear_box_ratios"]),
+        )
+
+        ndv_dict.pop(0, None)
+
+        gears, ndv = zip(*ndv_dict.items())
+
         gear_box_ratios_dict = {
-            "ndv": func(
-                final_drive_ratio=gear_box_ratios[k]["final_drive_ratios"],
-                gear_box_ratios=gear_box_ratios[k]["gear_box_ratios"],
-                tyre_code=gear_box_ratios[k]["tyre_code"],
-            ),
+            "vehicle": k,
+            "gear": gears,
+            "ndv": ndv,
         }
 
         df = pd.DataFrame.from_dict(gear_box_ratios_dict)
