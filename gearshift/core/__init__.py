@@ -50,7 +50,16 @@ def register_model():
 
 
 def _obtain_inputs(case, base):
-    to_del = ["case", "vehicle", "class", "merge", "m_ro", "phase"]
+    to_del = [
+        "case",
+        "vehicle",
+        "class",
+        "merge",
+        "m_ro",
+        "phase",
+        "maximum_velocity",
+        "vehicle_mass_running_order",
+    ]
 
     case_rename = {
         "do_dsc": "ApplyDownscaling",
@@ -141,10 +150,15 @@ def _obtain_inputs(case, base):
         if not k in to_del
     }
 
+    if case["class"] not in ["class1", "class2", "class3a", "class3b"]:
+        case_scale_phase = case["class"].replace(" ", "")[:-1]
+    else:
+        case_scale_phase = case["class"]
+
     scale = {
         scale_rename[k]: v
         for k, v in base["scale"]
-        .loc[base["scale"]["class"] == case["class"]]
+        .loc[base["scale"]["class"] == case_scale_phase]
         .to_dict("records")[0]
         .items()
         if not k in to_del
@@ -153,7 +167,7 @@ def _obtain_inputs(case, base):
     phase = {
         phase_rename[k]: v
         for k, v in base["phase"]
-        .loc[base["phase"]["class"] == case["class"]]
+        .loc[base["phase"]["class"] == case_scale_phase]
         .to_dict("list")
         .items()
         if not k in to_del
