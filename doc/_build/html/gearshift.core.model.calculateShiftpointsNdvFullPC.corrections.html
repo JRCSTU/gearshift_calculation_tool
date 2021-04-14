@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>gearshift.core.model.calculateShiftpointsNdvFullPC.corrections package &mdash; GEARSHIFT TOOL 1.0.1 documentation</title>
   
@@ -17,7 +17,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -30,7 +33,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -50,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GEARSHIFT TOOL
+            <a href="index.html" class="icon icon-home"> GEARSHIFT TOOL
           
 
           
@@ -128,6 +130,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -139,7 +143,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -155,356 +159,8 @@
             
   <div class="section" id="gearshift-core-model-calculateshiftpointsndvfullpc-corrections-package">
 <h1>gearshift.core.model.calculateShiftpointsNdvFullPC.corrections package<a class="headerlink" href="#gearshift-core-model-calculateshiftpointsndvfullpc-corrections-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-gearshift.core.model.calculateShiftpointsNdvFullPC.corrections">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gearshift.core.model.calculateShiftpointsNdvFullPC.corrections" title="Permalink to this headline">¶</a></h2>
-<p>It provides the corrections defined in section 4 of the Sub-Annex 2 from Annex XXI from the
-COMMISSION REGULATION (EU) 2017/1151.</p>
-<p>Docstrings should provide sufficient understanding for any individual function.</p>
-<p>Sub-Modules:</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-</tbody>
-</table>
-<dl class="py function">
-<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.appendCorrectionCells">
-<code class="sig-name descname">appendCorrectionCells</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">CorrectionsCells</span></em>, <em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">InitialGearsPrev</span></em>, <em class="sig-param"><span class="n">correctionType</span></em>, <em class="sig-param"><span class="n">correctionNbr</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#appendCorrectionCells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.appendCorrectionCells" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>This function is just for debugging of gear corrections.
-It extends a cell array of gear correction strings by the current corrections and the resulting corrected gears.
-Each gear correction is indicated by a string combining correction type and number.
-If eg gear 2 is corrected to gear 3 by correction ‘4a’ during the first iteration then the gear correction string
-will be extended by ‘ 4a1 3’.
-If eg gear 2 is not corrected then the gear correction string will be extended by ‘ — 2’.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>CorrectionsCells</strong> (<em>numpy.array</em>) – A cell array of gear correction strings BEFORE the current correction</p></li>
-<li><p><strong>InitialGears</strong> (<em>numpy.array</em>) – A cell array of gear numbers AFTER the current correction</p></li>
-<li><p><strong>InitialGearsPrev</strong> (<em>numpy.array</em>) – A cell array of gear numbers BEFORE the current correction</p></li>
-<li><p><strong>InitialGearsPrev</strong> – A cell array of gear numbers BEFORE the current correction</p></li>
-<li><p><strong>correctionType</strong> (<em>String</em>) – A string indicating the type of the current correction
-eg ‘4c’</p></li>
-<li><p><strong>correctionNbr</strong> (<em>Integer</em>) – A number indicating the iteration of the current correction</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul>
-<li><dl>
-<dt>CorrectionsCells (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.array</span></code>):</dt><dd><p>A cell array of gear correction strings AFTER the current correction.
-For example:</p>
-<p>’4 — 4 4b1 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2 — 2’</p>
-<p>’4 — 4 4b1 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3’</p>
-<p>’5 — 5 4b1 4 — 4 — 4 — 4 — 4 — 4 — 4 4b2 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3 — 3’</p>
-<p>’5 — 5 — 5 4c1 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 4g2 3 — 3 — 3 — 3 — 3’</p>
-<p>’5 — 5 — 5 4c1 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 — 4 4g2 3 — 3 — 3 — 3 — 3’</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>InitialGearsPrev (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.array</span></code>):</dt><dd><p>A cell array of gear numbers AFTER current correction i.e. before next correction</p>
-</dd>
-</dl>
-</li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4b">
-<code class="sig-name descname">applyCorrection4b</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">Corr4bToBeDoneAfterCorr4a</span></em>, <em class="sig-param"><span class="n">Corr4bToBeDoneAfterCorr4d</span></em>, <em class="sig-param"><span class="n">PhaseValues</span></em>, <em class="sig-param"><span class="n">PhaseStarts</span></em>, <em class="sig-param"><span class="n">PhaseEnds</span></em>, <em class="sig-param"><span class="n">PHASE_ACCELERATION_FROM_STANDSTILL</span></em>, <em class="sig-param"><span class="n">PHASE_ACCELERATION</span></em>, <em class="sig-param"><span class="n">NoOfGearsFinal</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4b"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4b" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sub-Annex 2 in section 4.(b) :</p>
-<p>If a downshift is required during an acceleration phase
-or at the beginning of the acceleration phase
-the gear required during this downshift shall be noted (i_DS).</p>
-<p>The starting point of a correction procedure is defined by either
-the last previous second when i_DS was identified
-or by the starting point of the acceleration phase,
-if all time samples before have gears &gt; i_DS.</p>
-<p>The highest gear of the time samples before the downshift
-determines the reference gear i_ref for the downshift.
-A downshift where i_DS = i_ref - 1
-is referred to as a one step downshift,
-a downshift where i_DS = i_ref - 2
-is referred to as a two step downshift,
-a downshift where i_DS = i_ref – 3
-is referred to as a three step downshift.</p>
-<p>Visualization of rules implemented:</p>
-<p>initial gear sequence:</p>
-<img alt="_images/initial_gears_correction_4b.PNG" src="_images/initial_gears_correction_4b.PNG" />
-<img alt="_images/correction_4b_1.PNG" src="_images/correction_4b_1.PNG" />
-<img alt="_images/correction_4b_2.PNG" src="_images/correction_4b_2.PNG" />
-<img alt="_images/correction_4b_3.PNG" src="_images/correction_4b_3.PNG" />
-<img alt="_images/correction_4b_4.PNG" src="_images/correction_4b_4.PNG" />
-<p>final gear sequence:</p>
-<img alt="_images/correction_4b_5.PNG" src="_images/correction_4b_5.PNG" />
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>InitialGears</strong> (<em>numpy.array</em>) – A cell array of gear numbers AFTER the previous correction</p></li>
-<li><p><strong>Corr4bToBeDoneAfterCorr4a</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Boolean that check if the correction 4b to be done after correction 4a</p></li>
-<li><p><strong>Corr4bToBeDoneAfterCorr4d</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Boolean that check if the correction 4b to be done after correction 4d</p></li>
-<li><p><strong>PhaseValues</strong> (<em>numpy.array</em>) – Contains the points of changes phases</p></li>
-<li><p><strong>PhaseStarts</strong> (<em>numpy.array</em>) – Contains the points that are start point from a phase</p></li>
-<li><p><strong>PhaseEnds</strong> (<em>numpy.array</em>) – Contains the points that are end point from a phase</p></li>
-<li><p><strong>PHASE_ACCELERATION_FROM_STANDSTILL</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Acceleration phase following a standstill phase</p></li>
-<li><p><strong>PHASE_ACCELERATION</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Acceleration phase</p></li>
-<li><p><strong>NoOfGearsFinal</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The number of forward gears after apply the exclusion of first gear
-if is necessary.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><dl class="simple">
-<dt>InitialGears (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.array</span></code>):</dt><dd><p>A cell array of gear numbers AFTER the current correction</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>Corr4bToBeDoneAfterCorr4a (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>):</dt><dd><p>Boolean that check if the correction 4b to be done after correction 4a</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>Corr4bToBeDoneAfterCorr4d (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>):</dt><dd><p>Boolean that check if the correction 4b to be done after correction 4d</p>
-</dd>
-</dl>
-</li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4a">
-<code class="sig-name descname">applyCorrection4a</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">Corr4bToBeDoneAfterCorr4a</span></em>, <em class="sig-param"><span class="n">PossibleGears</span></em>, <em class="sig-param"><span class="n">InAcceleration</span></em>, <em class="sig-param"><span class="n">InConstantSpeed</span></em>, <em class="sig-param"><span class="n">InAccelerationAnyDuration</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4a"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4a" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sub-Annex 2 in sectoin 4.(a)</p>
-<p>If a one step higher gear (n+1) is required for only 1 second
-and the gears before and after are the same (n),
-or one of them is one step lower (n-1),
-gear (n+1) shall be corrected to gear n.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>InitialGears</strong> (<em>numpy.array</em>) – A cell array of gear numbers AFTER the previous correction</p></li>
-<li><p><strong>Corr4bToBeDoneAfterCorr4a</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Boolean that check if the correction 4b to be done after correction 4a</p></li>
-<li><p><strong>PossibleGears</strong> (<em>numpy.array</em>) – The possible gears calculated by each second</p></li>
-<li><p><strong>InAcceleration</strong> (<em>boolean numpy.array</em>) – Contains the points that are in acceleration phase as a True</p></li>
-<li><p><strong>InConstantSpeed</strong> (<em>boolean numpy.array</em>) – Contains the points that are in constant speed phase as a True</p></li>
-<li><p><strong>InAccelerationAnyDuration</strong> (<em>boolean numpy.array</em>) – some gear corrections ignore the duration of acceleration phases
-so save acceleration phases with any duration here</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><dl class="simple">
-<dt>InitialGears (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.array</span></code>):</dt><dd><p>A cell array of gear numbers AFTER the current correction</p>
-</dd>
-</dl>
-</li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4c">
-<code class="sig-name descname">applyCorrection4c</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">PossibleGears</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4c"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4c" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sub-Annex 2 in section 4.(c)</p>
-<p>If gear i is used for a time sequence of 1 to 5 seconds
-and the gear prior to this sequence is one step lower
-and the gear after this sequence is one or two steps lower than within this sequence
-or the gear prior to this sequence is two steps lower
-and the gear after this sequence is one step lower than within the sequence,
-the gear for the sequence shall be corrected to
-the maximum of the gears before and after the sequence.
-In all cases i-1 &gt;= i_min shall be fulfilled.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The corrected gear will be i-1 in all cases. 3.5. Determination of possible
-gears to be used. The lowest final possible gear is i_min.</p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>InitialGears</strong> (<em>numpy.array</em>) – A cell array of gear numbers AFTER the previous correction</p></li>
-<li><p><strong>PossibleGears</strong> (<em>numpy.array</em>) – The possible gears calculated by each second</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><dl class="simple">
-<dt>InitialGears (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.array</span></code>):</dt><dd><p>A cell array of gear numbers AFTER the current correction</p>
-</dd>
-</dl>
-</li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4d">
-<code class="sig-name descname">applyCorrection4d</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">PhaseStarts</span></em>, <em class="sig-param"><span class="n">PhaseEnds</span></em>, <em class="sig-param"><span class="n">PhaseValues</span></em>, <em class="sig-param"><span class="n">PHASE_DECELERATION</span></em>, <em class="sig-param"><span class="n">PHASE_DECELERATION_TO_STANDSTILL</span></em>, <em class="sig-param"><span class="n">corr_4d_applied_before</span></em>, <em class="sig-param"><span class="n">TraceTimesCount</span></em>, <em class="sig-param"><span class="n">NoOfGearsFinal</span></em>, <em class="sig-param"><span class="n">RequiredVehicleSpeeds</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Regulation Annex 2, 4.(d) :
-No upshift to a higher gear shall be performed within a deceleration phase.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The newest regulation ECE/TRANS/WP.29/GRPE/2019/2 moved the text part below to paragraph Annex 2, 4.(e).
-But we keep it here as it does not matter whether it will be executed at the end of 4.(d) or at the begin of 4.(e).</p>
-</div>
-<p>No upshift to a higher gear at the transition
-from an acceleration or constant speed phase
-to a deceleration phase shall be performed
-if one of the gears in the first two seconds
-following the end of the deceleration phase
-is lower than the upshifted gear or is gear 0.
-If there is an upshift during the transition
-and the initial deceleration phase by 2 gears,
-an upshift by 1 gear shall be performed instead.
-In this case, no further modifications shall be perfomed
-in the following gear use checks.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>InitialGears</strong> (<em>numpy.array</em>) – A cell array of gear numbers AFTER the previous correction</p></li>
-<li><p><strong>PhaseStarts</strong> (<em>numpy.array</em>) – Contains the points that are start point from a phase</p></li>
-<li><p><strong>PhaseEnds</strong> (<em>numpy.array</em>) – Contains the points that are end point from a phase</p></li>
-<li><p><strong>PhaseValues</strong> (<em>numpy.array</em>) – Contains the points of changes phases</p></li>
-<li><p><strong>PHASE_DECELERATION</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – <dl class="simple">
-<dt>time period of more than 2 seconds with required vehicle</dt><dd><p>speed &gt;= 1km/h and monotonically decreasing</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>PHASE_DECELERATION_TO_STANDSTILL</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – DECELERATION phase preceding a STANDSTILL phase</p></li>
-<li><p><strong>corr_4d_applied_before</strong> (<em>boolean numpy.array</em>) – Boolean array that check if correction 4d have been applied before as True</p></li>
-<li><p><strong>TraceTimesCount</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The length of trace times re-sampled in 1Hz</p></li>
-<li><p><strong>NoOfGearsFinal</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The number of forward gears after apply the exclusion of first gear
-if is necessary.</p></li>
-<li><p><strong>RequiredVehicleSpeeds</strong> (<em>numpy.array</em>) – The vehicle speed required for the whole cycle re-sampled in 1Hz</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><dl class="simple">
-<dt>InitialGears (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.array</span></code>):</dt><dd><p>A cell array of gear numbers AFTER the current correction</p>
-</dd>
-</dl>
-</li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4e">
-<code class="sig-name descname">applyCorrection4e</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">PhaseStarts</span></em>, <em class="sig-param"><span class="n">PhaseEnds</span></em>, <em class="sig-param"><span class="n">PhaseValues</span></em>, <em class="sig-param"><span class="n">ClutchDisengaged</span></em>, <em class="sig-param"><span class="n">InitialRequiredEngineSpeeds</span></em>, <em class="sig-param"><span class="n">IdlingEngineSpeed</span></em>, <em class="sig-param"><span class="n">PHASE_DECELERATION</span></em>, <em class="sig-param"><span class="n">PHASE_DECELERATION_TO_STANDSTILL</span></em>, <em class="sig-param"><span class="n">Phases</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4e"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4e" title="Permalink to this definition">¶</a></dt>
-<dd><p>Regulation Annex 2, 4.(e) :</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The newest regulation ECE/TRANS/WP.29/GRPE/2019/2
-moved this gear correction to paragraph
-3.3. Selection of possible gears with respect to engine speed.
-But we keep it here to check also additional usages of gear 2,
-which may result from other gear corrections done before.</p>
-</div>
-<p>During a deceleration phase, gears with n_gear &gt; 2 shall be used
-as long as the engine speed does not drop below n_min_drive.
-Gear 2 shall be used during a deceleration phase within a short trip
-of the cycle (not at the end of a short trip)as long as the engine
-speed does not drop below (0.9 × n_idle).
-If the engine speed drops below n_idle, the clutch shall be disengaged.
-If the deceleration phase is the last part of a short trip shortly before a stop phase,
-the second gear shall be used as long as the engine speed does not drop below n_idle.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>InitialGears</strong> (<em>numpy.array</em>) – A cell array of gear numbers AFTER the previous correction</p></li>
-<li><p><strong>PhaseStarts</strong> (<em>numpy.array</em>) – Contains the points that are start point from a phase</p></li>
-<li><p><strong>PhaseEnds</strong> (<em>numpy.array</em>) – Contains the points that are end point from a phase</p></li>
-<li><p><strong>PhaseValues</strong> (<em>numpy.array</em>) – Contains the points of changes phases</p></li>
-<li><p><strong>ClutchDisengaged</strong> (<em>boolean numpy.array</em>) – The clutch disengaged by each second.</p></li>
-<li><p><strong>InitialRequiredEngineSpeeds</strong> (<em>numpy.array</em>) – The initial engine speeds required for each gear i from 1 to ng and
-for each second j of the cycle trace.</p></li>
-<li><p><strong>IdlingEngineSpeed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Annex 2 (2c) n_idle. The idling speed.</p></li>
-<li><p><strong>PHASE_DECELERATION</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – <dl class="simple">
-<dt>time period of more than 2 seconds with required vehicle</dt><dd><p>speed &gt;= 1km/h and monotonically decreasing</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>PHASE_DECELERATION_TO_STANDSTILL</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – DECELERATION phase preceding a STANDSTILL phase</p></li>
-<li><p><strong>Phases</strong> (<em>numpy.array</em>) – The list of phases that are used during whole cycle</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><dl class="simple">
-<dt>InitialGears (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.array</span></code>):</dt><dd><p>A cell array of gear numbers AFTER the current correction</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>ClutchDisengaged (<code class="xref py py-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">numpy.array</span></code>):</dt><dd><p>The clutch disengaged by each second AFTER the current correction</p>
-</dd>
-</dl>
-</li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4f">
-<code class="sig-name descname">applyCorrection4f</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">InitialGears</span></em>, <em class="sig-param"><span class="n">ClutchDisengaged</span></em>, <em class="sig-param"><span class="n">SuppressGear0DuringDownshifts</span></em>, <em class="sig-param"><span class="n">PossibleGears</span></em>, <em class="sig-param"><span class="n">InStandStill</span></em>, <em class="sig-param"><span class="n">InDecelerationToStandstill</span></em>, <em class="sig-param"><span class="n">InDeceleration</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/model/calculateShiftpointsNdvFullPC/corrections.html#applyCorrection4f"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gearshift.core.model.calculateShiftpointsNdvFullPC.corrections.applyCorrection4f" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sub-Annex 2 in section 4.(f)</p>
-<p>If during a deceleration phase the duration of a gear sequence between
-two gear sequences of 3 seconds or more is only 1 second, it shall be
-replaced by gear 0 and the clutch shall be disengaged.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>InitialGears</strong> (<em>numpy.array</em>) – A cell array of gear numbers AFTER the previous correction</p></li>
-<li><p><strong>ClutchDisengaged</strong> (<em>boolean numpy.array</em>) – The clutch disengaged by each second.</p></li>
-<li><p><strong>SuppressGear0DuringDownshifts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Sub-Annex 2 (4f).If a gear is used for only 1 second during a deceleration phase
-it shall be replaced by gear 0 with clutch disengaged, in order to avoid too high
-engine speeds. But if this is not an issue, the manufacturer may allow to use the
-lower gear of the following second directly instead of gear 0 for downshifts of
-up to 3 steps.</p></li>
-<li><p><strong>PossibleGears</strong> (<em>numpy.array</em>) – The possible gears calculated by each second</p></li>
-<li><p><strong>InStandStill</strong> (<em>boolean numpy.array</em>) – Contains the points that are in standstill phase as a True</p></li>
-<li><p><strong>InDecelerationToStandstill</strong> (<em>boolean numpy.array</em>) – The array that contains the seconds from deceleration to standstill as a True</p></li>
-<li><p><strong>InDeceleration</strong> (<em>boolean array</em>) – Contains the points that are in deceleration phase as a True</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><dl class="simple">
-<dt>InitialGears (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.array</span></code>):</dt><dd><p>A cell array of gear numbers AFTER the current correction</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>ClutchDisengaged (<code class="xref py py-class docutils literal notranslate"><span class="pre">boolean</span> <span class="pre">numpy.array</span></code>):</dt><dd><p>The clutch disengaged by each second AFTER the current correction</p>
-</dd>
-</dl>
-</li>
-</ul>
-</p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -513,28 +169,25 @@ up to 3 steps.</p></li>
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2015-2019, European Commission (JRC)
+        &#169; Copyright 2015-2019, European Commission (JRC).
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
