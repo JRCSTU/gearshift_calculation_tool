@@ -58,7 +58,7 @@ Download the sources,
 
 - either with *git*, by giving this command to the terminal::
 
-      git clone https://github.com/AndresLaverdeMarin/gearshift_calculation_tool --depth=1
+      git clone https://github.com/JRCSTU/gearshift_calculation_tool --depth=1
 
 Install
 -------
