@@ -50,17 +50,6 @@ def register_model():
 
 
 def _obtain_inputs(case, base):
-    to_del = [
-        "case",
-        "vehicle",
-        "class",
-        "merge",
-        "m_ro",
-        "phase",
-        "maximum_velocity",
-        "vehicle_mass_running_order",
-    ]
-
     case_rename = {
         "do_dsc": "ApplyDownscaling",
         "do_cap": "ApplySpeedCap",
@@ -127,7 +116,7 @@ def _obtain_inputs(case, base):
         .loc[base["gearbox_ratios"]["vehicle"] == case["vehicle"]]
         .to_dict("list")
         .items()
-        if not k in to_del
+        if k in gear_box_rename
     }
 
     Trace = (
@@ -138,7 +127,7 @@ def _obtain_inputs(case, base):
     )
 
     input_case = {
-        case_rename[k]: v for k, v in case.to_dict().items() if not k in to_del
+        case_rename[k]: v for k, v in case.to_dict().items() if k in case_rename
     }
 
     vehicle = {
@@ -147,7 +136,7 @@ def _obtain_inputs(case, base):
         .loc[base["vehicle"]["vehicle"] == case["vehicle"]]
         .to_dict("records")[0]
         .items()
-        if not k in to_del
+        if k in vehicle_rename
     }
 
     if case["class"] not in ["class1", "class2", "class3a", "class3b"]:
@@ -161,7 +150,7 @@ def _obtain_inputs(case, base):
         .loc[base["scale"]["class"] == case_scale_phase]
         .to_dict("records")[0]
         .items()
-        if not k in to_del
+        if k in scale_rename
     }
 
     phase = {
@@ -170,7 +159,7 @@ def _obtain_inputs(case, base):
         .loc[base["phase"]["class"] == case_scale_phase]
         .to_dict("list")
         .items()
-        if not k in to_del
+        if k in phase_rename
     }
 
     dicts = [
