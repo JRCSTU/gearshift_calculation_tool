@@ -54,7 +54,7 @@ def check_file_format(input_file_name, *args, ext=(".xlsx",)):
     import pandas as pd
 
     f = input_file_name
-    xl = pd.ExcelFile(f)
+    xl = pd.ExcelFile(f, engine='openpyxl')
     l = len(xl.sheet_names)
     if l < 6:
         return input_file_name.lower().endswith(ext)
@@ -105,7 +105,7 @@ def check_file_format_co2mpas(input_file_name, *args, ext=(".xlsx",)):
     import pandas as pd
 
     f = input_file_name
-    xl = pd.ExcelFile(f)
+    xl = pd.ExcelFile(f, engine='openpyxl')
     l = len(xl.sheet_names)
     if l > 6:
         return input_file_name.lower().endswith(ext)
