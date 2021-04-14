@@ -102,7 +102,7 @@ def parse_excel_file(input_file_name, input_file):
     :rtype: dict
     """
     raw_data = {}
-    input_data = pd.ExcelFile(input_file, engine='openpyxl')
+    input_data = pd.ExcelFile(input_file, engine="openpyxl")
     columns = _read_columns(input_data)
     for col in columns:
         raw_data[col] = _read_dataframe(col, input_data.parse(col))
