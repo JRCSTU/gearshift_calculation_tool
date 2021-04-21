@@ -170,7 +170,7 @@ def _check_demo_flag(output_folder, demo_flag):
 @sh.add_function(dsp, outputs=["demo"], input_domain=_check_demo_flag)
 def save_demo_files(output_folder, demo_flag):
     """
-    Save CO2MPAS demo files.
+    Save GEARSHIFT demo files.
 
     :param output_folder:
         Output folder.
@@ -184,7 +184,7 @@ def save_demo_files(output_folder, demo_flag):
     os.makedirs(output_folder or ".", exist_ok=True)
     for src in glob.glob(resource_filename("gearshift", "demos/*")):
         copy2(src, osp.join(output_folder, osp.basename(src)))
-    log.info("CO2MPAS demos written into (%s).", output_folder)
+    log.info("GEARSHIFT demos written into (%s).", output_folder)
 
 
 @sh.add_function(dsp, outputs=["start_time"])
