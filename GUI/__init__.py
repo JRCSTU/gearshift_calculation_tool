@@ -22,11 +22,9 @@ def canvas_gui(root):
     root.resizable(0, 0)
 
     canvas1 = tk.Canvas(root, width=1800, height=750)
-    mydir = osp.dirname(osp.dirname(__file__))
-    filepath = Path(mydir, "doc", "_static", "images", "gs_logo_name_tool.png")
     canvas1.pack()
 
-    bg = tk.PhotoImage(file=filepath)
+    bg = tk.PhotoImage(file="../doc/_static/images/gs_logo_name_tool.png")
     background = tk.Label(root, image=bg)
     background.place(x=0, y=0)
 
@@ -197,7 +195,6 @@ def canvas_gui(root):
 
     def run_gearshift():
         progBarT = threading.Thread(target=progres_bar_start, args=(20,))
-        progBarT.start()
         inputPath = Path(inputEntry.get())
         outputPath = Path(outputEntry.get())
 
@@ -208,6 +205,7 @@ def canvas_gui(root):
             progBar.stop()
 
         else:
+            progBarT.start()
             os.makedirs(osp.dirname(outputPath), exist_ok=True)
             runGS = threading.Thread(target=run_command, args=(inputPath, outputPath))
             runGS.start()
