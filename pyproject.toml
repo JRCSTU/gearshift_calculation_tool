@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=30.3.0"]
+
+[tool.black]
+exclude = '''
+    (
+        /(
+            \.eggs/
+            |\.git/
+            |\.hg/
+            |\.mypy_cache/
+            |\.nox/
+            |\.tox/
+            |.?venv.*/
+            |_build/
+            |buck-out/
+            |build/
+            |dist/
+            |Notebooks/.*\.py                    # py:percent jupytext-paired files
+            |dist/
+        )
+    )
+'''
