@@ -24,7 +24,6 @@ import logging
 import pandas as pd
 import schedula as sh
 from .excel import parse_excel_file
-from .excel_dice import load_dice_file
 
 log = logging.getLogger(__name__)
 
@@ -32,6 +31,23 @@ dsp = sh.BlueDispatcher(
     name="load_inputs",
     description="Loads from files the inputs for the GEARSHIFT model.",
 )
+
+
+@sh.add_function(dsp, outputs=["input_file"])
+def open_input_file(input_file_name):
+    """
+    Open the input file.
+
+    :param input_file_name:
+        Input file name.
+    :type input_file_name: str
+
+    :return:
+        Input file.
+    :rtype: io.BytesIO
+    """
+    with open(input_file_name, "rb") as file:
+        return io.BytesIO(file.read())
 
 
 # noinspection PyUnusedLocal
@@ -51,30 +67,8 @@ def check_file_format(input_file_name, *args, ext=(".xlsx",)):
         If the extension of the input file is within the allowed extensions.
     :rtype: bool
     """
-    import pandas as pd
-
     f = input_file_name
-    xl = pd.ExcelFile(f, engine="openpyxl")
-    l = len(xl.sheet_names)
-    if l < 6:
-        return input_file_name.lower().endswith(ext)
-
-
-@sh.add_function(dsp, outputs=["input_file"], input_domain=check_file_format)
-def open_input_file(input_file_name):
-    """
-    Open the input file.
-
-    :param input_file_name:
-        Input file name.
-    :type input_file_name: str
-
-    :return:
-        Input file.
-    :rtype: io.BytesIO
-    """
-    with open(input_file_name, "rb") as file:
-        return io.BytesIO(file.read())
+    return input_file_name.lower().endswith(ext)
 
 
 dsp.add_function(
@@ -82,40 +76,6 @@ dsp.add_function(
     inputs=["input_file_name", "input_file"],
     outputs=["raw_data"],
     input_domain=check_file_format,
-)
-
-
-# noinspection PyUnusedLocal
-def check_file_format_co2mpas(input_file_name, *args, ext=(".xlsx",)):
-    """
-    Check file format extension.
-
-    :param input_file_name:
-        Input file name.
-    :type input_file_name: str
-
-    :param ext:
-        Allowed extensions.
-    :type ext: tuple[str]
-
-    :return:
-        If the extension of the input file is within the allowed extensions.
-    :rtype: bool
-    """
-    import pandas as pd
-
-    f = input_file_name
-    xl = pd.ExcelFile(f, engine="openpyxl")
-    l = len(xl.sheet_names)
-    if l > 6:
-        return input_file_name.lower().endswith(ext)
-
-
-dsp.add_function(
-    function=load_dice_file,
-    inputs=["input_file_name"],
-    outputs=["raw_data"],
-    input_domain=check_file_format_co2mpas,
 )
 
 
