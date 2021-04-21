@@ -10,7 +10,7 @@ import os
 import collections
 import os.path as osp
 
-name = "gearshift"
+name = "gearshift_calculation_tool"
 mydir = osp.dirname(__file__)
 
 
@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     def read_project_version():
         fglobals = {}
-        with io.open(os.path.join(mydir, proj_name, "_version.py")) as fd:
+        with io.open(os.path.join(mydir, "gearshift", "_version.py")) as fd:
             exec(fd.read(), fglobals)  # To read __version__
         return fglobals["__version__"]
 
