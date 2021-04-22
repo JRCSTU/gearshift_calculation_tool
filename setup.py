@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     def read_project_version():
         fglobals = {}
-        with io.open(os.path.join(mydir, "gearshift", "_version.py")) as fd:
+        with io.open(os.path.join(mydir, proj_name, "_version.py")) as fd:
             exec(fd.read(), fglobals)  # To read __version__
         return fglobals["__version__"]
 
@@ -126,7 +126,6 @@ if __name__ == "__main__":
             "openpyxl",
             "xlrd",
         ],
-        scripts=['cli/__init__.py'],
         entry_points={
             "console_scripts": [
                 f"{proj_name} = {proj_name}.cli:cli",
