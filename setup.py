@@ -128,7 +128,7 @@ if __name__ == "__main__":
         ],
         entry_points={
             "console_scripts": [
-                f"{proj_name} = {proj_name}.cli:cli",
+                f"{proj_name} = {proj_name}.cli:main",
             ],
         },
         extras_require=extras,
