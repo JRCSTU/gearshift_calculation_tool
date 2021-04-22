@@ -128,13 +128,13 @@ if __name__ == "__main__":
         ],
         entry_points={
             "console_scripts": [
-                "%(p)s = %(p)s.cli:cli" % {"p": name},
+                "%(p)s = %(p)s.cli:cli" % {"p": proj_name},
             ],
         },
         extras_require=extras,
         tests_require=["nose>=1.0", "ddt"],
         test_suite="nose.collector",
-        package_data={"gearshift": ["demos/*.xlsx"]},
+        package_data={"gearshift": ["demos/*.xlsx", "core/load/speed_phases/*.ftr"]},
         zip_safe=True,
         options={"bdist_wheel": {"universal": True}},
         platforms=["any"],
