@@ -9,12 +9,6 @@ import io
 import os
 import collections
 import os.path as osp
-
-
-mydir = osp.dirname(__file__)
-
-
-
 import functools
 from setuptools import setup, find_packages
 
@@ -22,19 +16,28 @@ name = "wltp-gearshift"
 
 module_name = "gearshift"
 
+mydir = osp.dirname(__file__)
+
+
 def read_project_version():
     fglobals = {}
     with io.open(os.path.join(mydir, module_name, "_version.py")) as fd:
         exec(fd.read(), fglobals)  # To read __version__
     return fglobals["__version__"]
 
+
 proj_ver = read_project_version()
-url = f'https://github.com/JRCSTU/{name}'
-download_url = f'{url}/tarball/{proj_ver}'
-project_urls = collections.OrderedDict((
-    ('Documentation', 'https://gearshift-calculation-tool.readthedocs.io/en/latest/'),
-    ('Issue tracker', f'{url}/issues'),
-))
+url = f"https://github.com/JRCSTU/{name}"
+download_url = f"{url}/tarball/{proj_ver}"
+project_urls = collections.OrderedDict(
+    (
+        (
+            "Documentation",
+            "https://gearshift-calculation-tool.readthedocs.io/en/latest/",
+        ),
+        ("Issue tracker", f"{url}/issues"),
+    )
+)
 
 extras = {
     "cli": ["click", "click-log"],
@@ -100,8 +103,7 @@ setup(
         "Intended Audience :: Science/Research",
         "Intended Audience :: Manufacturing",
         "Environment :: Console",
-        "License :: OSI Approved :: European Union Public Licence 1.1 "
-        "(EUPL 1.1)",
+        "License :: OSI Approved :: European Union Public Licence 1.1 " "(EUPL 1.1)",
         "Natural Language :: English",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: Microsoft :: Windows",
