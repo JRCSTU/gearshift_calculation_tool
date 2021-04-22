@@ -5,7 +5,7 @@ Python Gearshift Calculation Tool
 ################################################################
 :versions:      |gh-version| |rel-date| |python-ver|
 :documentation: https://gearshift-calculation-tool.readthedocs.io/en/latest/ |doc|
-:sources:       https://github.com/JRCSTU/gearshift_calculation_tool |codestyle|
+:sources:       https://github.com/JRCSTU/gearshift_calculation_tool, `PyPi downloads <https://pypi.org/project/gearshift-calculation-tool/>`__ |codestyle|
 :keywords:      automotive, car, cars, driving, engine, emissions, fuel-consumption,
                 gears, gearshifts, rpm, simulation, simulator, standard, vehicle, vehicles, WLT
 :copyright:     2013-2020 European Commission (`JRC-IET <https://ec.europa.eu/jrc/en/institutes/iet>`_)
@@ -112,15 +112,90 @@ and in a *single* command.  To have precise control over the inputs and outputs
     $ gearshift run "path_input_file" -O "path_to_save_output_file"     ## to run gearshift tool
 .. _end-usage:
 
+.. _start-library:
+Usage
+=====
+
+In this example we will use gearshift model in order to predict the gears.
+
+Setup
+-----
+Import dispatcher(dsp) from gearshift tool that contains functions and simulation model to process vehicle data and Import also
+schedula for selecting and executing functions. for more information on how to use `schedula <https://pypi.org/project/schedula/>`__
+
+.. code-block:: python
+
+    from gearshift.core import dsp
+    import schedula as sh
+
+Load data
+---------
+* Load vehicle data for a specific vehicle from `excel template <https://github.com/JRCSTU/gearshift_calculation_tool/raw/main/gearshift/demos/gs_input_demo.xlsx>`__
+.. code-block:: python
+
+    vehData = 'gs_input_demo.xlsx'
+
+* Define the input dictionary for the dispacher.
+.. code-block:: python
+
+    input = dict(input_file_name=vehData)
+
+Dispatcher
+----------
+* Dispatcher will select and execute the proper functions for the given inputs and the requested outputs
+.. code-block:: python
+
+    core = dsp(input, outputs=['sol'], shrink=True)
+
+* Plot workflow of the core model from the dispatcher
+.. code-block:: python
+
+    core.plot()
+
+This will automatically open an internet browser and show the work flow of the core model as below.
+You can click all the rectangular boxes to see in detail sub models like load, model, write and plot.
+
+.. figure:: doc/_static/images/core_plot.PNG
+    :align: center
+    :alt: alternate text
+    :figclass: align-center
+
+The load module
+
+.. figure:: doc/_static/images/load_core_plot.PNG
+    :align: center
+    :alt: alternate text
+    :figclass: align-center
+
+* Load outputs of dispatcher Select the chosen dictionary key (sol) from the given dictionary.
+.. code-block:: python
+
+    solution = sh.selector(['sol'], sh.selector(['sol'], core))
+
+* Select each output case
+.. code-block:: python
+
+    # Select first case
+    solution['sol'][0]
+
+    # Select second case case
+    solution['sol'][1]
+
+    # Select gears output for different cases
+    gears = {}
+    for sol in solution['sol']:
+        gears[f'gears_{sol["Case"]}'] = sol['GearsOutput']
+.. _end-library:
+
 .. _start-sub:
 .. |python-ver| image::  https://img.shields.io/badge/PyPi%20python-3.3%20%7C%203.4%20%7C%203.5%20%7C%203.6%20%7C%203.7-informational
     :alt: Supported Python versions of latest release in PyPi
 
-.. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.0.0.dev0-orange
+.. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.1.1-orange
     :target: https://github.com/JRCSTU/gearshift/releases
     :alt: Latest version in GitHub
 
-.. |rel-date| image:: https://img.shields.io/badge/rel--date-29--03--2021-orange
+.. |rel-date| image:: https://img.shields.io/badge/rel--date-22--04--2021-orange
     :target: https://github.com/JRCSTU/gearshift/releases
     :alt: release date
 
