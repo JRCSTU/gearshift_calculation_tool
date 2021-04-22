@@ -10,7 +10,7 @@ import os
 import collections
 import os.path as osp
 
-name = "gearshift_calculation_tool"
+name = "gearshift"
 mydir = osp.dirname(__file__)
 
 
@@ -128,7 +128,7 @@ if __name__ == "__main__":
         ],
         entry_points={
             "console_scripts": [
-                f"{proj_name} = {proj_name}.cli:main",
+                f"{proj_name} = {proj_name}.cli:cli",
             ],
         },
         extras_require=extras,
