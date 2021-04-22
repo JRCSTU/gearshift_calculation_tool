@@ -5,7 +5,7 @@ Python Gearshift Calculation Tool
 ################################################################
 :versions:      |gh-version| |rel-date| |python-ver|
 :documentation: https://gearshift-calculation-tool.readthedocs.io/en/latest/ |doc|
-:sources:       https://github.com/JRCSTU/gearshift_calculation_tool, `PyPi downloads <https://pypi.org/project/gearshift-calculation-tool/>`__ |codestyle|
+:sources:       https://github.com/JRCSTU/gearshift_calculation_tool, `PyPi downloads <https://pypi.org/project/wltp-gearshift/>`__ |codestyle|
 :keywords:      automotive, car, cars, driving, engine, emissions, fuel-consumption,
                 gears, gearshifts, rpm, simulation, simulator, standard, vehicle, vehicles, WLT
 :copyright:     2013-2020 European Commission (`JRC-IET <https://ec.europa.eu/jrc/en/institutes/iet>`_)
