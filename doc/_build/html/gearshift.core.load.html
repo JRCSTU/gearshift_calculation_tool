@@ -87,6 +87,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html#quick-start">Quick-Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#usage">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Gearshift Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
@@ -186,8 +187,75 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-gearshift.core.load">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gearshift.core.load" title="Permalink to this headline">¶</a></h2>
+<p>Functions and <cite>dsp</cite> model to load data from a GEARSHIFT input file.</p>
+<p>Sub-Modules:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#module-gearshift.core.load.excel" title="gearshift.core.load.excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">excel</span></code></a></p></td>
+<td><p>Functions to read inputs from excel.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt id="gearshift.core.load.open_input_file">
+<code class="sig-name descname"><span class="pre">open_input_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/load.html#open_input_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gearshift.core.load.open_input_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the input file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Input file name.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Input file.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/io.html#io.BytesIO" title="(in Python v3.9)">io.BytesIO</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gearshift.core.load.check_file_format">
+<code class="sig-name descname"><span class="pre">check_file_format</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file_name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('.xlsx')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/load.html#check_file_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gearshift.core.load.check_file_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check file format extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Input file name.</p></li>
+<li><p><strong>ext</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – Allowed extensions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>If the extension of the input file is within the allowed extensions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="gearshift.core.load.merge_data">
+<code class="sig-name descname"><span class="pre">merge_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/load.html#merge_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gearshift.core.load.merge_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge raw data with the speed phases data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>raw_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Raw input data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Merged raw data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </div>
 

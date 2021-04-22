@@ -87,6 +87,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../intro.html#quick-start">Quick-Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../intro.html#usage">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../model.html">Gearshift Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API Reference</a></li>
@@ -141,6 +142,10 @@
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
         
           <li><a href="../../../gearshift.html">gearshift</a> &raquo;</li>
+        
+          <li><a href="../../core.html">gearshift.core</a> &raquo;</li>
+        
+          <li><a href="../load.html">gearshift.core.load</a> &raquo;</li>
         
       <li>gearshift.core.load.excel</li>
     
@@ -262,7 +267,7 @@
 <span class="sd">    :rtype: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">raw_data</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">input_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelFile</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;openpyxl&#39;</span><span class="p">)</span>
+    <span class="n">input_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">ExcelFile</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;openpyxl&quot;</span><span class="p">)</span>
     <span class="n">columns</span> <span class="o">=</span> <span class="n">_read_columns</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
         <span class="n">raw_data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">_read_dataframe</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>

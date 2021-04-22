@@ -15,5 +15,9 @@ The input file of the GEARSHIFT tool is an excel file, structured in different s
     :end-before: .. _end-usage:
 
 .. include:: ../README.rst
+    :start-after: .. _start-library:
+    :end-before: .. _end-library:
+
+.. include:: ../README.rst
     :start-after: .. _start-sub:
     :end-before: .. _end-sub:

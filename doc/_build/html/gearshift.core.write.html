@@ -87,6 +87,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html#quick-start">Quick-Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html#usage">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Gearshift Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
@@ -162,11 +163,55 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="gearshift-core-write-excel-module">
-<h2>gearshift.core.write.excel module<a class="headerlink" href="#gearshift-core-write-excel-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-gearshift.core.write.excel">
+<span id="gearshift-core-write-excel-module"></span><h2>gearshift.core.write.excel module<a class="headerlink" href="#module-gearshift.core.write.excel" title="Permalink to this headline">¶</a></h2>
+<p>Functions to write outputs on an excel file.</p>
+<dl class="py function">
+<dt id="gearshift.core.write.excel.write_to_excel">
+<code class="sig-name descname"><span class="pre">write_to_excel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solution_case</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/write/excel.html#write_to_excel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gearshift.core.write.excel.write_to_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solution_case</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Dictionary that contain outputs.</p></li>
+<li><p><strong>fp</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Output path and file name.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-gearshift.core.write">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gearshift.core.write" title="Permalink to this headline">¶</a></h2>
+<p>Functions and <cite>dsp</cite> model to writre data from a GEARSHIFT input file.</p>
+<p>Sub-Modules:</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#module-gearshift.core.write.excel" title="gearshift.core.write.excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">excel</span></code></a></p></td>
+<td><p>Functions to write outputs on an excel file.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt id="gearshift.core.write.save_output_file">
+<code class="sig-name descname"><span class="pre">save_output_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gearshift/core/write.html#save_output_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gearshift.core.write.save_output_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a excel file for each input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sol</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of dictionaries that contains the solution for the different inputs cases</p></li>
+<li><p><strong>output_folder</strong> (<em>os.path</em>) – Path to save the different outputs files</p></li>
+<li><p><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><em>datetime.datetime</em></a>) – The current datetime</p></li>
+<li><p><strong>output_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The extension format of the output file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </div>
 
