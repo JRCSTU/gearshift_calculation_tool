@@ -10,7 +10,7 @@ import os
 import collections
 import os.path as osp
 
-name = "gearshift"
+name = "gearshift_calculation_tool"
 mydir = osp.dirname(__file__)
 
 
@@ -126,6 +126,7 @@ if __name__ == "__main__":
             "openpyxl",
             "xlrd",
         ],
+        scripts=['cli/__init__.py'],
         entry_points={
             "console_scripts": [
                 f"{proj_name} = {proj_name}.cli:cli",
