@@ -26,6 +26,11 @@ def read_project_version():
     return fglobals["__version__"]
 
 
+def read_file(fpath):
+    with open(fpath) as fd:
+        return fd.read()
+
+
 proj_ver = read_project_version()
 url = f"https://github.com/JRCSTU/{name}"
 download_url = f"{url}/tarball/{proj_ver}"
@@ -88,6 +93,7 @@ setup(
     author_email="Andres.LAVERDE-MARIN@ext.ec.europa.eu",
     description="Gearshift tool implement the Sub-Annex 1 and Sub-Annex 2 of the"
     "COMMISSION REGULATION (EU) 2017/1151 of 1 June 2017 - Annex XXI",
+    long_description=read_file("README.rst"),
     keywords="""GEARSHIFT WLTP vehicle automotive EU JRC IET
     policy monitoring simulator
     """.split(),
