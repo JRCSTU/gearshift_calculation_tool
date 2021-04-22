@@ -27,6 +27,12 @@ if __name__ == "__main__":
         return fglobals["__version__"]
 
     proj_ver = read_project_version()
+    url = f'https://github.com/JRCSTU/{name}'
+    download_url = f'{url}/tarball/{proj_ver}'
+    project_urls = collections.OrderedDict((
+        ('Documentation', 'https://gearshift-calculation-tool.readthedocs.io/en/latest/'),
+        ('Issue tracker', f'{url}/issues'),
+    ))
 
     extras = {
         "cli": ["click", "click-log"],
