@@ -161,7 +161,7 @@ texinfo_documents = [
         "GEARSHIFT",
         "One line description of project.",
         "Miscellaneous",
-    ),
+    )
 ]
 
 # Documents to append as an appendix to all manuals.
