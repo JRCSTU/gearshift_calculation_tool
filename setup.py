@@ -136,11 +136,7 @@ setup(
         "openpyxl",
         "xlrd",
     ],
-    entry_points={
-        "console_scripts": [
-            f"{module_name} = {module_name}.cli:cli",
-        ],
-    },
+    entry_points={"console_scripts": [f"{module_name} = {module_name}.cli:cli"]},
     extras_require=extras,
     tests_require=["nose>=1.0", "ddt"],
     test_suite="nose.collector",
