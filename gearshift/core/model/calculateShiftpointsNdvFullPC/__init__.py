@@ -109,8 +109,7 @@ def parse_speed_trace(speed_trace):
 
 
 @sh.add_function(
-    dsp,
-    outputs=["TraceTimes", "RequiredVehicleSpeeds", "TraceTimesCount"],
+    dsp, outputs=["TraceTimes", "RequiredVehicleSpeeds", "TraceTimesCount"]
 )
 def resample_trace(TraceTimesInput, RequiredVehicleSpeedsInput):
     """
@@ -733,8 +732,7 @@ def get_accelerations(RequiredVehicleSpeeds, TraceTimes):
             The acceleration required for the whole cycle re-sampled in 1Hz
     """
     Accelerations = np.around(
-        np.append(np.diff(RequiredVehicleSpeeds) / (3.6 * np.diff(TraceTimes)), 0),
-        4,
+        np.append(np.diff(RequiredVehicleSpeeds) / (3.6 * np.diff(TraceTimes)), 0), 4
     )
 
     return Accelerations
@@ -999,13 +997,7 @@ def define_minimum_engine_speed_in_motion(
 
 @sh.add_function(dsp, outputs=["GearAtMaxVehicleSpeed", "MaxVehicleSpeed"])
 def determine_gear_in_maximum_vehicle_speed(
-    PowerCurveEngineSpeeds,
-    f0,
-    f1,
-    f2,
-    NdvRatios,
-    NoOfGearsFinal,
-    PowerCurvePowers,
+    PowerCurveEngineSpeeds, f0, f1, f2, NdvRatios, NoOfGearsFinal, PowerCurvePowers
 ):
     """
     The maximum vehicle speed is defined as the vehicle speed, at which the
@@ -1469,13 +1461,7 @@ def determine_possible_gears(
     """
     from functools import reduce
 
-    RequiredEngineSpeeds = NdvRatios * np.transpose(
-        np.array(
-            [
-                RequiredVehicleSpeeds,
-            ]
-        )
-    )
+    RequiredEngineSpeeds = NdvRatios * np.transpose(np.array([RequiredVehicleSpeeds]))
     InitialRequiredEngineSpeeds = np.copy(RequiredEngineSpeeds)
 
     PossibleGearsByEngineSpeed = np.empty((TraceTimesCount, NoOfGearsFinal))
@@ -1490,11 +1476,7 @@ def determine_possible_gears(
             np.where(InStandStill == 1),
             IdlingEngineSpeed,
         )
-        np.put(
-            PossibleGearsByEngineSpeed[:, gear],
-            np.where(InStandStill == 1),
-            0,
-        )
+        np.put(PossibleGearsByEngineSpeed[:, gear], np.where(InStandStill == 1), 0)
 
     AccelerationFromStandstillStarts = PhaseStarts[
         np.where(PhaseValues == PHASE_ACCELERATION_FROM_STANDSTILL)
@@ -1829,10 +1811,7 @@ def calculate_available_powers(
                         fill_value=np.nan,
                     )(
                         np.max(
-                            (
-                                RequiredEngineSpeeds[i, gear],
-                                PowerCurveEngineSpeeds[0],
-                            )
+                            (RequiredEngineSpeeds[i, gear], PowerCurveEngineSpeeds[0])
                         )
                     )
                 else:
@@ -1843,10 +1822,7 @@ def calculate_available_powers(
                         fill_value="extrapolate",
                     )(
                         np.max(
-                            (
-                                RequiredEngineSpeeds[i, gear],
-                                PowerCurveEngineSpeeds[0],
-                            )
+                            (RequiredEngineSpeeds[i, gear], PowerCurveEngineSpeeds[0])
                         )
                     )
 
@@ -2862,32 +2838,12 @@ def reduce_vehicle_speed_if_not_enough_power(
             )
 
             AvailablePowerClutchDisengaged = interp1d(
-                PowerCurveEngineSpeeds,
-                interpval,
-                bounds_error=False,
-                fill_value=np.nan,
-            )(
-                np.max(
-                    (
-                        IdlingEngineSpeed,
-                        PowerCurveEngineSpeeds[0],
-                    )
-                )
-            )
+                PowerCurveEngineSpeeds, interpval, bounds_error=False, fill_value=np.nan
+            )(np.max((IdlingEngineSpeed, PowerCurveEngineSpeeds[0])))
 
             AvailablePowerClutchUndefined = interp1d(
-                PowerCurveEngineSpeeds,
-                interpval,
-                bounds_error=False,
-                fill_value=np.nan,
-            )(
-                np.max(
-                    (
-                        1.15 * IdlingEngineSpeed,
-                        PowerCurveEngineSpeeds[0],
-                    )
-                )
-            )
+                PowerCurveEngineSpeeds, interpval, bounds_error=False, fill_value=np.nan
+            )(np.max((1.15 * IdlingEngineSpeed, PowerCurveEngineSpeeds[0])))
 
         CheckAvailablePowerClutchDisengaged = (
             IdlingEngineSpeed >= PowerCurveEngineSpeeds[0]
