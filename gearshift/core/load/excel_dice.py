@@ -62,21 +62,9 @@ def _load_excel_file(input_file_name):
 
     data = _load({"input_file_name": input_file_name})
 
-    input_data = sh.get_nested_dicts(
-        data,
-        "raw_data",
-        "base",
-        "input",
-        "calibration",
-    )
+    input_data = sh.get_nested_dicts(data, "raw_data", "base", "input", "calibration")
 
-    target_data = sh.get_nested_dicts(
-        data,
-        "raw_data",
-        "base",
-        "target",
-        "calibration",
-    )
+    target_data = sh.get_nested_dicts(data, "raw_data", "base", "target", "calibration")
 
     final_input = _mergeDict(input_data, target_data)
     veh_class = _get_class(final_input)
@@ -132,10 +120,7 @@ def _load_excel_file(input_file_name):
     }
     case = dict(filter(lambda x: bool(x[1]) != False, case.items()))
 
-    keys_engine = {
-        "full_load_speeds",
-        "full_load_powers",
-    }
+    keys_engine = {"full_load_speeds", "full_load_powers"}
     engine = {
         cycle: sh.selector(keys_engine, d, allow_miss=True)
         for cycle, d in final_input.items()
@@ -172,10 +157,7 @@ def _transform_vehicle_data(vehicle, gear_box_ratios, type_cols):
         "vehicle_mass": "m_test",
     }
 
-    vehicle_calc = {
-        "n_max1": 0.0,
-        "SM": 0.1,
-    }
+    vehicle_calc = {"n_max1": 0.0, "SM": 0.1}
 
     frames = []
 
@@ -202,10 +184,7 @@ def _transform_vehicle_data(vehicle, gear_box_ratios, type_cols):
 
 def _transform_engine_data(engine, type_cols):
 
-    engine_keys = {
-        "full_load_speeds": "n",
-        "full_load_powers": "p",
-    }
+    engine_keys = {"full_load_speeds": "n", "full_load_powers": "p"}
 
     engine_calc = {"ASM": 0.0}
 
@@ -215,11 +194,7 @@ def _transform_engine_data(engine, type_cols):
         engine_dict = {
             (engine_keys[ki] if ki in engine_keys else ki): vi for ki, vi in v.items()
         }
-        engine_dict = {
-            **engine_calc,
-            **{"vehicle": k},
-            **engine_dict,
-        }
+        engine_dict = {**engine_calc, **{"vehicle": k}, **engine_dict}
         df = pd.DataFrame.from_dict(engine_dict)
         frames.append(df)
 
@@ -234,10 +209,7 @@ def _transform_engine_data(engine, type_cols):
 
 def _transform_speed_phase_data(speed_phase_data, case, type_cols):
 
-    speed_phase_data_keys = {
-        "times": "t",
-        "obd_velocities": "v",
-    }
+    speed_phase_data_keys = {"times": "t", "obd_velocities": "v"}
 
     classes = list(map(lambda x: x.get("class"), case.values()))
 
@@ -301,11 +273,7 @@ def _transform_gear_box_ratios(gear_box_inputs, type_cols):
 
         gears, ndv = zip(*ndv_dict.items())
 
-        gear_box_ratios_dict = {
-            "vehicle": k,
-            "gear": gears,
-            "ndv": ndv,
-        }
+        gear_box_ratios_dict = {"vehicle": k, "gear": gears, "ndv": ndv}
 
         df = pd.DataFrame.from_dict(gear_box_ratios_dict)
 
@@ -463,12 +431,7 @@ def load_dice_file(input_file_name):
             "f2": "float64",
             "SM": "float64",
         },
-        "engine": {
-            "vehicle": "str",
-            "n": "float64",
-            "p": "float64",
-            "ASM": "float64",
-        },
+        "engine": {"vehicle": "str", "n": "float64", "p": "float64", "ASM": "float64"},
         "gearbox_ratios": {"vehicle": "str", "gear": "int32", "ndv": "float64"},
         "speed_phase": {"class": "str", "t": "float64", "v": "float"},
     }
