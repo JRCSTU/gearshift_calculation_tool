@@ -30,8 +30,7 @@ dsp = sh.BlueDispatcher(
 )
 
 dsp.add_data(
-    data_id="execution_case",
-    description="User input data of PYCSIS calibration stage.",
+    data_id="execution_case", description="User input data of PYCSIS calibration stage."
 )
 
 dsp.add_function(
