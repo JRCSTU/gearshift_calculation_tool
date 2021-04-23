@@ -164,14 +164,14 @@ Dispatcher
   This will automatically open an internet browser and show the work flow of the core model as below.
   You can click all the rectangular boxes to see in detail sub models like load, model, write and plot.
 
-    .. figure:: doc/_static/images/core_plot.PNG
+    .. figure:: ../doc/_static/images/core_plot.PNG
         :align: center
         :alt: alternate text
         :figclass: align-center
 
   The load module
 
-    .. figure:: doc/_static/images/load_core_plot.PNG
+    .. figure:: ../doc/_static/images/load_core_plot.PNG
         :align: center
         :alt: alternate text
         :figclass: align-center
