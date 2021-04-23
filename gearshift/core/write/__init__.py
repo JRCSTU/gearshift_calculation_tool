@@ -26,8 +26,7 @@ import schedula as sh
 log = logging.getLogger(__name__)
 
 dsp = sh.BlueDispatcher(
-    name="write",
-    description="Produces a vehicle report from GEARSHIFT outputs.",
+    name="write", description="Produces a vehicle report from GEARSHIFT outputs."
 )
 
 
