@@ -1,1 +1,4 @@
 jupyterlab
+wltp-gearshift
+pandas
+numpy
