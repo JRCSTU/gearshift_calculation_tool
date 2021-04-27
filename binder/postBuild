@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# Install a JupyterLab extension for demonstration purposes
-jupyter contrib nbextension install --user
-jupyter nbextension enable --py widgetsnbextension
