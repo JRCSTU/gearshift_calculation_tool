@@ -100,7 +100,6 @@ pyrsistent
 PySocks
 python-dateutil
 python-gnupg==0.4.7
-pytz
 pywin32==300
 pywin32-ctypes==0.2.0
 pywinpty==0.5.7
