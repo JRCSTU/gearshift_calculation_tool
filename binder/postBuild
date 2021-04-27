@@ -1,9 +1,6 @@
-# Install QGrid for plain notebook-server.
-jupyter nbextension enable --py --sys-prefix qgrid
-jupyter nbextension enable --py widgetsnbextension
+#!/bin/bash
 
-# Install a JupyterLab extensions for JupyterLab < 1.10!!
-jupyter labextension install @jupyter-widgets/jupyterlab-manager  # https://github.com/jupyter-widgets/ipywidgets/tree/master/packages/jupyterlab-manager
-jupyter labextension install jupyter-matplotlib
-jupyter labextension install jupyterlab-jupytext  # https://github.com/mwouts/jupytext/issues/276
-jupyter labextension install qgrid2
+# Install a JupyterLab extension for demonstration purposes
+jupyter contrib nbextension install --user
+jupyter nbextension enable --py widgetsnbextension
+jupyter labextension install @jupyter-widgets/jupyterlab-manager@0.38 --minimize=False
