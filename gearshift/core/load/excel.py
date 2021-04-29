@@ -108,7 +108,8 @@ def _read_dataframe(col, dataframe):
 
     dataframe = dataframe.astype(type_cols[col])
 
-    if col == "case": dataframe = dataframe.astype(caseDict)
+    if col == "case":
+        dataframe = dataframe.astype(caseDict)
 
     for string_column in dataframe.select_dtypes(include="object"):
         dataframe[string_column] = dataframe[string_column].str.replace(" ", "")
