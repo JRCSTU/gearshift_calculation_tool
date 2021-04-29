@@ -26,10 +26,10 @@ def _read_dataframe(col, dataframe):
         "case": {
             "case": "int32",
             "vehicle": "int32",
-            "do_dsc": "bool",
-            "do_cap": "bool",
-            "do_cmp": "bool",
-            "calc_dsc": "bool",
+            "do_dsc": "int32",
+            "do_cap": "int32",
+            "do_cmp": "int32",
+            "calc_dsc": "int32",
             "f_dsc": "float64",
             "v_cap": "float64",
             "class": "str",
@@ -43,9 +43,9 @@ def _read_dataframe(col, dataframe):
             "n_min3as": "float64",
             "n_min3ds": "float64",
             "t_start": "int32",
-            "supp0": "bool",
-            "excl1": "bool",
-            "autom": "bool",
+            "supp0": "int32",
+            "excl1": "int32",
+            "autom": "int32",
             "n_lim": "float64",
             "asm_0": "float64",
             "n_asm_s": "float64",
@@ -73,11 +73,42 @@ def _read_dataframe(col, dataframe):
         "gearbox_ratios": {"vehicle": "int32", "gear": "int32", "ndv": "float64"},
     }
 
+    caseDict = {
+        "case": "int32",
+        "vehicle": "int32",
+        "do_dsc": "bool",
+        "do_cap": "bool",
+        "do_cmp": "bool",
+        "calc_dsc": "bool",
+        "f_dsc": "float64",
+        "v_cap": "float64",
+        "class": "str",
+        "n_min1": "float64",
+        "n_min12": "float64",
+        "n_min2d": "float64",
+        "n_min2": "float64",
+        "n_min3": "float64",
+        "n_min3a": "float64",
+        "n_min3d": "float64",
+        "n_min3as": "float64",
+        "n_min3ds": "float64",
+        "t_start": "int32",
+        "supp0": "bool",
+        "excl1": "bool",
+        "autom": "bool",
+        "n_lim": "float64",
+        "asm_0": "float64",
+        "n_asm_s": "float64",
+        "n_asm_e": "float64",
+    }
+
     dataframe = dataframe.drop([0], axis=0)
 
     dataframe.columns = dataframe.columns.str.replace(" ", "")
 
     dataframe = dataframe.astype(type_cols[col])
+
+    if col == "case": dataframe = dataframe.astype(caseDict)
 
     for string_column in dataframe.select_dtypes(include="object"):
         dataframe[string_column] = dataframe[string_column].str.replace(" ", "")
