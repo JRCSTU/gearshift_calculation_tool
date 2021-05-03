@@ -25,7 +25,7 @@ def _read_dataframe(col, dataframe):
     type_cols = {
         "case": {
             "case": "int32",
-            "vehicle": "int32",
+            "vehicle": "str",
             "do_dsc": "int32",
             "do_cap": "int32",
             "do_cmp": "int32",
@@ -52,7 +52,7 @@ def _read_dataframe(col, dataframe):
             "n_asm_e": "float64",
         },
         "vehicle": {
-            "vehicle": "int32",
+            "vehicle": "str",
             "p_rated": "float64",
             "n_rated": "float64",
             "n_idle": "float64",
@@ -64,18 +64,13 @@ def _read_dataframe(col, dataframe):
             "f2": "float64",
             "SM": "float64",
         },
-        "engine": {
-            "vehicle": "int32",
-            "n": "float64",
-            "p": "float64",
-            "ASM": "float64",
-        },
-        "gearbox_ratios": {"vehicle": "int32", "gear": "int32", "ndv": "float64"},
+        "engine": {"vehicle": "str", "n": "float64", "p": "float64", "ASM": "float64"},
+        "gearbox_ratios": {"vehicle": "str", "gear": "int32", "ndv": "float64"},
     }
 
     caseDict = {
         "case": "int32",
-        "vehicle": "int32",
+        "vehicle": "str",
         "do_dsc": "bool",
         "do_cap": "bool",
         "do_cmp": "bool",
