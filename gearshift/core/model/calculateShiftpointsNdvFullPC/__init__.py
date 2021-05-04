@@ -555,6 +555,13 @@ def determine_maximum_engine_speed_95(
     return Max95EngineSpeedFinal
 
 
+def _round_half_up(n, decimals=0):
+    import math
+
+    multiplier = 10 ** decimals
+    return math.floor(n * multiplier + 0.5) / multiplier
+
+
 @sh.add_function(
     dsp,
     outputs=[
@@ -677,19 +684,19 @@ def minimum_engine_speed_in_motion(
         RatedEngineSpeedF - IdlingEngineSpeed
     )
 
-    MinDrive1st = np.round(
+    MinDrive1st = _round_half_up(
         max(CalculatedMinDriveEngineSpeed1st, MinDriveEngineSpeed1st)
     )
-    MinDrive1stTo2nd = np.round(
+    MinDrive1stTo2nd = _round_half_up(
         max(CalculatedMinDriveEngineSpeed1stTo2nd, MinDriveEngineSpeed1stTo2nd)
     )
-    MinDrive2ndDecel = np.round(
+    MinDrive2ndDecel = _round_half_up(
         max(CalculatedMinDriveEngineSpeed2ndDecel, MinDriveEngineSpeed2ndDecel)
     )
-    MinDrive2nd = np.round(
+    MinDrive2nd = _round_half_up(
         max(CalculatedMinDriveEngineSpeed2nd, MinDriveEngineSpeed2nd)
     )
-    MinDriveGreater2nd = np.round(
+    MinDriveGreater2nd = _round_half_up(
         max(CalculatedMinDriveEngineSpeedGreater2nd, MinDriveEngineSpeedGreater2nd)
     )
 
