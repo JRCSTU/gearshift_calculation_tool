@@ -22,6 +22,11 @@ def _read_columns(input_data):
 
 def _read_dataframe(col, dataframe):
 
+    dataframe = dataframe.fillna(0)
+
+    if col == "vehicle":
+        dataframe["SM"] = 0.100
+
     type_cols = {
         "case": {
             "case": "int32",
