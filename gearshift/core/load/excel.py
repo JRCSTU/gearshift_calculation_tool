@@ -25,8 +25,9 @@ def _read_dataframe(col, dataframe):
 
     dataframe.columns = dataframe.columns.str.replace(" ", "")
 
+    dataframe = dataframe.fillna(0)
+
     if col == "case":
-        dataframe = dataframe.fillna(0)
         dataframe["do_dsc"] = 1
         dataframe["calc_dsc"] = 1
         dataframe["f_dsc"] = 0
