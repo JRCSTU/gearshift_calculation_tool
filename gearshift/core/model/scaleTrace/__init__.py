@@ -250,23 +250,44 @@ def _calculate_downscaling_factor(
     """
     if UseCalculatedDownscalingPercentage:
         if indexing is None:
-            indexing = np.full((len(requiredPowers)), 1)
-        requiredToRatedPowerRatio = _calculate_required_to_rated_power_ratio(
-            indexing, requiredPowers, RatedEnginePower
-        )
-        if requiredToRatedPowerRatio >= r0:
-            downscalingFactor = a1 * requiredToRatedPowerRatio + b1
+            if a1 == 0.588:
+                indexing = np.full((len(requiredPowers)), 0)
+                indexing[1566] = 1
+                requiredToRatedPowerRatio = _calculate_required_to_rated_power_ratio(
+                    indexing, requiredPowers, RatedEnginePower
+                )
+                if requiredToRatedPowerRatio >= r0:
+                    downscalingFactor = a1 * requiredToRatedPowerRatio + b1
+                    downscalingFactor = np.round(downscalingFactor, 3)
+                else:
+                    downscalingFactor = 0
+            else:
+                indexing = np.full((len(requiredPowers)), 1)
+                indexing[1579:] = 0
+                requiredToRatedPowerRatio = _calculate_required_to_rated_power_ratio(
+                    indexing, requiredPowers, RatedEnginePower
+                )
+                if requiredToRatedPowerRatio >= r0:
+                    downscalingFactor = a1 * requiredToRatedPowerRatio + b1
+                    downscalingFactor = int(downscalingFactor * 1000) / 1000
+                else:
+                    downscalingFactor = 0
         else:
+            requiredToRatedPowerRatio = _calculate_required_to_rated_power_ratio(
+                indexing, requiredPowers, RatedEnginePower
+            )
             downscalingFactor = 0
+
         return downscalingFactor, requiredToRatedPowerRatio
     else:
         if indexing is None:
             indexing = np.full((len(requiredPowers)), 1)
+            indexing[1579:] = 0
         requiredToRatedPowerRatio = _calculate_required_to_rated_power_ratio(
             indexing, requiredPowers, RatedEnginePower
         )
         downscalingFactor = DownscalingPercentage
-        return downscalingFactor, requiredToRatedPowerRatio
+        return np.round(downscalingFactor, 3), requiredToRatedPowerRatio
 
 
 def _round_half_up(n, decimals=0):
@@ -474,8 +495,8 @@ def downscale_trace(
             The maximum required to rated power ratio
     """
 
-    if DownscalingPercentage * 100 <= 1:
-        ApplyDownscaling = False
+    # if DownscalingPercentage * 100 <= 1:
+    #    ApplyDownscaling = False
 
     downscalingFactor, requiredToRatedPowerRatio = _calculate_downscaling_factor(
         r0,
