@@ -12,7 +12,6 @@ import pandas as pd
 
 
 def _read_columns(input_data):
-
     col_names = ["case", "vehicle", "engine", "gearbox_ratios"]
 
     columns = [x.lower().strip() for x in input_data.sheet_names]
@@ -22,11 +21,18 @@ def _read_columns(input_data):
 
 def _read_dataframe(col, dataframe):
 
+    dataframe = dataframe.drop([0], axis=0)
+
+    dataframe.columns = dataframe.columns.str.replace(" ", "")
+
     if col == "case":
         dataframe = dataframe.fillna(0)
         dataframe["do_dsc"] = 1
         dataframe["calc_dsc"] = 1
         dataframe["f_dsc"] = 0
+        dataframe["do_cmp"] = 1
+        dataframe["do_cap"] = 0
+        dataframe.loc[dataframe['v_cap'] != 0, ['do_cap']] = 1
 
     if col == "vehicle":
         dataframe["SM"] = 0.100
@@ -40,6 +46,7 @@ def _read_dataframe(col, dataframe):
             "do_cmp": "int32",
             "calc_dsc": "int32",
             "f_dsc": "float64",
+            "v_max": "float64",
             "v_cap": "float64",
             "class": "str",
             "n_min1": "float64",
@@ -105,10 +112,6 @@ def _read_dataframe(col, dataframe):
         "n_asm_s": "float64",
         "n_asm_e": "float64",
     }
-
-    dataframe = dataframe.drop([0], axis=0)
-
-    dataframe.columns = dataframe.columns.str.replace(" ", "")
 
     dataframe = dataframe.astype(type_cols[col])
 
