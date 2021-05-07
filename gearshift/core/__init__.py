@@ -56,6 +56,7 @@ def _obtain_inputs(case, base):
         "do_cmp": "ApplyDistanceCompensation",
         "calc_dsc": "UseCalculatedDownscalingPercentage",
         "f_dsc": "DownscalingPercentage",
+        "v_max": "MaximumVelocityDefined",
         "v_cap": "CappedSpeed",
         "n_min1": "MinDriveEngineSpeed1st",
         "n_min12": "MinDriveEngineSpeed1stTo2nd",
