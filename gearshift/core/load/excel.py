@@ -33,7 +33,7 @@ def _read_dataframe(col, dataframe):
         dataframe["f_dsc"] = 0
         dataframe["do_cmp"] = 1
         dataframe["do_cap"] = 0
-        dataframe.loc[dataframe['v_cap'] != 0, ['do_cap']] = 1
+        dataframe.loc[dataframe["v_cap"] != 0, ["do_cap"]] = 1
 
     if col == "vehicle":
         dataframe["SM"] = 0.100
