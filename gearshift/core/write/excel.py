@@ -9,7 +9,19 @@ Functions to write outputs on an excel file.
 """
 import pandas as pd
 import numpy as np
+import os.path as osp
+from pathlib import Path
+import io
 import re
+
+
+def _read_project_version():
+    mydir = osp.dirname(__file__)
+    gsdir = Path(mydir).parent.parent.absolute()
+    fglobals = {}
+    with io.open(osp.join(gsdir, "_version.py")) as fd:
+        exec(fd.read(), fglobals)  # To read __version__
+    return fglobals["__version__"]
 
 
 def _dict2dataframes(solution_case):
@@ -61,7 +73,7 @@ def _dict2dataframes(solution_case):
         }
         ApplicableTrace = pd.DataFrame(dict_AT)
         dict_df["Applicable Trace"] = ApplicableTrace
-
+    principal_sheet_output["gearshift_version"] = _read_project_version()
     dict_df["Summary"] = pd.DataFrame(principal_sheet_output)
 
     return dict_df
