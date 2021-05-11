@@ -11,21 +11,28 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+import io
 import sys
 from os.path import abspath, join, dirname
 
 prj_dir = abspath(join(dirname(__file__), ".."))
 sys.path.insert(0, prj_dir)
 
+def read_project_version(prj_dir):
+    fglobals = {}
+    with io.open(os.path.join(prj_dir, "gearshift", "_version.py")) as fd:
+        exec(fd.read(), fglobals)  # To read __version__
+    return fglobals["__version__"]
+
 
 # -- Project information -----------------------------------------------------
 
 project = "gearshift tool"
-copyright = "2020, European commission"
+copyright = "2013-2020 European Commission"
 author = "European commission"
 
 # The full version, including alpha/beta/rc tags
-release = "1.0.1"
+release = read_project_version(prj_dir)
 
 
 # -- General configuration ---------------------------------------------------
@@ -67,7 +74,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "GEARSHIFT TOOL"
-copyright = "2015-2019, European Commission (JRC)"  # @ReservedAssignment
+copyright = "2013-2020, European Commission (JRC)"  # @ReservedAssignment
 author = "see AUTHORS.rst"
 
 # -- Options for HTML output ----------------------------------------------
