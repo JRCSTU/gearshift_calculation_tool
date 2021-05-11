@@ -18,6 +18,7 @@ from os.path import abspath, join, dirname
 prj_dir = abspath(join(dirname(__file__), ".."))
 sys.path.insert(0, prj_dir)
 
+
 def read_project_version(prj_dir):
     fglobals = {}
     with io.open(os.path.join(prj_dir, "gearshift", "_version.py")) as fd:
