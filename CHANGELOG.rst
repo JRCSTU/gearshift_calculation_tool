@@ -39,6 +39,16 @@ v1.1.1, 22 April 2021: PY3.5 or grater and real work
 - Build & dev-dependencies enhancements.
     - Correct reading of xlsx files according to xlrd deprecation.
 
+v1.1.2, 11 May 2021: Fix downscaling calculation
+------------------------------------------------
+
+- Correct calculate downscaling function inside of scaleTrace according to the regulation.
+- Define new input template reducing the mandatory parameters.
+- Redefine the color description in the input template.
+- Updated documentation.
+- style: auto-format python files with |black|_  using |pre-commit|_.
+
+
 .. |black| replace:: *black* opinionated formatter
 .. _black: https://black.readthedocs.io/
 .. |pre-commit| replace:: *pre-commit* hooks framework
