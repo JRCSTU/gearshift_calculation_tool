@@ -9,7 +9,7 @@ Python Gearshift Calculation Tool
 :keywords:      automotive, car, cars, driving, engine, emissions, fuel-consumption,
                 gears, gearshifts, rpm, simulation, simulator, standard, vehicle, vehicles, WLTP
 :live-demo:     |binder|
-:copyright:     2013-2020 European Commission (`JRC-IET <https://ec.europa.eu/jrc/en/institutes/iet>`_)
+:Licence:     2013-2020 European Commission (`JRC-IET <https://ec.europa.eu/jrc/en/institutes/iet>`_)
                 |proj-lic|
 
 A python-3.6+ package to generate the *gear-shifts* of Light-duty vehicles
@@ -148,6 +148,10 @@ Load data
 
         input = dict(input_file_name=vehData)
 
+.. _end-library:
+
+.. _start-dispacher1:
+
 Dispatcher
 ----------
 * Dispatcher will select and execute the proper functions for the given inputs and the requested outputs
@@ -155,6 +159,8 @@ Dispatcher
   .. code-block:: python
 
     core = dsp(input, outputs=['sol'], shrink=True)
+
+.. _end-dispacher1:
 
 * Plot workflow of the core model from the dispatcher
 
@@ -177,6 +183,8 @@ Dispatcher
         :alt: alternate text
         :figclass: align-center
 
+.. _start-dispacher2:
+
 * Load outputs of dispatcher Select the chosen dictionary key (sol) from the given dictionary.
 
     .. code-block:: python
@@ -198,14 +206,15 @@ Dispatcher
         for sol in solution['sol']:
             gears[f'gears_{sol["Case"]}'] = sol['GearsOutput']
 
-.. _end-library:
+.. _end-dispacher2:
+
 
 .. _start-sub:
 
 .. |python-ver| image::  https://img.shields.io/badge/PyPi%20python-3.3%20%7C%203.4%20%7C%203.5%20%7C%203.6%20%7C%203.7-informational
     :alt: Supported Python versions of latest release in PyPi
 
-.. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.1.1-orange
+.. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.1.2-orange
     :target: https://github.com/JRCSTU/gearshift/releases
     :alt: Latest version in GitHub
 
@@ -219,9 +228,9 @@ Dispatcher
 .. |doc| image:: https://img.shields.io/badge/docs-passing-success
     :alt: GitHub page documentation
 
-.. |proj-lic| image:: https://img.shields.io/pypi/l/wltp.svg
+.. |proj-lic| image:: https://img.shields.io/badge/license-European%20Union%20Public%20Licence%201.2-lightgrey
     :target:  https://joinup.ec.europa.eu/software/page/eupl
-    :alt: EUPL 1.1+
+    :alt: EUPL 1.2
 
 .. |codestyle| image:: https://img.shields.io/badge/code%20style-black-black.svg
     :target: https://github.com/ambv/black
