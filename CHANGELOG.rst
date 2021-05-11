@@ -48,6 +48,10 @@ v1.1.2, 11 May 2021: Fix downscaling calculation
 - Updated documentation.
 - style: auto-format python files with |black|_  using |pre-commit|_.
 
+v1.1.2.1, 11 May 2021: Fix downscaling calculation
+------------------------------------------------
+
+- Update demo files.
 
 .. |black| replace:: *black* opinionated formatter
 .. _black: https://black.readthedocs.io/

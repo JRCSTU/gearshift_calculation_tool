@@ -214,7 +214,7 @@ Dispatcher
 .. |python-ver| image::  https://img.shields.io/badge/PyPi%20python-3.3%20%7C%203.4%20%7C%203.5%20%7C%203.6%20%7C%203.7-informational
     :alt: Supported Python versions of latest release in PyPi
 
-.. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.1.2-orange
+.. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.1.2.1-orange
     :target: https://github.com/JRCSTU/gearshift/releases
     :alt: Latest version in GitHub
 
