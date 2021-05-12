@@ -241,7 +241,7 @@ Dispatcher
     :alt: pip installation
 
 .. |binder| image:: https://mybinder.org/badge_logo.svg
-    :target: https://mybinder.org/v2/gh/JRCSTU/gearshift_calculation_tool/HEAD?urlpath=lab/tree/Notebooks/GUI_binder_interface.ipynb
+    :target: https://mybinder.org/v2/gh/JRCSTU/gearshift_calculation_tool/main?urlpath=lab/tree/Notebooks/GUI_binder_interface.ipynb
     :alt: JupyterLab for Gerashift Calculation Tool (stable)
 
 .. |CO2| replace:: CO\ :sub:`2`
