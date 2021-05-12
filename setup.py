@@ -34,15 +34,12 @@ def read_file(fpath):
 proj_ver = read_project_version()
 url = f"https://github.com/JRCSTU/{name}"
 download_url = f"{url}/tarball/{proj_ver}"
-project_urls = collections.OrderedDict(
-    (
-        (
-            "Documentation",
-            "https://gearshift-calculation-tool.readthedocs.io/en/latest/",
-        ),
-        ("Issue tracker", f"{url}/issues"),
-    )
-)
+project_urls = {
+    "Documentation": "https://gearshift-calculation-tool.readthedocs.io/en/latest/",
+    "Sources": "https://github.com/JRCSTU/gearshift_calculation_tool",
+    "Bug Tracker": f"{url}/issues",
+    "Live Demo": "https://mybinder.org/v2/gh/JRCSTU/gearshift_calculation_tool/HEAD?urlpath=lab/tree/Notebooks/GUI_binder_interface.ipynb",
+}
 
 extras = {
     "cli": ["click", "click-log"],
