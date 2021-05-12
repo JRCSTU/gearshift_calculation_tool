@@ -211,14 +211,14 @@ Dispatcher
 
 .. _start-sub:
 
-.. |python-ver| image::  https://img.shields.io/badge/PyPi%20python-3.3%20%7C%203.4%20%7C%203.5%20%7C%203.6%20%7C%203.7-informational
+.. |python-ver| image::  https://img.shields.io/badge/PyPi%20python-3.5%20%7C%203.6%20%7C%203.7%20%7C%203.8-informational
     :alt: Supported Python versions of latest release in PyPi
 
 .. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.1.2.1-orange
     :target: https://github.com/JRCSTU/gearshift/releases
     :alt: Latest version in GitHub
 
-.. |rel-date| image:: https://img.shields.io/badge/rel--date-22--04--2021-orange
+.. |rel-date| image:: https://img.shields.io/badge/rel--date-11--05--2021-orange
     :target: https://github.com/JRCSTU/gearshift/releases
     :alt: release date
 
