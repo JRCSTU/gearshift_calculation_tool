@@ -1380,28 +1380,6 @@ def applyCorrection4f(
         # -------------------------------------------------------------------
 
         # -------------------------------------------------------------------
-        # In all cases specified above in this sub-paragraph,
-        # the clutch disengagement (gear 0) for 1 second is used
-        # in order to avoid too high engine speeds for this second.
-        # If this is not an issue and, if requested by the manufacturer,
-        # it is allowed to use the lower gear of the following second
-        # directly instead of gear 0 for downshifts of up to 3 steps.
-        # The use of this option shall be recorded.
-        # -------------------------------------------------------------------
-        # NOTE: This text is a later part of the regulation text.
-        # -------------------------------------------------------------------
-        if (
-            replaced
-            and SuppressGear0DuringDownshifts
-            and i - 1 >= 1
-            and i + 1 <= i_max
-            and gear[i - 1] - 3 <= gear[i + 1]
-        ):
-            gear[i] = gear[i + 1]
-            ClutchDisengaged[i] = 0
-            replaced = False
-
-        # -------------------------------------------------------------------
         # For extreme transmission designs, it is possible
         # that gear sequences with durations of 1 or 2 seconds
         # following one another may last up to 7 seconds.
@@ -1501,6 +1479,27 @@ def applyCorrection4f(
                 ClutchDisengaged[i + 1] = 1
                 gear[i + 2] = gear[i + 4]
                 gear[i + 3] = gear[i + 4]
+
+        # -------------------------------------------------------------------
+        # In all cases specified above in this sub-paragraph,
+        # the clutch disengagement (gear 0) for 1 second is used
+        # in order to avoid too high engine speeds for this second.
+        # If this is not an issue and, if requested by the manufacturer,
+        # it is allowed to use the lower gear of the following second
+        # directly instead of gear 0 for downshifts of up to 3 steps.
+        # The use of this option shall be recorded.
+        # -------------------------------------------------------------------
+        # NOTE: This text is a later part of the regulation text.
+        # -------------------------------------------------------------------
+        if (
+            replaced
+            and SuppressGear0DuringDownshifts
+            and i - 1 >= 1
+            and i + 1 <= i_max
+            and gear[i - 1] - 3 <= gear[i + 1]
+        ):
+            gear[i] = gear[i + 1]
+            ClutchDisengaged[i] = 0
 
         # -------------------------------------------------------------------
         # If the deceleration phase is the last part of a short trip
