@@ -14,12 +14,6 @@ Python Gearshift Calculation Tool
 
 A python-3.6+ package to generate the *gear-shifts* of Light-duty vehicles
 
-
-.. Attention::
-    This *gearshift* python project is still in *alpha* stage, in the sense that
-    its results are not "correct" by the standard, and no WLTP dyno-tests should rely
-    currently on them.
-
 .. _end-info:
 
 .. contents:: Table of Contents
