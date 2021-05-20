@@ -53,6 +53,17 @@ v1.1.2.1, 11 May 2021: Fix demo files
 
 - Update demo files.
 
+v1.1.3, 20 May 2021: Suppress gear 0 during execution
+-----------------------------------------------------
+
+- Correct correction 4f in correction file:
+    - In all cases specified above in this sub-paragraph, the clutch disengagement (gear 0) for 1 second is used in order to avoid too high engine speeds for this second. If this is not an issue and,
+      if requested by the manufacturer, it is allowed to use the lower gear of the following second directly instead of gear 0 for downshifts of up to 3 steps. The use of this option shall be recorded.
+    - This correction should be applied after all corrections described in section 4 of sub-Annex 2.
+- Define new input template reducing the mandatory parameters.
+- Update copyright.
+
+
 .. |black| replace:: *black* opinionated formatter
 .. _black: https://black.readthedocs.io/
 .. |pre-commit| replace:: *pre-commit* hooks framework
