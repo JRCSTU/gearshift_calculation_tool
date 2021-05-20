@@ -1370,14 +1370,6 @@ def applyCorrection4f(
             ClutchDisengaged[i] = 1
             gear[i + 1] = gear[i + 2]
             replaced = True
-        # -------------------------------------------------------------------
-        # This change shall also be applied to gear sequences
-        # where the acceleration is >= 0 for the first 2 seconds
-        # and < 0 for the 3rd second
-        # or where the acceleration is >= 0 for the last 2 seconds.
-        # -------------------------------------------------------------------
-        # IMPLEMENTED ABOVE AS: all( InDeceleration( i-1 : i ) )
-        # -------------------------------------------------------------------
 
         # -------------------------------------------------------------------
         # For extreme transmission designs, it is possible
@@ -1479,6 +1471,15 @@ def applyCorrection4f(
                 ClutchDisengaged[i + 1] = 1
                 gear[i + 2] = gear[i + 4]
                 gear[i + 3] = gear[i + 4]
+
+        # -------------------------------------------------------------------
+        # This change shall also be applied to gear sequences
+        # where the acceleration is >= 0 for the first 2 seconds
+        # and < 0 for the 3rd second
+        # or where the acceleration is >= 0 for the last 2 seconds.
+        # -------------------------------------------------------------------
+        # IMPLEMENTED ABOVE AS: all( InDeceleration( i-1 : i ) )
+        # -------------------------------------------------------------------
 
         # -------------------------------------------------------------------
         # In all cases specified above in this sub-paragraph,
