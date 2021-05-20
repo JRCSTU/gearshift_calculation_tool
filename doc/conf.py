@@ -18,6 +18,14 @@ from os.path import abspath, join, dirname
 prj_dir = abspath(join(dirname(__file__), ".."))
 sys.path.insert(0, prj_dir)
 
+
+def read_project_version(prj_dir):
+    fglobals = {}
+    with io.open(os.path.join(prj_dir, "gearshift", "_version.py")) as fd:
+        exec(fd.read(), fglobals)  # To read __version__
+    return fglobals["__version__"]
+
+
 # -- Project information -----------------------------------------------------
 
 project = "gearshift tool"
@@ -25,7 +33,7 @@ copyright = "2021, European Commission, COP0001375"
 author = "European commission"
 
 # The full version, including alpha/beta/rc tags
-release = '1.1.3'
+release = read_project_version(prj_dir)
 
 
 # -- General configuration ---------------------------------------------------
