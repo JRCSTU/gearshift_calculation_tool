@@ -208,11 +208,11 @@ Dispatcher
 .. |python-ver| image::  https://img.shields.io/badge/PyPi%20python-3.5%20%7C%203.6%20%7C%203.7%20%7C%203.8-informational
     :alt: Supported Python versions of latest release in PyPi
 
-.. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.1.2.1-orange
+.. |gh-version| image::  https://img.shields.io/badge/GitHub%20release-1.1.3-orange
     :target: https://github.com/JRCSTU/gearshift/releases
     :alt: Latest version in GitHub
 
-.. |rel-date| image:: https://img.shields.io/badge/rel--date-11--05--2021-orange
+.. |rel-date| image:: https://img.shields.io/badge/rel--date-20--05--2021-orange
     :target: https://github.com/JRCSTU/gearshift/releases
     :alt: release date
 
@@ -230,7 +230,7 @@ Dispatcher
     :target: https://github.com/ambv/black
     :alt: Code Style
 
-.. |pypi-ins| image:: https://img.shields.io/badge/pypi-v1.1.2.1-informational
+.. |pypi-ins| image:: https://img.shields.io/badge/pypi-v1.1.3-informational
     :target: https://pypi.org/project/wltp-gearshift/
     :alt: pip installation
 
