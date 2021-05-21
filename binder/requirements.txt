@@ -1,4 +1,4 @@
 jupyterlab
-wltp-gearshift==1.1.2.1
+wltp-gearshift
 pandas
 numpy
