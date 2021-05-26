@@ -87,7 +87,7 @@ setup(
     packages=find_packages(exclude=["test", "test.*", "doc", "doc.*", "appveyor"]),
     license="EUPL 1.1+",
     author="GEARSHIFT-Team",
-    author_email="Andres.LAVERDE-MARIN@ext.ec.europa.eu",
+    author_email="jrc-ldvs-co2@ec.europa.eu",
     description="Gearshift tool implement the Sub-Annex 1 and Sub-Annex 2 of the"
     "COMMISSION REGULATION (EU) 2017/1151 of 1 June 2017 - Annex XXI",
     long_description=read_file("README.rst"),
