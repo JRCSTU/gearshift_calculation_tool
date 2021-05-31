@@ -169,11 +169,11 @@ def applyCorrection4b(
 
     initial gear sequence:
 
-    .. image:: ../doc/_static/images/initial_gears_correction_4b.*
-    .. image:: ../doc/_static/images/correction_4b_1.*
-    .. image:: ../doc/_static/images/correction_4b_2.*
-    .. image:: ../doc/_static/images/correction_4b_3.*
-    .. image:: ../doc/_static/images/correction_4b_4.*
+    .. image:: ../doc/_static/images/initial_gears_correction_4b.PNG
+    .. image:: ../doc/_static/images/correction_4b_1.PNG
+    .. image:: ../doc/_static/images/correction_4b_2.PNG
+    .. image:: ../doc/_static/images/correction_4b_3.PNG
+    .. image:: ../doc/_static/images/correction_4b_4.PNG
 
     final gear sequence:
 
