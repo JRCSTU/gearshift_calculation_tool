@@ -17,7 +17,6 @@ Sub-Modules:
 
     core
     cli
-    gearshift
 """
 import tqdm
 import logging
