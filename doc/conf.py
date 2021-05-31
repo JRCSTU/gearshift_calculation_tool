@@ -75,7 +75,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "GEARSHIFT TOOL"
-copyright = "2013-2020, European Commission (JRC)"  # @ReservedAssignment
+copyright = "2021, European Commission (JRC)"  # @ReservedAssignment
 author = "see AUTHORS.rst"
 
 # -- Options for HTML output ----------------------------------------------
