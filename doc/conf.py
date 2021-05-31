@@ -30,7 +30,7 @@ def read_project_version(prj_dir):
 
 project = "gearshift tool"
 copyright = "2021, European Commission (JRC)"
-author = "European commission"
+author = "European Commission"
 
 # The full version, including alpha/beta/rc tags
 release = read_project_version(prj_dir)
