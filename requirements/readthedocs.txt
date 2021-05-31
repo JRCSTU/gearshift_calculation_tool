@@ -2,3 +2,4 @@
 click
 sphinx-click
 jinja2
+co2mpas-dice
