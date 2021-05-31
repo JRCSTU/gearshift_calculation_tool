@@ -13,7 +13,7 @@ Sub-Modules:
 
 .. autosummary::
     :nosignatures:
-    :toctree: gearshift/
+    :toctree: toctree/gearshift/
 
     core
     cli
