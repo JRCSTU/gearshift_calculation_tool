@@ -1,9 +1,9 @@
 .. _start-info:
 
-.. figure:: ./doc/_static/images/logo_text.PNG
-    :align: center
-    :alt: alternate text
-    :figclass: align-center
+    .. figure:: ./doc/_static/images/logo_text.PNG
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
 
 :versions:      |gh-version| |rel-date| |python-ver|
 :documentation: https://gearshift-calculation-tool.readthedocs.io/en/latest/ |doc|
