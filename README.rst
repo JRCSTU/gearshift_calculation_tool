@@ -1,8 +1,10 @@
 .. _start-info:
 
-################################################################
-Python Gearshift Calculation Tool
-################################################################
+.. figure:: ./doc/_static/images/logo_text.PNG
+    :align: center
+    :alt: alternate text
+    :figclass: align-center
+
 :versions:      |gh-version| |rel-date| |python-ver|
 :documentation: https://gearshift-calculation-tool.readthedocs.io/en/latest/ |doc|
 :sources:       https://github.com/JRCSTU/gearshift_calculation_tool |pypi-ins| |codestyle|
