@@ -5,8 +5,7 @@
 # – subsequent versions of the EUPL (the "Licence");
 #
 # You may not use this work except in compliance with the Licence.
-# You may obtain a copy of the Licence at: [11:17] MITSIARA Athina (JRC-ISPRA-EXT)
-#     https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+# You may obtain a copy of the Licence at: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 """
 GEARSHIFT setup.
 """
