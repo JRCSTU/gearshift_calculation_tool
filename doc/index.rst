@@ -1,6 +1,11 @@
 .. meta::
     :theme-color:   #CCCC00
 
+.. figure:: ../doc/_static/images/logo_text.png
+    :align: center
+    :alt: alternate text
+    :figclass: align-center
+
 .. include:: ../README.rst
     :start-after: .. _start-info:
     :end-before: .. _end-info:
