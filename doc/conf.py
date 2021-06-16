@@ -28,10 +28,6 @@ def read_project_version(prj_dir):
 
 # -- Project information -----------------------------------------------------
 
-project = "gearshift tool"
-copyright = "2021, European Commission (JRC)"
-author = "European Commission"
-
 # The full version, including alpha/beta/rc tags
 release = read_project_version(prj_dir)
 
@@ -75,7 +71,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "GEARSHIFT TOOL"
-copyright = "Copyright (c) 2021 European Union"  # @ReservedAssignment
+copyright = "(c) 2021 European Union"  # @ReservedAssignment
 author = "see AUTHORS.rst"
 
 # -- Options for HTML output ----------------------------------------------
