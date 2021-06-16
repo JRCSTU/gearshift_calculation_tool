@@ -11,7 +11,9 @@
 :keywords:      automotive, car, cars, driving, engine, emissions, fuel-consumption,
                 gears, gearshifts, rpm, simulation, simulator, standard, vehicle, vehicles, WLTP
 :live-demo:     |binder|
-:Licence:     Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the European Commission – subsequent versions of the EUPL (the "Licence");
+:Copyright and License:     © Copyright (c) 2021 European Union.
+
+              Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the European Commission – subsequent versions of the EUPL (the "Licence");
               You may not use this work except in compliance with the Licence.
               You may obtain a copy of the Licence at: |proj-lic|
 
@@ -208,7 +210,7 @@ Dispatcher
 
 .. _end-dispacher2:
 
-© Copyright (c) 2021 European Union.
+
 
 .. _start-sub:
 
