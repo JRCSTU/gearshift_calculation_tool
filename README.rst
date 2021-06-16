@@ -11,7 +11,7 @@
 :keywords:      automotive, car, cars, driving, engine, emissions, fuel-consumption,
                 gears, gearshifts, rpm, simulation, simulator, standard, vehicle, vehicles, WLTP
 :live-demo:     |binder|
-:Licence:     2013-2020 European Commission (`JRC-IET <https://ec.europa.eu/jrc/en/institutes/iet>`_)
+:Licence:     2013-2021 European Commission (`JRC-IET <https://ec.europa.eu/jrc/en/institutes/iet>`_)
                 |proj-lic|
 
 A python-3.6+ package to generate the *gear-shifts* of Light-duty vehicles
