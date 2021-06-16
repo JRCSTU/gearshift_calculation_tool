@@ -75,7 +75,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "GEARSHIFT TOOL"
-copyright = "2021, European Commission (JRC)"  # @ReservedAssignment
+copyright = "Copyright (c) 2021 European Union"  # @ReservedAssignment
 author = "see AUTHORS.rst"
 
 # -- Options for HTML output ----------------------------------------------
@@ -186,5 +186,6 @@ texinfo_documents = [
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'python': ('https://docs.python.org/3',
-                                  (None, 'python-inv.txt'))}
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", (None, "python-inv.txt"))
+}
