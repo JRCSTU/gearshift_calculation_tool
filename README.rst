@@ -10,6 +10,7 @@
 :sources:       https://github.com/JRCSTU/gearshift_calculation_tool |pypi-ins| |codestyle|
 :keywords:      automotive, car, cars, driving, engine, emissions, fuel-consumption,
                 gears, gearshifts, rpm, simulation, simulator, standard, vehicle, vehicles, WLTP
+:short name:    JR-Shift
 :live-demo:     |binder|
 :Copyright and License:     © Copyright (c) 2021 European Union.
 
@@ -32,7 +33,7 @@ A python-3.6+ package to generate the *gear-shifts* of Light-duty vehicles
 Introduction
 ============
 
-The aim of the Gearshift tool is obtain the Required Engine Speeds, the Available Powers, the Required Vehicle Speeds
+The aim of the JR-Shift is obtain the Required Engine Speeds, the Available Powers, the Required Vehicle Speeds
 and the Gears for the whole WLTC based on the vehicle characteristics. The model should allow accurate calculation
 of final trace and the operating conditions of the engine.
 
