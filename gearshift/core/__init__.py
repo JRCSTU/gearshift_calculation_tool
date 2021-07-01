@@ -7,7 +7,7 @@
 # You may not use this work except in compliance with the Licence.
 # You may obtain a copy of the Licence at: https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 """
-Functions and `dsp` model to processes a GEARSHIFT input file.
+Functions and `dsp` model to processes a JR-Shift input file.
 
 Sub-Modules:
 
