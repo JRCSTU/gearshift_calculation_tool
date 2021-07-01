@@ -3,7 +3,7 @@ Input File
 
 .. image:: ../doc/_static/images/about_sheet.*
 
-The input file of the GEARSHIFT tool is an excel file, structured in different sheets.
+The input file of the gearshift tool is an excel file, structured in different sheets.
 
   - **Case sheet:** The case sheet contains a list of cases that the tool will run.
   - **Vehicle sheet:** The vehicle sheet contains a list of vehicles along with their characteristics.
