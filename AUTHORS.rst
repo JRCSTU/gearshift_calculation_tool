@@ -18,3 +18,4 @@ Tester:
     - Nikiforos Georgios <Nikiforos-Georgios.ZACHAROF@ext.ec.europa.eu>
     - Dimitris Komnos <Dimitrios.KOMNOS@ext.ec.europa.eu>
     - Kostis Anagnostopoulos <kostis.anagnostopoulos@ext.ec.europa.eu>
+    - Jaime Suarez Corujo <Jaime.SUAREZ-CORUJO@ec.europa.eu>
