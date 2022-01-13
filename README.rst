@@ -21,8 +21,6 @@
               Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS
               OF ANY KIND, either express or implied. See the Licence for the specific language governing permissions and limitations under the Licence.
               
-:ISBN: 978-92-76-45979-8
-:DOI: 10.2760/400750
 
 A python-3.6+ package to generate the *gear-shifts* of Light-duty vehicles
 
