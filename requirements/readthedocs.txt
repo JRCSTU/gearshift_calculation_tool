@@ -5,3 +5,4 @@ jinja2
 co2mpas-dice
 graphviz
 schedula[sphinx]
+cython
