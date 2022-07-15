@@ -5,6 +5,9 @@
 
 .. _start-info:
 
+--(( Project has moved to https://code.europa.eu/jrc-ldv/jrshift since version 1.1.3 ))--
+=========================================================================================
+
 :versions:      |gh-version| |rel-date| |python-ver|
 :documentation: https://gearshift-calculation-tool.readthedocs.io/en/latest/ |doc|
 :sources:       https://github.com/JRCSTU/gearshift_calculation_tool |pypi-ins| |codestyle|

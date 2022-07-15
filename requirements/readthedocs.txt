@@ -1,8 +1,22 @@
 ## Somehow these do not apply from setup.py :-(
+Jinja2<3.1
+tqdm
 click
 sphinx-click
-jinja2
 co2mpas-dice
 graphviz
-schedula[sphinx]
-cython
+schedula[sphinx]==1.2.7
+Sphinx==3.5.2
+PyYAML
+pandas
+schedula>=1.1.1
+click_log
+tqdm
+regex
+numpy
+scipy
+pyarrow
+XlsxWriter
+ruamel.yaml
+openpyxl
+xlrd
